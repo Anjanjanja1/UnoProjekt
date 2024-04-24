@@ -59,4 +59,9 @@ public class Stapel {
             System.out.print(stapel.get(i) + " ");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Stapel " + stapel;
+    }
 }

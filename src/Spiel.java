@@ -41,11 +41,15 @@ public class Spiel {
         }
     }
 
+
+
     public void stapelSuffle(){
         Stapel stapel = new Stapel();
         stapel.addKarte();
         stapel.printAll(stapel);
     }
+
+
 
 
 }
