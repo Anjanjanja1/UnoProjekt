@@ -11,6 +11,8 @@ public class Karte {
         this.zeichen = zeichen;
     }
 
+    public Karte(){}
+
     public String getZeichen() {
         return zeichen;
     }
@@ -33,5 +35,10 @@ public class Karte {
 
     public void setPunkte(int punkte) {
         this.punkte = punkte;
+    }
+
+    @Override
+    public String toString() {
+        return farbe + zeichen;
     }
 }
