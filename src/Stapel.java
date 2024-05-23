@@ -72,16 +72,16 @@ public class Stapel extends Karte {
     }
 
     public ArrayList<Karte> stapelShuffleUndTeilen(ArrayList<Spieler> spielerListe, int anzahl) {
-        entferneErsteKarte();
+
         if (stapel.isEmpty()) {
             System.out.println("Der Stapel ist leer und kann nicht gemischt und verteilt werden.");
+            return stapel;
         }
 
         Collections.shuffle(stapel);
         //System.out.println("S " + stapel);
-        if (!stapel.isEmpty()) {
-            ablageStapel.getAblageStapel().add(stapel.remove(0));
-        }
+
+        entferneErsteKarte();
 
 //        System.out.println("A " + ablageStapel);
 //        System.out.println("S " + stapel);
@@ -89,7 +89,7 @@ public class Stapel extends Karte {
         for (Spieler s : spielerListe) {
             for (int j = 0; j < anzahl; j++) {
                 if (!stapel.isEmpty()) { // Check if the deck is not empty
-                    s.addKarten(stapel.removeFirst()); // Deal the top card and remove it from the deck
+                    s.addKarten(stapel.remove(0)); // Deal the top card and remove it from the deck
                 } else {
                     System.out.println("The deck is empty. Cannot deal more cards.");
                     break;
@@ -103,12 +103,15 @@ public class Stapel extends Karte {
     }
 
     public void entferneErsteKarte() {
-
-        if (ablageStapel.getFarbe().contains("WILD") || ablageStapel.getZeichen().contains("+2") || ablageStapel.getFarbe().contains("Y") || ablageStapel.getFarbe().contains("B")) {
+        ablageStapel.getAblageStapel().add(stapel.remove(0));
+        Karte ersteKarte = ablageStapel.getAblageStapel().get(0);
+        if (ersteKarte.getFarbe().contains("WILD") || ersteKarte.getZeichen().contains("+2")) {
             ablageStapel.getAblageStapel().add(stapel.remove(0));
             System.out.println("Die erste Karte war eine Wilde Karte oder eine Plus-2-Karte und wurde entfernt.");
         }
     }
+
+
 
     @Override
     public String toString() {

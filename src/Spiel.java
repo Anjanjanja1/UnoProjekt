@@ -18,13 +18,14 @@ public class Spiel {
         this.aktuellerSpieler = null;
     }
 
-    //die Gameloop
+
+    // Die Hauptschleife des Spiels -> Gameloop
     public void run() {
         initialisieren();
         benutzernameInput();
 
         stapel.addKarte();
-        stapel.entferneErsteKarte();
+
         stapel.stapelShuffleUndTeilen(spielerListe, 7);
         aktuellerSpieler = spielerListe.get(0);
         menu();
@@ -97,16 +98,29 @@ public class Spiel {
         }
     }
 
-
+    // Frage den Spieler, welche Karte er legen möchte, und fordere ihn auf, den Index einzugeben
     public void karteLegen() {
         output.println("Welche Karte möchtest du legen? (Index eingeben)");
         int index = input.nextInt();
         input.nextLine();
 
+        // Überprüfe, ob der eingegebene Index gültig ist
         if (index >= 0 && index < aktuellerSpieler.meineKarte.size()) {
-            Karte gelegteKarte = aktuellerSpieler.meineKarte.remove(index);
-            stapel.getAblageStapel().getAblageStapel().add(gelegteKarte);
-            output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
+            Karte gelegteKarte = aktuellerSpieler.meineKarte.get(index);
+
+            // Überprüfe, ob die Karte gelegt werden kann (gleiche Farbe oder Zeichen wie die oberste Karte im Ablagestapel)
+            if (gelegteKarte.getFarbe().equals(stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1).getFarbe()) || gelegteKarte.getZeichen().equals(stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1).getZeichen())) {
+                gelegteKarte = aktuellerSpieler.meineKarte.remove(index);
+                stapel.getAblageStapel().getAblageStapel().add(gelegteKarte);
+                output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
+                if (gelegteKarte.getFarbe().equals("WILD")) {
+                    System.out.println("Welche Farbe wählen Sie? (Index eingeben) \n [Y, R, B, G]: ");
+                    input.nextLine();
+                    //STOPPED HERE :) TODO : special cards implementieren- mache kleinere methoden
+                }
+            } else {
+                output.println("Ungültige Karte. Probiere es nochmal!");
+            }
         } else {
             output.println("Ungültiger Index!");
         }
@@ -135,5 +149,6 @@ public class Spiel {
     }
 
     public void ueberpruefeKarte() {
+
     }
 }
