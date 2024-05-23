@@ -4,58 +4,61 @@ import java.util.Collections;
 public class Stapel extends Karte {
 
     protected ArrayList<Karte> stapel;
-    protected ArrayList<Karte> ablageStapel;
+    protected TopKarte ablageStapel;
 
     public Stapel() {
         this.stapel = new ArrayList<>(108);
-        this.ablageStapel = new ArrayList<>();
+        this.ablageStapel = new TopKarte();
     }
 
     public ArrayList<Karte> getStapel() {
         return stapel;
     }
 
+    public TopKarte getAblageStapel() {
+        return ablageStapel;
+    }
+
     public ArrayList<Karte> addKarte() {
         stapel.add(new Karte(0, "R", "0"));
         for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "R", "R"));
-            stapel.add(new Karte(20, "R", "S"));
+            stapel.add(new Karte(20, "R-", "REV")); //REVERSE
+            stapel.add(new Karte(20, "R-", "SKIP")); //SKIP
             stapel.add(new Karte(20, "R", "+2"));
             for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "R", Integer.toString(j)));
+                stapel.add(new Karte(j, "R-", Integer.toString(j)));
             }
         }
-        stapel.add(new Karte(0, "B", "0"));
+        stapel.add(new Karte(0, "B-", "0"));
         for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "B", "R"));
-            stapel.add(new Karte(20, "B", "S"));
+            stapel.add(new Karte(20, "B-", "REV"));
+            stapel.add(new Karte(20, "B-", "SKIP"));
             stapel.add(new Karte(20, "B", "+2"));
             for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "B", Integer.toString(j)));
+                stapel.add(new Karte(j, "B-", Integer.toString(j)));
             }
         }
-        stapel.add(new Karte(0, "Y", "0"));
+        stapel.add(new Karte(0, "Y-", "0"));
         for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "Y", "R"));
-            stapel.add(new Karte(20, "Y", "S"));
+            stapel.add(new Karte(20, "Y-", "REV"));
+            stapel.add(new Karte(20, "Y-", "SKIP"));
             stapel.add(new Karte(20, "Y", "+2"));
             for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "Y", Integer.toString(j)));
+                stapel.add(new Karte(j, "Y-", Integer.toString(j)));
             }
         }
-        stapel.add(new Karte(0, "G", "0"));
+        stapel.add(new Karte(0, "G-", "0"));
         for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "G", "R"));
-            stapel.add(new Karte(20, "G", "S"));
+            stapel.add(new Karte(20, "G-", "REV"));
+            stapel.add(new Karte(20, "G-", "SKIP"));
             stapel.add(new Karte(20, "G", "+2"));
             for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "G", Integer.toString(j)));
+                stapel.add(new Karte(j, "G-", Integer.toString(j)));
             }
         }
         for (int i = 0; i < 4; i++) {
-            stapel.add(new Karte(50, "W", "4"));
-            stapel.add(new Karte(50, "W", ""));
-
+            stapel.add(new Karte(50, "WILD", "+4"));
+            stapel.add(new Karte(50, "WILD", ""));
         }
         return stapel;
     }
@@ -68,28 +71,33 @@ public class Stapel extends Karte {
         return stapel;
     }
 
-    public ArrayList<Karte> stapelSuffleUndTeilen(ArrayList<Karte> stapel, ArrayList<Spieler> spielerListe, int anzahl) {
+    public ArrayList<Karte> stapelShuffleUndTeilen(ArrayList<Spieler> spielerListe, int anzahl) {
+        if (stapel.isEmpty()) {
+            System.out.println("Der Stapel ist leer und kann nicht gemischt und verteilt werden.");
+        }
+
         Collections.shuffle(stapel);
-        System.out.println("S " + stapel);
+        //System.out.println("S " + stapel);
+        if (!stapel.isEmpty()) {
+            ablageStapel.getAblageStapel().add(stapel.remove(0));
+        }
 
+//        System.out.println("A " + ablageStapel);
+//        System.out.println("S " + stapel);
 
-        ablageStapel.add(stapel.getFirst());
-
-        System.out.println("------");
-        System.out.println("A " + ablageStapel);
-        System.out.println("S " + stapel);
-        stapel.remove(stapel.getFirst());
-        System.out.println("------removed s");
-        System.out.println("A " + ablageStapel);
-        System.out.println("S " + stapel);
         for (Spieler s : spielerListe) {
             for (int j = 0; j < anzahl; j++) {
-                s.meineKarte.add(stapel.get(j));
+                if (!stapel.isEmpty()) { // Check if the deck is not empty
+                    s.addKarten(stapel.removeFirst()); // Deal the top card and remove it from the deck
+                } else {
+                    System.out.println("The deck is empty. Cannot deal more cards.");
+                    break;
+                }
             }
-
+            //System.out.println("Meine Karte: " + s.getMeineKarte());
         }
-        System.out.println("M " + Spieler.meineKarte);
-        System.out.println("S " + stapel);
+//        System.out.println("A " + ablageStapel);
+//        System.out.println("S " + stapel);
         return stapel;
     }
 

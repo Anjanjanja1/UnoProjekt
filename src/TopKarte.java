@@ -1,32 +1,29 @@
-//import java.util.ArrayList;
-//import java.util.Collections;
-//
-//public class TopKarte extends Karte{
-//
-//    protected ArrayList<TopKarte> ablageStapel;
-//
-//    public TopKarte() {
-//        this.ablageStapel = new ArrayList<>();
-//    }
-//
-//
-//
-//    public void showAll() {
-//        for (TopKarte topKarte : ablageStapel) {
-//            System.out.println(topKarte);
-//        }
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "" + ;
-//    }
-//
-//    public ArrayList<TopKarte> getAblageStapel() {
-//        return ablageStapel;
-//    }
-//
-//    public void setAblageStapel(ArrayList<TopKarte> ablageStapel) {
-//        this.ablageStapel = ablageStapel;
-//    }
-//}
+import java.util.ArrayList;
+
+public class TopKarte extends Karte{
+
+    protected ArrayList<Karte> ablageStapel;
+
+    public TopKarte() {
+        this.ablageStapel = new ArrayList<>();
+    }
+
+    public void showAll() {
+        for (Karte karte : ablageStapel) {
+            System.out.println(karte);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Top Karte: " + farbe + zeichen;
+    }
+
+    public ArrayList<Karte> getAblageStapel() {
+        return ablageStapel;
+    }
+
+    public void setAblageStapel(ArrayList<Karte> ablageStapel) {
+        this.ablageStapel = ablageStapel;
+    }
+}

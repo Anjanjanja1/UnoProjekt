@@ -6,7 +6,7 @@ public class Spiel {
     protected final Scanner input;
     protected final PrintStream output;
     protected ArrayList<Spieler> spielerListe;
-    protected ArrayList<Karte> stapel;
+    protected Stapel stapel;
     protected Spieler aktuellerSpieler;
 
 
@@ -14,25 +14,19 @@ public class Spiel {
         this.input = input;
         this.output = output;
         this.spielerListe = new ArrayList<>();
-        this.stapel = new ArrayList<>();
+        this.stapel = new Stapel();
         this.aktuellerSpieler = null;
     }
-
 
     //die Gameloop
     public void run() {
         initialisieren();
         benutzernameInput();
 
-        Stapel stapel = new Stapel();
-        //stapel.addKarte();
-        stapel.stapelSuffleUndTeilen(stapel.addKarte(), spielerListe, 7);
+        stapel.addKarte();
+        stapel.stapelShuffleUndTeilen(spielerListe, 7);
+        aktuellerSpieler = spielerListe.get(0);
         menu();
-
-        while (true) {
-            benutzernameInput();
-
-        }
     }
 
     public void initialisieren() {
@@ -44,48 +38,86 @@ public class Spiel {
             System.out.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
             String name = input.nextLine();
             Spieler spieler = new Spieler(name);
-            spieler.addSpieler(spieler);
-            if (i == 0) {
-                aktuellerSpieler = spieler;
+            Spieler.addSpieler(spieler);
+            spielerListe.add(spieler);
+        }
+    }
+
+    public void menu() {
+        while (true) {
+            output.println("\nSpielername: " + aktuellerSpieler.getName());
+            output.println("Top Karte: " + stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1));
+            output.println("Deine Karte: " + aktuellerSpieler.meineKarte);
+            output.println("Mögliche Karte: "); //TODO
+
+            output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n Geben Sie Ihre Wahl ein: ");
+            int menuAuswahl = input.nextInt();
+            input.nextLine();
+
+
+            switch (menuAuswahl) {
+                case 1:
+                    karteHeben();
+                    break;
+                case 2:
+                    karteLegen();
+                    break;
+                case 3:
+                    unoSagen();
+                    break;
+                case 4:
+                    naechsterSpieler();
+                    break;
+                default:
+                    output.println("Ungültige Eingabe.");
             }
         }
     }
 
-//    public void stapelTeilen() {
-//        for (Spieler s : spieler) {
-//            spieler.add(new ArrayList<Karte>(stapel));
-//        }
-//    }
-
-    public void menu() {
-        System.out.println("\nSpielername: " + aktuellerSpieler.getName());
-        System.out.println("Top Karte: " ); //TODO
-        System.out.println("Deine Karte: " + Spieler.meineKarte); //TODO
-        System.out.println("Mögliche Karte: "); //TODO
-
-        System.out.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n Geben Sie Ihre Wahl ein: ");
-        int menuAuswahl = input.nextInt();
-
-        while (true) {
-
-            switch (menuAuswahl) {
-                case 1:
-                    //TODO
-                    break;
-                case 2:
-                    //TODO
-                    break;
-                case 3:
-                    //TODO
-                    break;
-                case 4:
-                    //TODO
-                    break;
-                default:
-                    System.out.println("Ungültige Eingabe.");
-            }
-            System.out.println("Geben Sie Ihre Wahl ein: ");
-            menuAuswahl = input.nextInt();
+    public void karteHeben() {
+        if (!stapel.getStapel().isEmpty()) {
+            Karte gezogeneKarte = stapel.getStapel().remove(0);
+            aktuellerSpieler.addKarten(gezogeneKarte);
+            output.println("Du hast die Karte " + gezogeneKarte + " gezogen.");
+        } else {
+            output.println("Der Stapel ist leer.");
         }
+    }
+
+
+    public void karteLegen() {
+        output.println("Welche Karte möchtest du legen? (Index eingeben)");
+        int index = input.nextInt();
+        input.nextLine();
+
+        if (index >= 0 && index < aktuellerSpieler.meineKarte.size()) {
+            Karte gelegteKarte = aktuellerSpieler.meineKarte.remove(index);
+            stapel.getAblageStapel().getAblageStapel().add(gelegteKarte);
+            output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
+        } else {
+            output.println("Ungültiger Index!");
+        }
+    }
+
+    public void unoSagen() {
+        output.println("Spieler " + aktuellerSpieler.getName() + " hat UNO gesagt!");
+        if (aktuellerSpieler.meineKarte.size() > 1) {
+            output.println("Du hast nicht zur richtigen Zeit UNO gesagt. Du bekommst 2 Karten als Strafe!");
+        }
+//        aktuellerSpieler.meineKarte.add(stapel.getStapel().getFirst());
+//        aktuellerSpieler.meineKarte.add(stapel.getStapel().getFirst()); //TODO
+        karteHeben();
+        karteHeben();
+        naechsterSpieler();
+    }
+
+    public void naechsterSpieler() {
+        int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler);
+        aktuellerSpieler = spielerListe.get((aktuellerIndex + 1) % spielerListe.size());
+        output.println("Der nächtste Spieler ist: " + aktuellerSpieler.getName());
+
+//        if (stapel.getAblageStapel().equals("U")) {
+//            aktuellerSpieler = spielerListe;
+//        }
     }
 }
