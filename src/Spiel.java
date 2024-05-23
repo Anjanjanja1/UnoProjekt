@@ -24,6 +24,7 @@ public class Spiel {
         benutzernameInput();
 
         stapel.addKarte();
+        stapel.entferneErsteKarte();
         stapel.stapelShuffleUndTeilen(spielerListe, 7);
         aktuellerSpieler = spielerListe.get(0);
         menu();
@@ -48,12 +49,11 @@ public class Spiel {
             output.println("\nSpielername: " + aktuellerSpieler.getName());
             output.println("Top Karte: " + stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1));
             output.println("Deine Karte: " + aktuellerSpieler.meineKarte);
-            output.println("Mögliche Karte: "); //TODO
+            output.println("Mögliche Karte: " + gueltigeKarten()); //TODO
 
             output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n Geben Sie Ihre Wahl ein: ");
             int menuAuswahl = input.nextInt();
             input.nextLine();
-
 
             switch (menuAuswahl) {
                 case 1:
@@ -72,6 +72,19 @@ public class Spiel {
                     output.println("Ungültige Eingabe.");
             }
         }
+    }
+
+    public ArrayList<Karte> gueltigeKarten() {
+        ArrayList<Karte> gueltigeKarten = new ArrayList<>();
+
+        Karte obersteKarte = stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1);
+
+        for (Karte karte : aktuellerSpieler.meineKarte) {
+            if (karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) || karte.getFarbe().contains("WILD")) {
+                gueltigeKarten.add(karte);
+            }
+        }
+        return gueltigeKarten;
     }
 
     public void karteHeben() {
@@ -119,5 +132,8 @@ public class Spiel {
 //        if (stapel.getAblageStapel().equals("U")) {
 //            aktuellerSpieler = spielerListe;
 //        }
+    }
+
+    public void ueberpruefeKarte() {
     }
 }

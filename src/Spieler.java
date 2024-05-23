@@ -61,4 +61,6 @@ public class Spieler {
     public String toString() {
         return name + " " + meineKarte;
     }
+
+
 }

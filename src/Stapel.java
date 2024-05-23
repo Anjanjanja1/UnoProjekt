@@ -20,7 +20,7 @@ public class Stapel extends Karte {
     }
 
     public ArrayList<Karte> addKarte() {
-        stapel.add(new Karte(0, "R", "0"));
+        stapel.add(new Karte(0, "R-", "0"));
         for (int i = 0; i < 2; i++) {
             stapel.add(new Karte(20, "R-", "REV")); //REVERSE
             stapel.add(new Karte(20, "R-", "SKIP")); //SKIP
@@ -72,6 +72,7 @@ public class Stapel extends Karte {
     }
 
     public ArrayList<Karte> stapelShuffleUndTeilen(ArrayList<Spieler> spielerListe, int anzahl) {
+        entferneErsteKarte();
         if (stapel.isEmpty()) {
             System.out.println("Der Stapel ist leer und kann nicht gemischt und verteilt werden.");
         }
@@ -99,6 +100,14 @@ public class Stapel extends Karte {
 //        System.out.println("A " + ablageStapel);
 //        System.out.println("S " + stapel);
         return stapel;
+    }
+
+    public void entferneErsteKarte() {
+
+        if (ablageStapel.getFarbe().contains("WILD") || ablageStapel.getZeichen().contains("+2") || ablageStapel.getFarbe().contains("Y") || ablageStapel.getFarbe().contains("B")) {
+            ablageStapel.getAblageStapel().add(stapel.remove(0));
+            System.out.println("Die erste Karte war eine Wilde Karte oder eine Plus-2-Karte und wurde entfernt.");
+        }
     }
 
     @Override
