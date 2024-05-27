@@ -6,7 +6,6 @@ public class Main {
         Scanner input = new Scanner(System.in);
         PrintStream output = System.out;
         Spiel spiel = new Spiel(input, output);
-
         // Startet das Spiel
         spiel.run();
         input.close();
