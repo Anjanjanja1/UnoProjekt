@@ -5,7 +5,6 @@ public class Stapel extends Karte {
 
     protected ArrayList<Karte> stapel;
     protected TopKarte topKarte;
-    // was neues
 
     public Stapel() {
         this.stapel = new ArrayList<>(108);
