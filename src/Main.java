@@ -12,5 +12,8 @@ public class Main {
         spiel.run();
         input.close();
         //Ajla
+
+
+        //hier ist Sophia
     }
 }
