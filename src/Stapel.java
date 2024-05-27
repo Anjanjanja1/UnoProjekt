@@ -79,12 +79,8 @@ public class Stapel extends Karte {
         }
 
         Collections.shuffle(stapel);
-        //System.out.println("S " + stapel);
 
         entferneErsteKarte();
-
-//        System.out.println("A " + ablageStapel);
-//        System.out.println("S " + stapel);
 
         for (Spieler s : spielerListe) {
             for (int j = 0; j < anzahl; j++) {
@@ -95,10 +91,7 @@ public class Stapel extends Karte {
                     break;
                 }
             }
-            //System.out.println("Meine Karte: " + s.getMeineKarte());
         }
-//        System.out.println("A " + ablageStapel);
-//        System.out.println("S " + stapel);
         return stapel;
     }
 

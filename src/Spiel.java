@@ -9,6 +9,7 @@ public class Spiel {
     protected Stapel stapel;
     protected Spieler aktuellerSpieler;
     protected String gewaehlteFarbe;
+    protected Karte obersteKarte;
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
@@ -78,20 +79,10 @@ public class Spiel {
     public ArrayList<Karte> gueltigeKarten() {
         ArrayList<Karte> gueltigeKarten = new ArrayList<>();
 
-        Karte obersteKarte = stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1);
+        obersteKarte = stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1);
 
-        if (obersteKarte.getFarbe().contains("WILD")) {
-            for (Karte karte : aktuellerSpieler.meineKarte) {
-                if (karte.getFarbe().contains(gewaehlteFarbe)) {
-                    gueltigeKarten.add(karte);
-                }
-                if (obersteKarte.getZeichen().contains("+4")) {
-                    wildKartePlus();
-                }
-            }
-        }
         for (Karte karte : aktuellerSpieler.meineKarte) {
-            if (karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) || karte.getFarbe().contains("WILD")) {
+            if (karte.getFarbe().equals(obersteKarte.getFarbe()) || karte.getZeichen().equals(obersteKarte.getZeichen()) || karte.getFarbe().equals("WILD") || karte.getFarbe().equals(gewaehlteFarbe)) {
                 gueltigeKarten.add(karte);
             }
         }
@@ -109,33 +100,44 @@ public class Spiel {
     }
 
     // Frage den Spieler, welche Karte er legen möchte, und fordere ihn auf, den Index einzugeben
-    public Karte karteLegen() {
-        Karte gelegteKarte = null;
+    public void karteLegen() {
         output.println("Welche Karte möchtest du legen? (Index eingeben)");
         int index = input.nextInt();
         input.nextLine();
 
         // Überprüfe, ob der eingegebene Index gültig ist
         if (index >= 0 && index < aktuellerSpieler.meineKarte.size()) {
-            gelegteKarte = aktuellerSpieler.meineKarte.get(index);
+            obersteKarte = aktuellerSpieler.meineKarte.get(index);
 
             // Überprüfe, ob die Karte gelegt werden kann (gleiche Farbe oder Zeichen wie die oberste Karte im Ablagestapel)
-            if (gelegteKarte.getFarbe().equals(stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1).getFarbe()) || gelegteKarte.getZeichen().equals(stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1).getZeichen())) {
-                gelegteKarte = aktuellerSpieler.meineKarte.remove(index);
-                stapel.getTopKarte().getAblageStapel().add(gelegteKarte);
-                output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
-            }
-            else if (gelegteKarte.getFarbe().contains("WILD")) {
+            Karte topKarte = stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1);
+            if (obersteKarte.getFarbe().contains(topKarte.getFarbe()) || obersteKarte.getZeichen().contains(topKarte.getZeichen()) || (obersteKarte.getFarbe().contains(topKarte.getFarbe()) && obersteKarte.getZeichen().contains("+2"))) {
+                obersteKarte = aktuellerSpieler.meineKarte.remove(index);
+                stapel.getTopKarte().getAblageStapel().add(obersteKarte);
+                output.println("Du hast die Karte " + obersteKarte + " gelegt.");
+                //+2 ist nicht in möglichen karten...TODO
+                //gestarted mit wild, skip und reverse!
+            } else if (obersteKarte.getFarbe().contains("WILD")) {
+                obersteKarte = aktuellerSpieler.meineKarte.remove(index);
                 System.out.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
                 gewaehlteFarbe = input.nextLine();
+                System.out.println("Die Farbe ist " + gewaehlteFarbe);
+                stapel.getTopKarte().getAblageStapel().add(obersteKarte);
                 naechsterSpieler();
+            } else if (obersteKarte.getFarbe().contains("WILD") && obersteKarte.getZeichen().contains("+4")) {
+                obersteKarte = aktuellerSpieler.meineKarte.remove(index);
+                System.out.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
+                gewaehlteFarbe = input.nextLine();
+                System.out.println("Die Farbe ist " + gewaehlteFarbe);
+                stapel.getTopKarte().getAblageStapel().add(obersteKarte);
+                naechsterSpieler();
+                wildKartePlus();
             } else {
                 output.println("Ungültige Karte. Probiere es nochmal!");
             }
         } else {
             output.println("Ungültiger Index!");
         }
-        return gelegteKarte;
     }
 
     public void unoSagen() {
@@ -159,39 +161,10 @@ public class Spiel {
     }
 
     public void wildKartePlus() {
-        karteHeben();
-        karteHeben();
-        karteHeben();
-        karteHeben();
+        for (int i = 0; i < 4; i++) {
+            karteHeben();
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
