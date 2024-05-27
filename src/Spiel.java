@@ -30,6 +30,7 @@ public class Spiel {
         stapel.stapelShuffleUndTeilen(spielerListe, 7);
         aktuellerSpieler = spielerListe.get(0);
         menu();
+        String hallo = "Wooooow";
     }
 
     public void initialisieren() {
@@ -121,7 +122,7 @@ public class Spiel {
                 gelegteKarte = aktuellerSpieler.meineKarte.remove(index);
                 stapel.getTopKarte().getAblageStapel().add(gelegteKarte);
                 output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
-            }  else {
+            } else {
                 output.println("Ungültige Karte. Probiere es nochmal!");
             }
             if (gelegteKarte.getFarbe().contains("WILD")) {
