@@ -7,6 +7,7 @@ public class Main {
         PrintStream output = System.out;
         Spiel spiel = new Spiel(input, output);
 
+        //hola
         // Startet das Spiel
         spiel.run();
         input.close();
