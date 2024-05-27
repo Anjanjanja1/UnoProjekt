@@ -9,7 +9,7 @@ public class Spiel {
     protected Stapel stapel;
     protected Spieler aktuellerSpieler;
     protected String gewaehlteFarbe;
-    protected String gewaehlteNachricht;
+    protected String gewaehlteNachricht="Hello";
 
 
     public Spiel(Scanner input, PrintStream output) {
