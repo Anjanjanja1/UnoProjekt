@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="my first change">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="my second change" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,6 +16,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -78,6 +79,8 @@
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -107,7 +110,7 @@
       <workItem from="1716648436664" duration="105000" />
       <workItem from="1716648580759" duration="46000" />
       <workItem from="1716792612895" duration="9965000" />
-      <workItem from="1716803048041" duration="1204000" />
+      <workItem from="1716803048041" duration="3354000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -197,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716800823014</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="my first change">
+      <option name="closed" value="true" />
+      <created>1716806143276</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1716806143276</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -214,7 +225,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/Anja" />
+                        <option value="Anja" />
                       </list>
                     </value>
                   </entry>
@@ -233,6 +244,7 @@
     <MESSAGE value="23.05" />
     <MESSAGE value="27.05" />
     <MESSAGE value="my first change" />
-    <option name="LAST_COMMIT_MESSAGE" value="my first change" />
+    <MESSAGE value="my second change" />
+    <option name="LAST_COMMIT_MESSAGE" value="my second change" />
   </component>
 </project>

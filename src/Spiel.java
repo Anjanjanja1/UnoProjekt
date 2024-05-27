@@ -30,7 +30,7 @@ public class Spiel {
         stapel.stapelShuffleUndTeilen(spielerListe, 7);
         aktuellerSpieler = spielerListe.get(0);
         menu();
-        String hallo = "Bok";
+        String hallo = "Wooooow";
     }
 
     public void initialisieren() {
