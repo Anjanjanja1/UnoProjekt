@@ -4,19 +4,19 @@ import java.util.Collections;
 public class Stapel extends Karte {
 
     protected ArrayList<Karte> stapel;
-    protected TopKarte ablageStapel;
+    protected TopKarte topKarte;
 
     public Stapel() {
         this.stapel = new ArrayList<>(108);
-        this.ablageStapel = new TopKarte();
+        this.topKarte = new TopKarte();
     }
 
     public ArrayList<Karte> getStapel() {
         return stapel;
     }
 
-    public TopKarte getAblageStapel() {
-        return ablageStapel;
+    public TopKarte getTopKarte() {
+        return topKarte;
     }
 
     public ArrayList<Karte> addKarte() {
@@ -103,10 +103,10 @@ public class Stapel extends Karte {
     }
 
     public void entferneErsteKarte() {
-        ablageStapel.getAblageStapel().add(stapel.remove(0));
-        Karte ersteKarte = ablageStapel.getAblageStapel().get(0);
+        topKarte.getAblageStapel().add(stapel.remove(0));
+        Karte ersteKarte = topKarte.getAblageStapel().get(0);
         if (ersteKarte.getFarbe().contains("WILD") || ersteKarte.getZeichen().contains("+2")) {
-            ablageStapel.getAblageStapel().add(stapel.remove(0));
+            topKarte.getAblageStapel().add(stapel.remove(0));
             System.out.println("Die erste Karte war eine Wilde Karte oder eine Plus-2-Karte und wurde entfernt.");
         }
     }
@@ -115,6 +115,6 @@ public class Stapel extends Karte {
 
     @Override
     public String toString() {
-        return "Stapel " + stapel + "\n ablageStapel " + ablageStapel;
+        return "Stapel " + stapel + "\n ablageStapel " + topKarte;
     }
 }

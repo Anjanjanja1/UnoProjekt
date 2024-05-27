@@ -25,7 +25,6 @@ public class Spiel {
         benutzernameInput();
 
         stapel.addKarte();
-
         stapel.stapelShuffleUndTeilen(spielerListe, 7);
         aktuellerSpieler = spielerListe.get(0);
         menu();
@@ -48,7 +47,7 @@ public class Spiel {
     public void menu() {
         while (true) {
             output.println("\nSpielername: " + aktuellerSpieler.getName());
-            output.println("Top Karte: " + stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1));
+            output.println("Top Karte: " + stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1));
             output.println("Deine Karte: " + aktuellerSpieler.meineKarte);
             output.println("Mögliche Karte: " + gueltigeKarten()); //TODO
 
@@ -78,7 +77,7 @@ public class Spiel {
     public ArrayList<Karte> gueltigeKarten() {
         ArrayList<Karte> gueltigeKarten = new ArrayList<>();
 
-        Karte obersteKarte = stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1);
+        Karte obersteKarte = stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1);
 
         for (Karte karte : aktuellerSpieler.meineKarte) {
             if (karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) || karte.getFarbe().contains("WILD")) {
@@ -109,9 +108,9 @@ public class Spiel {
             Karte gelegteKarte = aktuellerSpieler.meineKarte.get(index);
 
             // Überprüfe, ob die Karte gelegt werden kann (gleiche Farbe oder Zeichen wie die oberste Karte im Ablagestapel)
-            if (gelegteKarte.getFarbe().equals(stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1).getFarbe()) || gelegteKarte.getZeichen().equals(stapel.getAblageStapel().getAblageStapel().get(stapel.getAblageStapel().getAblageStapel().size() - 1).getZeichen())) {
+            if (gelegteKarte.getFarbe().equals(stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1).getFarbe()) || gelegteKarte.getZeichen().equals(stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1).getZeichen())) {
                 gelegteKarte = aktuellerSpieler.meineKarte.remove(index);
-                stapel.getAblageStapel().getAblageStapel().add(gelegteKarte);
+                stapel.getTopKarte().getAblageStapel().add(gelegteKarte);
                 output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
                 if (gelegteKarte.getFarbe().equals("WILD")) {
                     System.out.println("Welche Farbe wählen Sie? (Index eingeben) \n [Y, R, B, G]: ");
@@ -143,7 +142,7 @@ public class Spiel {
         aktuellerSpieler = spielerListe.get((aktuellerIndex + 1) % spielerListe.size());
         output.println("Der nächtste Spieler ist: " + aktuellerSpieler.getName());
 
-//        if (stapel.getAblageStapel().equals("U")) {
+//        if (stapel.getTopKarte().equals("U")) {
 //            aktuellerSpieler = spielerListe;
 //        }
     }
