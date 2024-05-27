@@ -10,7 +10,7 @@ public class Spiel {
     protected Spieler aktuellerSpieler;
     protected String gewaehlteFarbe;
 
-
+//test
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
         this.output = output;
