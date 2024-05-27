@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+//hola
+
 public class Karte {
     protected int punkte;
     protected String farbe;
