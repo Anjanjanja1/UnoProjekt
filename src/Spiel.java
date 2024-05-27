@@ -9,9 +9,6 @@ public class Spiel {
     protected Stapel stapel;
     protected Spieler aktuellerSpieler;
     protected String gewaehlteFarbe;
-    protected String gewaehlteNachricht="Helloooo";
-
-//test2 hallo
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
