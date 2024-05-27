@@ -85,6 +85,9 @@ public class Spiel {
                 if (karte.getFarbe().contains(gewaehlteFarbe)) {
                     gueltigeKarten.add(karte);
                 }
+                if (obersteKarte.getZeichen().contains("+4")) {
+                    wildKartePlus();
+                }
             }
         }
         for (Karte karte : aktuellerSpieler.meineKarte) {
@@ -106,32 +109,33 @@ public class Spiel {
     }
 
     // Frage den Spieler, welche Karte er legen möchte, und fordere ihn auf, den Index einzugeben
-    public void karteLegen() {
+    public Karte karteLegen() {
+        Karte gelegteKarte = null;
         output.println("Welche Karte möchtest du legen? (Index eingeben)");
         int index = input.nextInt();
         input.nextLine();
 
         // Überprüfe, ob der eingegebene Index gültig ist
         if (index >= 0 && index < aktuellerSpieler.meineKarte.size()) {
-            Karte gelegteKarte = aktuellerSpieler.meineKarte.get(index);
+            gelegteKarte = aktuellerSpieler.meineKarte.get(index);
 
             // Überprüfe, ob die Karte gelegt werden kann (gleiche Farbe oder Zeichen wie die oberste Karte im Ablagestapel)
             if (gelegteKarte.getFarbe().equals(stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1).getFarbe()) || gelegteKarte.getZeichen().equals(stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1).getZeichen())) {
                 gelegteKarte = aktuellerSpieler.meineKarte.remove(index);
                 stapel.getTopKarte().getAblageStapel().add(gelegteKarte);
                 output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
-            }  else {
-                output.println("Ungültige Karte. Probiere es nochmal!");
             }
-            if (gelegteKarte.getFarbe().contains("WILD")) {
-                System.out.println("Welche Farbe wählen Sie? (Index eingeben) \n [Y, R, B, G]: ");
+            else if (gelegteKarte.getFarbe().contains("WILD")) {
+                System.out.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
                 gewaehlteFarbe = input.nextLine();
                 naechsterSpieler();
-                //STOPPED HERE :) TODO : special cards implementieren- mache kleinere methoden
+            } else {
+                output.println("Ungültige Karte. Probiere es nochmal!");
             }
         } else {
             output.println("Ungültiger Index!");
         }
+        return gelegteKarte;
     }
 
     public void unoSagen() {
@@ -139,8 +143,6 @@ public class Spiel {
         if (aktuellerSpieler.meineKarte.size() > 1) {
             output.println("Du hast nicht zur richtigen Zeit UNO gesagt. Du bekommst 2 Karten als Strafe!");
         }
-//        aktuellerSpieler.meineKarte.add(stapel.getStapel().getFirst());
-//        aktuellerSpieler.meineKarte.add(stapel.getStapel().getFirst()); //TODO
         karteHeben();
         karteHeben();
         naechsterSpieler();
@@ -150,17 +152,46 @@ public class Spiel {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler);
         aktuellerSpieler = spielerListe.get((aktuellerIndex + 1) % spielerListe.size());
         output.println("Der nächtste Spieler ist: " + aktuellerSpieler.getName());
-
-//        if (stapel.getTopKarte().equals("U")) {
-//            aktuellerSpieler = spielerListe;
-//        }
     }
 
     public void ueberpruefeKarte() {
 
     }
 
-    public void wildKarte() {
-
+    public void wildKartePlus() {
+        karteHeben();
+        karteHeben();
+        karteHeben();
+        karteHeben();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
