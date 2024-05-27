@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="23.05">
+    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="27.05">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stapel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stapel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +100,7 @@
       <workItem from="1716445409402" duration="24161000" />
       <workItem from="1716648436664" duration="105000" />
       <workItem from="1716648580759" duration="46000" />
-      <workItem from="1716792612895" duration="2423000" />
+      <workItem from="1716792612895" duration="6952000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -167,7 +166,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716471965780</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="27.05">
+      <option name="closed" value="true" />
+      <created>1716795597982</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1716795597982</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,6 +185,7 @@
     <MESSAGE value="24.04" />
     <MESSAGE value="04.05" />
     <MESSAGE value="23.05" />
-    <option name="LAST_COMMIT_MESSAGE" value="23.05" />
+    <MESSAGE value="27.05" />
+    <option name="LAST_COMMIT_MESSAGE" value="27.05" />
   </component>
 </project>

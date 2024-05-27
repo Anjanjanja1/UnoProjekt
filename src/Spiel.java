@@ -8,6 +8,7 @@ public class Spiel {
     protected ArrayList<Spieler> spielerListe;
     protected Stapel stapel;
     protected Spieler aktuellerSpieler;
+    protected String gewaehlteFarbe;
 
 
     public Spiel(Scanner input, PrintStream output) {
@@ -16,6 +17,7 @@ public class Spiel {
         this.spielerListe = new ArrayList<>();
         this.stapel = new Stapel();
         this.aktuellerSpieler = null;
+        this.gewaehlteFarbe = "";
     }
 
 
@@ -79,6 +81,13 @@ public class Spiel {
 
         Karte obersteKarte = stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1);
 
+        if (obersteKarte.getFarbe().contains("WILD")) {
+            for (Karte karte : aktuellerSpieler.meineKarte) {
+                if (karte.getFarbe().contains(gewaehlteFarbe)) {
+                    gueltigeKarten.add(karte);
+                }
+            }
+        }
         for (Karte karte : aktuellerSpieler.meineKarte) {
             if (karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) || karte.getFarbe().contains("WILD")) {
                 gueltigeKarten.add(karte);
@@ -112,13 +121,14 @@ public class Spiel {
                 gelegteKarte = aktuellerSpieler.meineKarte.remove(index);
                 stapel.getTopKarte().getAblageStapel().add(gelegteKarte);
                 output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
-                if (gelegteKarte.getFarbe().equals("WILD")) {
-                    System.out.println("Welche Farbe wählen Sie? (Index eingeben) \n [Y, R, B, G]: ");
-                    input.nextLine();
-                    //STOPPED HERE :) TODO : special cards implementieren- mache kleinere methoden
-                }
-            } else {
+            }  else {
                 output.println("Ungültige Karte. Probiere es nochmal!");
+            }
+            if (gelegteKarte.getFarbe().contains("WILD")) {
+                System.out.println("Welche Farbe wählen Sie? (Index eingeben) \n [Y, R, B, G]: ");
+                gewaehlteFarbe = input.nextLine();
+                naechsterSpieler();
+                //STOPPED HERE :) TODO : special cards implementieren- mache kleinere methoden
             }
         } else {
             output.println("Ungültiger Index!");
@@ -148,6 +158,10 @@ public class Spiel {
     }
 
     public void ueberpruefeKarte() {
+
+    }
+
+    public void wildKarte() {
 
     }
 }
