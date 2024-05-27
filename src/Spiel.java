@@ -11,7 +11,7 @@ public class Spiel {
     protected String gewaehlteFarbe;
     protected String gewaehlteNachricht="Helloooo";
 
-//test2
+//test2 hallo
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
