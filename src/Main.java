@@ -9,5 +9,6 @@ public class Main {
         // Startet das Spiel
         spiel.run();
         input.close();
+        //Ajla
     }
 }
