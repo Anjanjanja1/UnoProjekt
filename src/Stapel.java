@@ -19,7 +19,7 @@ public class Stapel extends Karte {
         return topKarte;
     }
 
-    public ArrayList<Karte> addKarte() {
+    public ArrayList<Karte> addKarten() {
         stapel.add(new Karte(0, "R-", "0"));
         for (int i = 0; i < 2; i++) {
             stapel.add(new Karte(20, "R-", "REV")); //REVERSE
