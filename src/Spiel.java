@@ -16,6 +16,7 @@ public class Spiel {
     protected boolean karteReversed;
     protected boolean karteSkip;
 
+
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
         this.output = output;
@@ -83,7 +84,13 @@ public class Spiel {
                     karteHeben();
                     break;
                 case 2: //Neu Implementiert
-                    karteLegen();
+                    if (karteGespielt) {
+                        output.println("Du kannst in diesem Zug keine weitere Karte legen.");
+                        output.println("Du bekommst eine Strafkarte");
+                        karteHeben();
+                    } else {
+                        karteLegen();
+                    }
                     break;
                 case 3:
                     unoSagen();
@@ -135,6 +142,12 @@ public class Spiel {
 
     //Der aktuelle Spieler legt eine Karte ab
     private void karteLegen() {
+//NEU
+        if (karteGespielt) {
+            output.println("Du kannst in diesem Zug keine weitere Karte legen.");
+            return;
+        }
+
         output.println("Welche Karte möchtest du legen? (Index eingeben)");
         int index = input.nextInt();
         input.nextLine();
