@@ -1,6 +1,5 @@
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class Spiel {
@@ -12,7 +11,7 @@ public class Spiel {
     protected String gewaehlteFarbe; //Speichert die gewählte Farbe, wenn eine Spezialkarte gespielt wird
     protected int zuZiehendeKarten; //Speichert die Anzahl der Karten, die ein Spieler ziehen muss
     protected boolean karteGespielt; //Prüft, ob in der aktuellen Runde eine Karte gespielt wurde
-    protected boolean karteGeheben; //Prüft, ob der Spieler eine Karte gehoben hat
+    protected boolean karteGehoben; //Prüft, ob der Spieler eine Karte gehoben hat
     protected boolean karteReversed;
 
     public Spiel(Scanner input, PrintStream output) {
@@ -92,10 +91,10 @@ public class Spiel {
                     unoSagen();
                     break;
                 case 4:
-                    if (karteGespielt) {
-                        naechsterSpieler();
+                    if (karteGespielt || karteGehoben) {
                         karteGespielt = false;
-                        karteGeheben = false;
+                        karteGehoben = false;
+                        naechsterSpieler();
                     } else {
                         output.println("Du musst eine gültige Karte spielen oder eine Karte ziehen, bevor du den Zug beenden kannst!");
                         karteHeben(); //Strafkarte → wenn der Spieler keine Karte hebe oder lege
@@ -130,6 +129,7 @@ public class Spiel {
             Karte gezogeneKarte = stapel.getStapel().remove(0);
             aktuellerSpieler.addKarten(gezogeneKarte);
             output.println("Du hast die Karte " + gezogeneKarte + " gezogen.");
+            karteGehoben = true;
         } else {
             output.println("Der Stapel ist leer.");
         }
@@ -257,7 +257,7 @@ public class Spiel {
 
             boolean kannZiehenVermeiden = false;
             for (Karte karte : gueltigeKarten) {
-                if (karte.getZeichen().equals("+2") || (karte.getZeichen().equals("+4") && karte.getFarbe().equals("WILD"))) {
+                if (karte.getZeichen().equals("+2")) {
                     kannZiehenVermeiden = true;
                     break;
                 }
