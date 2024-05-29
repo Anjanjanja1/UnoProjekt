@@ -81,8 +81,12 @@ public class Spiel {
                 case 1:
                     karteHeben();
                     break;
-                case 2:
-                    karteLegen();
+                case 2: //Neu Implementiert
+                    if (karteGespielt)
+                        System.out.println("Du kannst keine Karte mehr legen");
+                    else {
+                        karteLegen();
+                    }
                     break;
                 case 3:
                     unoSagen();
@@ -126,7 +130,6 @@ public class Spiel {
             Karte gezogeneKarte = stapel.getStapel().remove(0);
             aktuellerSpieler.addKarten(gezogeneKarte);
             output.println("Du hast die Karte " + gezogeneKarte + " gezogen.");
-            karteGeheben = true;
         } else {
             output.println("Der Stapel ist leer.");
         }

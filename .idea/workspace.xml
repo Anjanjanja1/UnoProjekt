@@ -7,7 +7,6 @@
     <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="wild">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stapel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stapel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +80,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -111,11 +114,6 @@
       <workItem from="1716648580759" duration="46000" />
       <workItem from="1716792612895" duration="9965000" />
       <workItem from="1716803048041" duration="3354000" />
-      <workItem from="1716826368485" duration="11753000" />
-      <workItem from="1716877818575" duration="309000" />
-      <workItem from="1716879367547" duration="1239000" />
-      <workItem from="1716893221412" duration="3797000" />
-      <workItem from="1716904218135" duration="17000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -213,31 +211,7 @@
       <option name="project" value="LOCAL" />
       <updated>1716806143276</updated>
     </task>
-    <task id="LOCAL-00013" summary="a">
-      <option name="closed" value="true" />
-      <created>1716810929552</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1716810929552</updated>
-    </task>
-    <task id="LOCAL-00014" summary="wild">
-      <option name="closed" value="true" />
-      <created>1716813554522</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1716813554522</updated>
-    </task>
-    <task id="LOCAL-00015" summary="wild">
-      <option name="closed" value="true" />
-      <created>1716818556199</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1716818556199</updated>
-    </task>
-    <option name="localTasksCounter" value="16" />
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,8 +248,6 @@
     <MESSAGE value="27.05" />
     <MESSAGE value="my first change" />
     <MESSAGE value="my second change" />
-    <MESSAGE value="a" />
-    <MESSAGE value="wild" />
-    <option name="LAST_COMMIT_MESSAGE" value="wild" />
+    <option name="LAST_COMMIT_MESSAGE" value="my second change" />
   </component>
 </project>
