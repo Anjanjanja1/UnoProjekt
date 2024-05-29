@@ -1,5 +1,6 @@
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Spiel {
@@ -13,6 +14,7 @@ public class Spiel {
     protected boolean karteGespielt; //Prüft, ob in der aktuellen Runde eine Karte gespielt wurde
     protected boolean karteGehoben; //Prüft, ob der Spieler eine Karte gehoben hat
     protected boolean karteReversed;
+    protected boolean karteSkip;
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
@@ -81,11 +83,7 @@ public class Spiel {
                     karteHeben();
                     break;
                 case 2: //Neu Implementiert
-                    if (karteGespielt)
-                        System.out.println("Du kannst keine Karte mehr legen");
-                    else {
-                        karteLegen();
-                    }
+                    karteLegen();
                     break;
                 case 3:
                     unoSagen();
@@ -179,11 +177,26 @@ public class Spiel {
     private void naechsterSpieler() {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
         if (karteReversed) {
-            aktuellerSpieler = spielerListe.get((aktuellerIndex - 1) % spielerListe.size());
-        } else {
-            //Setzt den nächsten Spieler als aktuellen Spieler
-            aktuellerSpieler = spielerListe.get((aktuellerIndex + 1) % spielerListe.size());
+
+            if (aktuellerIndex <= 0) {
+                aktuellerIndex = spielerListe.size() - 1;
+            }
+            aktuellerIndex--;
         }
+        if (karteSkip) {
+            aktuellerIndex += 2;
+
+            if (aktuellerIndex < 0) {
+                aktuellerIndex = spielerListe.size() - 1;
+            }
+        } else {
+            aktuellerIndex++;
+            if (aktuellerIndex >= spielerListe.size()) {
+                aktuellerIndex = 0;
+            }
+        }
+        aktuellerSpieler = spielerListe.get(aktuellerIndex); // Setzt den nächsten
+
         output.println("Der nächtste Spieler ist: " + aktuellerSpieler.getName());
         //Wenn es Karten zu ziehen gibt, handle das
         strafkartenBehandeln();
@@ -215,6 +228,12 @@ public class Spiel {
         if (gelegteKarte.getZeichen().equals("+2")) {
             zuZiehendeKarten += 2; //Addiert 2 zu der Anzahl der zu ziehenden Karten
         }
+
+        if (gelegteKarte.getZeichen().contains("SKIP")) {
+            skipKarte();
+        }
+
+
         if (gelegteKarte.getZeichen().contains("REV")) {
             reverseKarte();
         }
@@ -225,6 +244,7 @@ public class Spiel {
             output.println("Die Farbe ist " + gewaehlteFarbe);
             naechsterSpieler();
         }
+
     }
 
     //Fragt den Spieler nach der Farbwahl
@@ -268,12 +288,17 @@ public class Spiel {
         }
     }
 
-    public void reverseKarte() {
+    public void skipKarte() {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
-        aktuellerSpieler = spielerListe.get((aktuellerIndex - 1) % spielerListe.size());
+        aktuellerSpieler = spielerListe.get((aktuellerIndex + 2) % spielerListe.size());
+        output.println("Skip! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
+
+    }
+
+    public void reverseKarte() {
+        Collections.reverse(spielerListe);
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
-        karteReversed = true;
-        //Collections.reverse(spielerListe);
+
     }
 
 }
