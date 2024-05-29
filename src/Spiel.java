@@ -219,7 +219,7 @@ public class Spiel {
     //Überprüft, ob eine Karte gespielt werden kann
     private boolean ueberpruefeKarte(Karte karte, Karte obersteKarte) {
         if (zuZiehendeKarten > 0) {
-            if (karte.getZeichen().equals("+2") || karte.getZeichen().equals("+4")) {
+            if (karte.getZeichen().contains("+2") || karte.getZeichen().contains("+4")) {
                 return true;
             }
             return false;
@@ -227,7 +227,7 @@ public class Spiel {
         }
 
         if (gewaehlteFarbe.isEmpty()) {
-            return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().equals(obersteKarte.getZeichen()) ||
+            return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) ||
                     karte.getFarbe().contains("WILD");
         } else {
             return karte.getFarbe().contains(gewaehlteFarbe) || karte.getFarbe().contains("WILD");
@@ -236,11 +236,11 @@ public class Spiel {
 
     //Behandelt spezielle Karten (Wilde Karten, +2 Karten, +4 Karten)
     private void specialKarten(Karte gelegteKarte) {
-        if (gelegteKarte.getFarbe().equals("WILD") && gelegteKarte.getZeichen().isEmpty()) {
+        if (gelegteKarte.getFarbe().contains("WILD") && gelegteKarte.getZeichen().isEmpty()) {
             gewaehlteFarbe = farbeWaehlen(); //Fordert den Spieler auf, eine Farbe zu wählen
             output.println("Die Farbe ist " + gewaehlteFarbe);
         }
-        if (gelegteKarte.getZeichen().equals("+2")) {
+        if (gelegteKarte.getZeichen().contains("+2")) {
             zuZiehendeKarten += 2; //Addiert 2 zu der Anzahl der zu ziehenden Karten
         }
 
@@ -248,12 +248,10 @@ public class Spiel {
         if (gelegteKarte.getZeichen().contains("SKIP")) {
             skipKarte();
         }
-
-
         if (gelegteKarte.getZeichen().contains("REV")) {
             reverseKarte();
         }
-        if (gelegteKarte.getFarbe().equals("WILD") && gelegteKarte.getZeichen().equals("+4")) {
+        if (gelegteKarte.getFarbe().contains("WILD") && gelegteKarte.getZeichen().contains("+4")) {
             //Fordert den Spieler auf, eine Farbe zu wählen und erhöht die Anzahl der zu ziehenden Karten um 4
             gewaehlteFarbe = farbeWaehlen();
             zuZiehendeKarten += 4;
@@ -293,7 +291,7 @@ public class Spiel {
 
             boolean kannZiehenVermeiden = false;
             for (Karte karte : gueltigeKarten) {
-                if (karte.getZeichen().equals("+2")) {
+                if (karte.getZeichen().contains("+2")) {
                     kannZiehenVermeiden = true;
                     break;
                 }
@@ -316,4 +314,5 @@ public class Spiel {
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
 
     }
+
 }
