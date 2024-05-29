@@ -35,7 +35,7 @@ public class Spiel {
 
         stapel.addKarten(); //Fügt Karten zum Stapel hinzu
         stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
-        aktuellerSpieler = spielerListe.get(0); //Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
+        aktuellerSpieler = spielerListe.getFirst(); //Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
         menu(); //Zeigt das Menü an und verarbeitet die Benutzereingaben
     }
 
@@ -113,7 +113,7 @@ public class Spiel {
 
     //Greift auf den Ablagestapel des Stapelobjekts zu und gibt die letzte Karte in der Liste zurück
     private Karte getTopKarte() {
-        return stapel.getTopKarte().getAblageStapel().get(stapel.getTopKarte().getAblageStapel().size() - 1);
+        return stapel.getTopKarte().getAblageStapel().getLast();
     }
 
     //Gibt die gültigen Karten des aktuellen Spielers zurück
@@ -131,8 +131,9 @@ public class Spiel {
     //Der aktuelle Spieler hebt eine Karte vom Stapel
     private void karteHeben() {
         if (!stapel.getStapel().isEmpty()) {
-            Karte gezogeneKarte = stapel.getStapel().remove(0);
+            Karte gezogeneKarte = stapel.getStapel().removeFirst();
             aktuellerSpieler.addKarten(gezogeneKarte);
+            gueltigeKarten();
             output.println("Du hast die Karte " + gezogeneKarte + " gezogen.");
             karteGehoben = true;
         } else {
@@ -176,7 +177,7 @@ public class Spiel {
             output.println("Du hast nicht zur richtigen Zeit UNO gesagt. Du bekommst 2 Karten als Strafe!");
             for (int i = 0; i < 2; i++) {
                 if (!stapel.getStapel().isEmpty()) {
-                    Karte gezogeneKarte = stapel.getStapel().remove(0);
+                    Karte gezogeneKarte = stapel.getStapel().removeFirst();
                     aktuellerSpieler.addKarten(gezogeneKarte);
                 } else {
                     output.println("Der Stapel ist leer.");
@@ -222,6 +223,7 @@ public class Spiel {
                 return true;
             }
             return false;
+
         }
 
         if (gewaehlteFarbe.isEmpty()) {
@@ -234,13 +236,14 @@ public class Spiel {
 
     //Behandelt spezielle Karten (Wilde Karten, +2 Karten, +4 Karten)
     private void specialKarten(Karte gelegteKarte) {
-        if (gelegteKarte.getFarbe().equals("WILD") && gelegteKarte.getZeichen().equals("")) {
+        if (gelegteKarte.getFarbe().equals("WILD") && gelegteKarte.getZeichen().isEmpty()) {
             gewaehlteFarbe = farbeWaehlen(); //Fordert den Spieler auf, eine Farbe zu wählen
             output.println("Die Farbe ist " + gewaehlteFarbe);
         }
         if (gelegteKarte.getZeichen().equals("+2")) {
             zuZiehendeKarten += 2; //Addiert 2 zu der Anzahl der zu ziehenden Karten
         }
+
 
         if (gelegteKarte.getZeichen().contains("SKIP")) {
             skipKarte();
@@ -273,7 +276,7 @@ public class Spiel {
             output.println(aktuellerSpieler.getName() + " bekommt " + zuZiehendeKarten + " Karten.");
             for (int i = 0; i < zuZiehendeKarten; i++) {
                 if (!stapel.getStapel().isEmpty()) {
-                    Karte gezogeneKarte = stapel.getStapel().remove(0);
+                    Karte gezogeneKarte = stapel.getStapel().removeFirst();
                     aktuellerSpieler.addKarten(gezogeneKarte);
                 } else {
                     output.println("Der Stapel ist leer.");
@@ -313,5 +316,4 @@ public class Spiel {
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
 
     }
-
 }
