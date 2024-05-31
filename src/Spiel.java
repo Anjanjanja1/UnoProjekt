@@ -25,7 +25,9 @@ public class Spiel {
         this.gewaehlteFarbe = "";
         this.zuZiehendeKarten = 0;
         this.karteGespielt = false;
+        this.karteGehoben = false;
         this.karteReversed = false;
+        this.karteSkip = false;
     }
 
     //Die Hauptschleife des Spiels → Gameloop
@@ -159,9 +161,10 @@ public class Spiel {
             if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
                 aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
                 stapel.getTopKarte().getAblageStapel().add(gelegteKarte); //Fügt die Karte dem Ablagestapel hinzu
+                karteGespielt = true;  //Setze karteGespielt auf true
                 specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
                 output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
-                karteGespielt = true;  //Setze karteGespielt auf true
+
             } else {
                 output.println("Ungültige Karte. Probiere es nochmal!");
             }
@@ -218,15 +221,13 @@ public class Spiel {
 
     //Überprüft, ob eine Karte gespielt werden kann
     private boolean ueberpruefeKarte(Karte karte, Karte obersteKarte) {
-        if (zuZiehendeKarten > 0) {
-            if (karte.getZeichen().contains("+2") || karte.getZeichen().contains("+4")) {
-                return true;
-            }
-            return false;
-
+        if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().contains("+2")) {
+            return karte.getZeichen().contains("+2");
         }
-
-        if (gewaehlteFarbe.isEmpty()) {
+        if (obersteKarte.getZeichen().contains("+4")) {
+            return karte.getFarbe().contains(gewaehlteFarbe) || karte.getZeichen().contains("+4");
+        }
+        if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0) {
             return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) ||
                     karte.getFarbe().contains("WILD");
         } else {
@@ -243,8 +244,6 @@ public class Spiel {
         if (gelegteKarte.getZeichen().contains("+2")) {
             zuZiehendeKarten += 2; //Addiert 2 zu der Anzahl der zu ziehenden Karten
         }
-
-
         if (gelegteKarte.getZeichen().contains("SKIP")) {
             skipKarte();
         }
@@ -258,7 +257,6 @@ public class Spiel {
             output.println("Die Farbe ist " + gewaehlteFarbe);
             naechsterSpieler();
         }
-
     }
 
     //Fragt den Spieler nach der Farbwahl
@@ -278,9 +276,13 @@ public class Spiel {
                     aktuellerSpieler.addKarten(gezogeneKarte);
                 } else {
                     output.println("Der Stapel ist leer.");
+                    break;
                 }
             }
             zuZiehendeKarten = 0;
+            karteGespielt = false;
+            karteGehoben = false;
+
         }
     }
 
@@ -306,13 +308,15 @@ public class Spiel {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
         aktuellerSpieler = spielerListe.get((aktuellerIndex + 2) % spielerListe.size());
         output.println("Skip! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
+        karteSkip = false;
 
+        karteGespielt = false;
+        karteGehoben = false;
     }
 
     public void reverseKarte() {
         Collections.reverse(spielerListe);
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
-
     }
 
 }
