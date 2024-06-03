@@ -222,12 +222,12 @@ public class Spiel {
     //Überprüft, ob eine Karte gespielt werden kann
     private boolean ueberpruefeKarte(Karte karte, Karte obersteKarte) {
         if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().contains("+2")) {
-            return karte.getZeichen().contains("+2");
+            return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD");
         }
         if (obersteKarte.getZeichen().contains("+4")) {
-            return karte.getFarbe().contains(gewaehlteFarbe) || karte.getZeichen().contains("+4");
+            return karte.getFarbe().contains(gewaehlteFarbe) || karte.getZeichen().contains("+4") || karte.getFarbe().contains("WILD");
         }
-        if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0) {
+        if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().contains("WILD")) {
             return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) ||
                     karte.getFarbe().contains("WILD");
         } else {
