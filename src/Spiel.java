@@ -44,12 +44,11 @@ public class Spiel {
             skipKarte(); // überspringt den aktuellen Spieler
         } else if (topKarte.getZeichen().contains("REV")) {
             reverseKarte(); // dreht die Spielrichtung um
-           // naechsterSpieler(); // geht zum nächsten Spieler in der neuen Richtung
+            // naechsterSpieler(); // geht zum nächsten Spieler in der neuen Richtung
         }
         // aktuellerSpieler = spielerListe.getFirst(); //Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
         menu(); //Zeigt das Menü an und verarbeitet die Benutzereingaben
     }
-
 
 
     //Initialisiert das Spiel
@@ -174,10 +173,6 @@ public class Spiel {
             return;
         }
 
-
-        output.println("Welche Karte möchtest du legen? (Index eingeben)");
-        int index = input.nextInt();
-        input.nextLine();
         int index;
         do {
             output.println("Welche Karte möchtest du legen? (Index eingeben)");
@@ -191,28 +186,18 @@ public class Spiel {
         Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index
 
 
-            if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
-                aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
-                stapel.getTopKarte().getAblageStapel().add(gelegteKarte); //Fügt die Karte dem Ablagestapel hinzu
-                karteGespielt = true;  //Setze karteGespielt auf true
-                specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
-                output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
-
-            } else {
-                output.println("Ungültige Karte. Probiere es nochmal!");
-            }
-        } else {
-            output.println("Ungültiger Index!");
         if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
             aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
             stapel.getTopKarte().getAblageStapel().add(gelegteKarte); //Fügt die Karte dem Ablagestapel hinzu
             karteGespielt = true;  //Setze karteGespielt auf true
             specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
             output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
+
         } else {
             output.println("Ungültige Karte. Probiere es nochmal!");
         }
     }
+
 
     //Spieler sagt UNO
     private void unoSagen() {
@@ -263,10 +248,7 @@ public class Spiel {
         if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().contains("+2")) {
             return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD");
         }
-        if (obersteKarte.getZeichen().contains("+4")) {
-            return karte.getFarbe().contains(gewaehlteFarbe) || karte.getZeichen().contains("+4") || karte.getFarbe().contains("WILD");
-            return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD");
-        }
+
         if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().contains("WILD")) {
             return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) ||
                     karte.getFarbe().contains("WILD");
