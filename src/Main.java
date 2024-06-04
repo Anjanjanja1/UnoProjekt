@@ -11,5 +11,7 @@ public class Main {
         spiel.run();
         input.close();
 
+        System.out.println();
+
     }
 }

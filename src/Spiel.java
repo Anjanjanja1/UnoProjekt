@@ -15,7 +15,7 @@ public class Spiel {
     protected boolean karteGehoben; //Prüft, ob der Spieler eine Karte gehoben hat
     protected boolean karteReversed;
     protected boolean karteSkip;
-
+    protected boolean havingWinner;
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
@@ -28,13 +28,13 @@ public class Spiel {
         this.karteGehoben = false;
         this.karteReversed = false;
         this.karteSkip = false;
+        this.havingWinner = false;
     }
 
     //Die Hauptschleife des Spiels → Gameloop
     public void run() {
         initialisieren();
         benutzernameInput();
-
         stapel.addKarten(); //Fügt Karten zum Stapel hinzu
         stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
         aktuellerSpieler = spielerListe.getFirst(); //Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
@@ -53,7 +53,8 @@ public class Spiel {
             //System.out.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
             //String name = input.nextLine();
             String name = testNames[i];
-            Spieler spieler = new Spieler(name); //Erzeugt ein neues Spieler-Objekt mit dem eingegebenen Namen
+            int punkte = 0; //TODO punkte übergeben vom letzten spiel
+            Spieler spieler = new Spieler(name, punkte); //Erzeugt ein neues Spieler-Objekt mit dem eingegebenen Namen
             //Spieler.addSpieler(spieler); POSSIBLY NOT NECESSARY
             spielerListe.add(spieler);
         }
@@ -77,7 +78,7 @@ public class Spiel {
 
     //Zeigt das Menü und verwaltet die Auswahl des Spielers
     private void menu() {
-        while (true) { //TODO -> change true condition in points!
+        while (!havingWinner) { //TODO -> implement a (second?) Loop that runs until 500 points
             aktuellenZustandAnzeigen(); //Zeigt den aktuellen Spielstatus an
             int menuAuswahl = benutzermenueauswahl();
 
@@ -92,6 +93,7 @@ public class Spiel {
                         karteHeben();
                     } else {
                         karteLegen();
+                        checkIfCurrentPlayerWin();
                     }
                     break;
                 case 3:
@@ -319,4 +321,48 @@ public class Spiel {
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
     }
 
+
+    public void checkIfCurrentPlayerWin() {
+        if (aktuellerSpieler.meineKarte.isEmpty()) {
+            System.out.println("Du hast dieses Spiel gewonnen. Deine Punkte werden addiert.");
+            havingWinner = true;
+
+            int gesamtPunkte = countPointsFromPlayer();
+
+            addPointsToPlayer(aktuellerSpieler, gesamtPunkte);
+
+            output.println("Der jetzige Punktestand:");
+            for (Spieler spieler : spielerListe) {
+                output.println(spieler.getName() + ": " + spieler.getPunkte() + " Punkte");
+            }
+
+        }
+    }
+
+
+    //  Methode erstellen die Punkte zusammenzählt
+
+    public int countPointsFromPlayer() {
+        int gesamtPunkte = 0;
+        for (Spieler spieler : spielerListe) {
+            int punkte = 0;
+            for (Karte karte : spieler.getMeineKarte()) {
+                punkte += karte.getPunkte();
+            }
+            gesamtPunkte += punkte;
+            spieler.getMeineKarte().clear();
+        }
+        return gesamtPunkte;
+    }
+
+    //  Methode die die Punkte in Spieler speichert
+    public void addPointsToPlayer(Spieler spieler, int punkte) {
+        spieler.setPunkte(spieler.getPunkte() + punkte);
+    }
+
+
 }
+
+
+
+
