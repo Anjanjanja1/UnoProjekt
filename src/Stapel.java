@@ -5,7 +5,7 @@ public class Stapel extends Karte {
 
     protected ArrayList<Karte> stapel;
     protected TopKarte topKarte;
-    private Spiel spiel;
+    private final Spiel spiel;
 
     public Stapel(Spiel spiel) {
         this.stapel = new ArrayList<>(108);
@@ -65,13 +65,6 @@ public class Stapel extends Karte {
         return stapel;
     }
 
-    public ArrayList<Karte> printAll() {
-        for (Karte k : stapel) {
-            System.out.print(k + " ");
-        }
-        System.out.println(stapel.size());
-        return stapel;
-    }
 
     public ArrayList<Karte> stapelShuffleUndTeilen(ArrayList<Spieler> spielerListe, int anzahl) {
 
@@ -87,7 +80,7 @@ public class Stapel extends Karte {
         for (Spieler s : spielerListe) {
             for (int j = 0; j < anzahl; j++) {
                 if (!stapel.isEmpty()) { // Check if the deck is not empty
-                    s.addKarten(stapel.remove(0)); // Deal the top card and remove it from the deck
+                    s.addKarten(stapel.removeFirst()); // Deal the top card and remove it from the deck
                 } else {
                     System.out.println("The deck is empty. Cannot deal more cards.");
                     break;
@@ -96,18 +89,18 @@ public class Stapel extends Karte {
         }
         return stapel;
     }
-    public void someMethodInStapel() {
 
-        this.spiel.naechsterSpieler();
-
-    }
 
     public void entferneErsteKarte() {
         topKarte.getAblageStapel().add(stapel.removeFirst());
-        Karte ersteKarte = topKarte.getAblageStapel().get(0);
-        if (ersteKarte.getFarbe().contains("WILD") || ersteKarte.getZeichen().contains("+2")) {
+        Karte ersteKarte = topKarte.getAblageStapel().getFirst();
+        if (ersteKarte.getFarbe().contains("WILD") ){
             topKarte.getAblageStapel().add(stapel.removeFirst());
-            System.out.println("Die erste Karte war eine Wilde Karte oder eine Plus-2-Karte und wurde entfernt.");
+            System.out.println("Die erste Karte war eine Wilde Karte wurde entfernt.");
+        }
+        if (ersteKarte.getZeichen().contains("+2")) {
+            topKarte.getAblageStapel().add(stapel.removeFirst());
+            System.out.println("Die erste Karte war eine Plus-2 Karte und wurde entfernt.");
         }
         // Prüfen, ob die erste Karte eine "Skip"-Karte ist
         if (ersteKarte.getZeichen().contains("SKIP")) {
