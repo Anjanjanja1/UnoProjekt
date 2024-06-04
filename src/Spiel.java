@@ -210,6 +210,7 @@ public class Spiel {
 
         } else {
             output.println("Ungültige Karte. Probiere es nochmal!");
+            karteHeben();
         }
     }
 
