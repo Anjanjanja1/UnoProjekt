@@ -70,9 +70,18 @@ public class Spiel {
 
     //Fragt den Benutzer nach der Menüauswahl
     private int benutzermenueauswahl() {
-        output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n Geben Sie Ihre Wahl ein: ");
-        int menuAuswahl = input.nextInt();
-        input.nextLine();
+        int menuAuswahl;
+        do {
+            output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n Geben Sie Ihre Wahl ein: ");
+            while (!input.hasNextInt()) {
+                System.out.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 4 eingeben.");
+                input.next();
+            }
+            menuAuswahl = input.nextInt();
+            if (menuAuswahl < 1 || menuAuswahl > 4) {
+                output.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 4 eingeben.");
+            }
+        } while (menuAuswahl < 1 || menuAuswahl > 4);
         return menuAuswahl;
     }
 
@@ -153,25 +162,26 @@ public class Spiel {
             return;
         }
 
-        output.println("Welche Karte möchtest du legen? (Index eingeben)");
-        int index = input.nextInt();
-        input.nextLine();
-
-        if (index >= 0 && index < aktuellerSpieler.getMeineKarte().size()) { //Prüft, ob die Indexeingabe gültig ist
-            Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index
-
-            if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
-                aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
-                stapel.getTopKarte().getAblageStapel().add(gelegteKarte); //Fügt die Karte dem Ablagestapel hinzu
-                karteGespielt = true;  //Setze karteGespielt auf true
-                specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
-                output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
-
-            } else {
-                output.println("Ungültige Karte. Probiere es nochmal!");
+        int index;
+        do {
+            output.println("Welche Karte möchtest du legen? (Index eingeben)");
+            while (!input.hasNextInt()) {
+                System.out.println("Ungültige Eingabe.");
+                input.next();
             }
+            index = input.nextInt();
+        } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
+
+        Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index
+
+        if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
+            aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
+            stapel.getTopKarte().getAblageStapel().add(gelegteKarte); //Fügt die Karte dem Ablagestapel hinzu
+            karteGespielt = true;  //Setze karteGespielt auf true
+            specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
+            output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
         } else {
-            output.println("Ungültiger Index!");
+            output.println("Ungültige Karte. Probiere es nochmal!");
         }
     }
 
@@ -224,10 +234,7 @@ public class Spiel {
     //Überprüft, ob eine Karte gespielt werden kann
     private boolean ueberpruefeKarte(Karte karte, Karte obersteKarte) {
         if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().contains("+2")) {
-            return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD") && karte.getZeichen().contains("+4");
-        }
-        if (obersteKarte.getZeichen().contains("+4")) {
-            return karte.getFarbe().contains(gewaehlteFarbe) || karte.getZeichen().contains("+4") || karte.getFarbe().contains("WILD");
+            return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD");
         }
         if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().contains("WILD")) {
             return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) ||
@@ -263,8 +270,15 @@ public class Spiel {
 
     //Fragt den Spieler nach der Farbwahl
     private String farbeWaehlen() {
-        System.out.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
-        return input.nextLine().toUpperCase();
+        do {
+            output.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
+            gewaehlteFarbe = input.next().toUpperCase();
+
+            if (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G"))) {
+                output.println("Ungültige Eingabe.");
+            }
+        } while (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G")));
+        return gewaehlteFarbe;
     }
 
     //Methode zum Anwenden von Strafkarten
@@ -290,6 +304,7 @@ public class Spiel {
 
     //Methode zum Behandeln von offenen Strafkarten
     private void strafkartenBehandeln() {
+        karteGespielt = false;
         if (zuZiehendeKarten > 0) {
             ArrayList<Karte> gueltigeKarten = gueltigeKarten(); //Überprüft, ob der nächste Spieler gültige Karten hat
 
