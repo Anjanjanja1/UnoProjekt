@@ -5,10 +5,12 @@ public class Stapel extends Karte {
 
     protected ArrayList<Karte> stapel;
     protected TopKarte topKarte;
+    private Spiel spiel;
 
-    public Stapel() {
+    public Stapel(Spiel spiel) {
         this.stapel = new ArrayList<>(108);
         this.topKarte = new TopKarte();
+        this.spiel = spiel;
     }
 
     public ArrayList<Karte> getStapel() {
@@ -94,13 +96,26 @@ public class Stapel extends Karte {
         }
         return stapel;
     }
+    public void someMethodInStapel() {
+
+        this.spiel.naechsterSpieler();
+
+    }
 
     public void entferneErsteKarte() {
-        topKarte.getAblageStapel().add(stapel.remove(0));
+        topKarte.getAblageStapel().add(stapel.removeFirst());
         Karte ersteKarte = topKarte.getAblageStapel().get(0);
         if (ersteKarte.getFarbe().contains("WILD") || ersteKarte.getZeichen().contains("+2")) {
-            topKarte.getAblageStapel().add(stapel.remove(0));
+            topKarte.getAblageStapel().add(stapel.removeFirst());
             System.out.println("Die erste Karte war eine Wilde Karte oder eine Plus-2-Karte und wurde entfernt.");
+        }
+        // Prüfen, ob die erste Karte eine "Skip"-Karte ist
+        if (ersteKarte.getZeichen().contains("SKIP")) {
+            spiel.naechsterSpieler();
+        }
+        // Prüfen, ob die erste Karte eine "Rev"-Karte ist
+        else if (ersteKarte.getZeichen().contains("REV")) {
+            spiel.naechsterSpieler();      // Invertiere die Spielreihenfolge
         }
     }
 
@@ -110,4 +125,6 @@ public class Stapel extends Karte {
     public String toString() {
         return "Stapel " + stapel + "\n ablageStapel " + topKarte;
     }
+
+
 }

@@ -21,7 +21,7 @@ public class Spiel {
         this.input = input;
         this.output = output;
         this.spielerListe = new ArrayList<>();
-        this.stapel = new Stapel();
+        this.stapel = new Stapel(this);
         this.gewaehlteFarbe = "";
         this.zuZiehendeKarten = 0;
         this.karteGespielt = false;
@@ -37,9 +37,20 @@ public class Spiel {
 
         stapel.addKarten(); //Fügt Karten zum Stapel hinzu
         stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
-        aktuellerSpieler = spielerListe.getFirst(); //Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
+        aktuellerSpieler = spielerListe.get(0); // Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
+        // Prüft, ob die oberste Karte ein "SKIP" oder "REVERSE" ist und führt entsprechend die Aktion aus
+        Karte topKarte = getTopKarte();
+        if (topKarte.getZeichen().contains("SKIP")) {
+            skipKarte(); // überspringt den aktuellen Spieler
+        } else if (topKarte.getZeichen().contains("REV")) {
+            reverseKarte(); // dreht die Spielrichtung um
+           // naechsterSpieler(); // geht zum nächsten Spieler in der neuen Richtung
+        }
+        // aktuellerSpieler = spielerListe.getFirst(); //Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
         menu(); //Zeigt das Menü an und verarbeitet die Benutzereingaben
     }
+
+
 
     //Initialisiert das Spiel
     private void initialisieren() {
@@ -115,6 +126,7 @@ public class Spiel {
 
     //Greift auf den Ablagestapel des Stapelobjekts zu und gibt die letzte Karte in der Liste zurück
     private Karte getTopKarte() {
+
         return stapel.getTopKarte().getAblageStapel().getLast();
     }
 
@@ -151,12 +163,14 @@ public class Spiel {
             return;
         }
 
+
         output.println("Welche Karte möchtest du legen? (Index eingeben)");
         int index = input.nextInt();
         input.nextLine();
 
         if (index >= 0 && index < aktuellerSpieler.getMeineKarte().size()) { //Prüft, ob die Indexeingabe gültig ist
             Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index
+
 
             if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
                 aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
@@ -191,7 +205,7 @@ public class Spiel {
     }
 
     //Wechselt zum nächsten Spieler und behandelt die zu ziehenden Karten
-    private void naechsterSpieler() {
+    void naechsterSpieler() {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
         if (karteReversed) {
 
@@ -201,20 +215,18 @@ public class Spiel {
             aktuellerIndex--;
         }
         if (karteSkip) {
-            aktuellerIndex += 2;
+            aktuellerIndex = (aktuellerIndex + 2) % spielerListe.size();
+            karteSkip = false;
 
-            if (aktuellerIndex < 0) {
-                aktuellerIndex = spielerListe.size() - 1;
-            }
         } else {
-            aktuellerIndex++;
-            if (aktuellerIndex >= spielerListe.size()) {
-                aktuellerIndex = 0;
-            }
+
+            aktuellerIndex = (aktuellerIndex + 1) % spielerListe.size();
         }
+
+
         aktuellerSpieler = spielerListe.get(aktuellerIndex); // Setzt den nächsten
 
-        output.println("Der nächtste Spieler ist: " + aktuellerSpieler.getName());
+        output.println("Die aktuelle Spieler ist: " + aktuellerSpieler.getName());
         //Wenn es Karten zu ziehen gibt, handle das
         strafkartenBehandeln();
     }
@@ -222,7 +234,7 @@ public class Spiel {
     //Überprüft, ob eine Karte gespielt werden kann
     private boolean ueberpruefeKarte(Karte karte, Karte obersteKarte) {
         if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().contains("+2")) {
-            return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD") && karte.getZeichen().contains("+4");
+            return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD");
         }
         if (obersteKarte.getZeichen().contains("+4")) {
             return karte.getFarbe().contains(gewaehlteFarbe) || karte.getZeichen().contains("+4") || karte.getFarbe().contains("WILD");
@@ -306,17 +318,17 @@ public class Spiel {
 
     public void skipKarte() {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
-        aktuellerSpieler = spielerListe.get((aktuellerIndex + 2) % spielerListe.size());
+        aktuellerSpieler = spielerListe.get((aktuellerIndex + 1) % spielerListe.size());
         output.println("Skip! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
-        karteSkip = false;
 
         karteGespielt = false;
         karteGehoben = false;
     }
 
     public void reverseKarte() {
+        int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
+        aktuellerSpieler = spielerListe.get((spielerListe.size() - 1) % spielerListe.size());
         Collections.reverse(spielerListe);
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
     }
-
 }
