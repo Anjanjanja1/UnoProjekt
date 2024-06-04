@@ -15,6 +15,7 @@ public class Spiel {
     protected boolean karteGehoben; //Prüft, ob der Spieler eine Karte gehoben hat
     protected boolean karteReversed;
     protected boolean karteSkip;
+    protected boolean unoGesagt;
     protected boolean havingWinner;
 
     public Spiel(Scanner input, PrintStream output) {
@@ -28,6 +29,7 @@ public class Spiel {
         this.karteGehoben = false;
         this.karteReversed = false;
         this.karteSkip = false;
+        unoGesagt = false;
         this.havingWinner = false;
     }
 
@@ -116,12 +118,25 @@ public class Spiel {
                     }
                     break;
                 case 3:
+                    unoGesagt = true;
                     unoSagen();
                     break;
                 case 4:
                     if (karteGespielt || karteGehoben) {
+                        if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
+                            output.println("Du hast nicht UNO gesagt. Du bekommst 2 Karten als Strafe!");
+                            for (int i = 0; i < 2; i++) {
+                                if (!stapel.getStapel().isEmpty()) {
+                                    Karte gezogeneKarte = stapel.getStapel().removeFirst();
+                                    aktuellerSpieler.addKarten(gezogeneKarte);
+                                } else {
+                                    output.println("Der Stapel ist leer.");
+                                }
+                            }
+                        }
                         karteGespielt = false;
                         karteGehoben = false;
+                        unoGesagt=false;
                         naechsterSpieler();
                     } else {
                         output.println("Du musst eine gültige Karte spielen oder eine Karte ziehen, bevor du den Zug beenden kannst!");
