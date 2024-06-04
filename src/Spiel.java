@@ -15,7 +15,7 @@ public class Spiel {
     protected boolean karteGehoben; //Prüft, ob der Spieler eine Karte gehoben hat
     protected boolean karteReversed;
     protected boolean karteSkip;
-
+    protected boolean havingWinner;
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
@@ -28,13 +28,13 @@ public class Spiel {
         this.karteGehoben = false;
         this.karteReversed = false;
         this.karteSkip = false;
+        this.havingWinner = false;
     }
 
     //Die Hauptschleife des Spiels → Gameloop
     public void run() {
         initialisieren();
         benutzernameInput();
-
         stapel.addKarten(); //Fügt Karten zum Stapel hinzu
         stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
         aktuellerSpieler = spielerListe.get(0); // Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
@@ -64,7 +64,8 @@ public class Spiel {
             //System.out.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
             //String name = input.nextLine();
             String name = testNames[i];
-            Spieler spieler = new Spieler(name); //Erzeugt ein neues Spieler-Objekt mit dem eingegebenen Namen
+            int punkte = 0; //TODO punkte übergeben vom letzten spiel
+            Spieler spieler = new Spieler(name, punkte); //Erzeugt ein neues Spieler-Objekt mit dem eingegebenen Namen
             //Spieler.addSpieler(spieler); POSSIBLY NOT NECESSARY
             spielerListe.add(spieler);
         }
@@ -80,15 +81,24 @@ public class Spiel {
 
     //Fragt den Benutzer nach der Menüauswahl
     private int benutzermenueauswahl() {
-        output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n Geben Sie Ihre Wahl ein: ");
-        int menuAuswahl = input.nextInt();
-        input.nextLine();
+        int menuAuswahl;
+        do {
+            output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n Geben Sie Ihre Wahl ein: ");
+            while (!input.hasNextInt()) {
+                System.out.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 4 eingeben.");
+                input.next();
+            }
+            menuAuswahl = input.nextInt();
+            if (menuAuswahl < 1 || menuAuswahl > 4) {
+                output.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 4 eingeben.");
+            }
+        } while (menuAuswahl < 1 || menuAuswahl > 4);
         return menuAuswahl;
     }
 
     //Zeigt das Menü und verwaltet die Auswahl des Spielers
     private void menu() {
-        while (true) { //TODO -> change true condition in points!
+        while (!havingWinner) { //TODO -> implement a (second?) Loop that runs until 500 points
             aktuellenZustandAnzeigen(); //Zeigt den aktuellen Spielstatus an
             int menuAuswahl = benutzermenueauswahl();
 
@@ -103,6 +113,7 @@ public class Spiel {
                         karteHeben();
                     } else {
                         karteLegen();
+                        checkIfCurrentPlayerWin();
                     }
                     break;
                 case 3:
@@ -167,9 +178,17 @@ public class Spiel {
         output.println("Welche Karte möchtest du legen? (Index eingeben)");
         int index = input.nextInt();
         input.nextLine();
+        int index;
+        do {
+            output.println("Welche Karte möchtest du legen? (Index eingeben)");
+            while (!input.hasNextInt()) {
+                System.out.println("Ungültige Eingabe.");
+                input.next();
+            }
+            index = input.nextInt();
+        } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
 
-        if (index >= 0 && index < aktuellerSpieler.getMeineKarte().size()) { //Prüft, ob die Indexeingabe gültig ist
-            Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index
+        Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index
 
 
             if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
@@ -184,6 +203,14 @@ public class Spiel {
             }
         } else {
             output.println("Ungültiger Index!");
+        if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
+            aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
+            stapel.getTopKarte().getAblageStapel().add(gelegteKarte); //Fügt die Karte dem Ablagestapel hinzu
+            karteGespielt = true;  //Setze karteGespielt auf true
+            specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
+            output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
+        } else {
+            output.println("Ungültige Karte. Probiere es nochmal!");
         }
     }
 
@@ -238,6 +265,7 @@ public class Spiel {
         }
         if (obersteKarte.getZeichen().contains("+4")) {
             return karte.getFarbe().contains(gewaehlteFarbe) || karte.getZeichen().contains("+4") || karte.getFarbe().contains("WILD");
+            return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD");
         }
         if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().contains("WILD")) {
             return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) ||
@@ -273,8 +301,15 @@ public class Spiel {
 
     //Fragt den Spieler nach der Farbwahl
     private String farbeWaehlen() {
-        System.out.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
-        return input.nextLine().toUpperCase();
+        do {
+            output.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
+            gewaehlteFarbe = input.next().toUpperCase();
+
+            if (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G"))) {
+                output.println("Ungültige Eingabe.");
+            }
+        } while (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G")));
+        return gewaehlteFarbe;
     }
 
     //Methode zum Anwenden von Strafkarten
@@ -300,6 +335,7 @@ public class Spiel {
 
     //Methode zum Behandeln von offenen Strafkarten
     private void strafkartenBehandeln() {
+        karteGespielt = false;
         if (zuZiehendeKarten > 0) {
             ArrayList<Karte> gueltigeKarten = gueltigeKarten(); //Überprüft, ob der nächste Spieler gültige Karten hat
 
@@ -331,4 +367,49 @@ public class Spiel {
         Collections.reverse(spielerListe);
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
     }
+
+
+    public void checkIfCurrentPlayerWin() {
+        if (aktuellerSpieler.meineKarte.isEmpty()) {
+            System.out.println("Du hast dieses Spiel gewonnen. Deine Punkte werden addiert.");
+            havingWinner = true;
+
+            int gesamtPunkte = countPointsFromPlayer();
+
+            addPointsToPlayer(aktuellerSpieler, gesamtPunkte);
+
+            output.println("Der jetzige Punktestand:");
+            for (Spieler spieler : spielerListe) {
+                output.println(spieler.getName() + ": " + spieler.getPunkte() + " Punkte");
+            }
+
+        }
+    }
+
+
+    //  Methode erstellen die Punkte zusammenzählt
+
+    public int countPointsFromPlayer() {
+        int gesamtPunkte = 0;
+        for (Spieler spieler : spielerListe) {
+            int punkte = 0;
+            for (Karte karte : spieler.getMeineKarte()) {
+                punkte += karte.getPunkte();
+            }
+            gesamtPunkte += punkte;
+            spieler.getMeineKarte().clear();
+        }
+        return gesamtPunkte;
+    }
+
+    //  Methode die die Punkte in Spieler speichert
+    public void addPointsToPlayer(Spieler spieler, int punkte) {
+        spieler.setPunkte(spieler.getPunkte() + punkte);
+    }
+
+
 }
+
+
+
+

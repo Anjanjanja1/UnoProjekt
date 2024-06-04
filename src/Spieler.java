@@ -5,12 +5,18 @@ public class Spieler {
     protected String name;
     protected ArrayList<Karte> meineKarte;
     protected static ArrayList<Spieler> spielerListe = new ArrayList<>();
+    protected int punkte;
 
 
-    public Spieler(String name) {
+    public Spieler(String name, int punkte) {
         this.name = name;
         this.meineKarte = new ArrayList<>();
+        this.punkte = 0;
     }
+
+
+
+
 
 
     public ArrayList<Karte> getMeineKarte() {
@@ -35,6 +41,14 @@ public class Spieler {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getPunkte() {
+        return punkte;
+    }
+
+    public void setPunkte(int punkte) {
+        this.punkte = punkte;
     }
 
     public static void addSpieler(Spieler spieler) {
