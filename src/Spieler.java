@@ -15,10 +15,6 @@ public class Spieler {
     }
 
 
-
-
-
-
     public ArrayList<Karte> getMeineKarte() {
         return meineKarte;
     }
