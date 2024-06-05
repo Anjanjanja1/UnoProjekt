@@ -92,26 +92,27 @@ public class Stapel extends Karte {
 
 
     public void entferneErsteKarte() {
-        topKarte.getAblageStapel().add(stapel.removeFirst());
-        Karte ersteKarte = topKarte.getAblageStapel().getFirst();
-        if (ersteKarte.getFarbe().contains("WILD") ){
-            topKarte.getAblageStapel().add(stapel.removeFirst());
-            System.out.println("Die erste Karte war eine Wilde Karte wurde entfernt.");
-        }
-        if (ersteKarte.getZeichen().contains("+2")) {
-            topKarte.getAblageStapel().add(stapel.removeFirst());
-            System.out.println("Die erste Karte war eine Plus-2 Karte und wurde entfernt.");
-        }
+        Karte ersteKarte;
+        do {
+            ersteKarte = stapel.removeFirst();
+            if (ersteKarte.getFarbe().contains("WILD") || ersteKarte.getZeichen().contains("+2")) {
+                stapel.addLast(ersteKarte);
+                System.out.println("Die erste Karte war eine unerwünschte Karte, wurde entfernt und am Ende des Stapels eingefügt.");
+            }
+        } while (ersteKarte.getFarbe().contains("WILD") || ersteKarte.getZeichen().contains("+2"));
+        topKarte.getAblageStapel().add(ersteKarte);
+
         // Prüfen, ob die erste Karte eine "Skip"-Karte ist
         if (ersteKarte.getZeichen().contains("SKIP")) {
+//            spiel.karteSkip = true;
             spiel.naechsterSpieler();
         }
         // Prüfen, ob die erste Karte eine "Rev"-Karte ist
         else if (ersteKarte.getZeichen().contains("REV")) {
+//            spiel.karteReversed = true;
             spiel.naechsterSpieler();      // Invertiere die Spielreihenfolge
         }
     }
-
 
 
     @Override

@@ -31,6 +31,7 @@ public class Spiel {
         this.karteSkip = false;
         unoGesagt = false;
         this.havingWinner = false;
+
     }
 
     //Die Hauptschleife des Spiels → Gameloop
@@ -136,7 +137,7 @@ public class Spiel {
                         }
                         karteGespielt = false;
                         karteGehoben = false;
-                        unoGesagt=false;
+                        unoGesagt = false;
                         naechsterSpieler();
                     } else {
                         output.println("Du musst eine gültige Karte spielen oder eine Karte ziehen, bevor du den Zug beenden kannst!");
@@ -264,10 +265,9 @@ public class Spiel {
         if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().contains("+2")) {
             return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD");
         }
-
         if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().contains("WILD")) {
             return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) ||
-                    karte.getFarbe().contains("WILD");
+                    karte.getFarbe().contains("WILD") || karte.getFarbe().contains(obersteKarte.getFarbe()) && karte.getZeichen().contains("REV") || karte.getFarbe().contains(obersteKarte.getFarbe()) && karte.getZeichen().contains("SKIP");
         } else {
             return karte.getFarbe().contains(gewaehlteFarbe) || karte.getFarbe().contains("WILD");
         }
@@ -352,7 +352,7 @@ public class Spiel {
 
     public void skipKarte() {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
-        aktuellerSpieler = spielerListe.get((aktuellerIndex + 1) % spielerListe.size());
+        aktuellerSpieler = spielerListe.get((aktuellerIndex + 2) % spielerListe.size());
         output.println("Skip! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
 
         karteGespielt = false;
@@ -360,10 +360,12 @@ public class Spiel {
     }
 
     public void reverseKarte() {
-        int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
         aktuellerSpieler = spielerListe.get((spielerListe.size() - 1) % spielerListe.size());
         Collections.reverse(spielerListe);
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
+
+        karteGespielt = false;
+        karteGehoben = false;
     }
 
 
