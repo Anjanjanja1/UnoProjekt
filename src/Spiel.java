@@ -1,9 +1,12 @@
 import java.io.PrintStream;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class Spiel {
+    private static final String DB_URL = "jdbc:sqlite:UnoProjekt.mydatabase.db";
+    private SqliteClient sqliteClient;
     protected final Scanner input; //Zum Lesen von Benutzereingaben
     protected final PrintStream output; //Zum Schreiben von Ausgaben auf die Konsole
     protected final ArrayList<Spieler> spielerListe; //Liste der Spieler zu speichern
@@ -31,21 +34,27 @@ public class Spiel {
         this.karteSkip = false;
         unoGesagt = false;
         this.havingWinner = false;
-
+        //initialisieren();
+        try {
+            sqliteClient = new SqliteClient("uno_game.db");
+            initialisieren();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     //Die Hauptschleife des Spiels → Gameloop
     public void run() {
-        initialisieren();
+        //initialisieren();
         benutzernameInput();
         stapel.addKarten(); //Fügt Karten zum Stapel hinzu
         stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
         aktuellerSpieler = spielerListe.getFirst(); // Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
         // Prüft, ob die oberste Karte ein "SKIP" oder "REVERSE" ist und führt entsprechend die Aktion aus
         Karte topKarte = getTopKarte();
-        if (topKarte.getZeichen().contains("SKIP")) {
+        if (topKarte.getZeichen().equals("SKIP")) {
             skipKarte(); // überspringt den aktuellen Spieler
-        } else if (topKarte.getZeichen().contains("REV")) {
+        } else if (topKarte.getZeichen().equals("REV")) {
             reverseKarte(); // dreht die Spielrichtung um
             // naechsterSpieler(); // geht zum nächsten Spieler in der neuen Richtung
         }
@@ -57,6 +66,13 @@ public class Spiel {
     //Initialisiert das Spiel
     private void initialisieren() {
         System.out.println("Wilkommen zu unserem UNO Spiel!");
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             Statement stmt = conn.createStatement()) {
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS spieler (name TEXT PRIMARY KEY, punkte INTEGER)";
+            stmt.execute(createTableSQL);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     //Nimmt die Benutzernamen für die Spieler entgegen
@@ -206,6 +222,11 @@ public class Spiel {
             aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
             stapel.getTopKarte().getAblageStapel().add(gelegteKarte); //Fügt die Karte dem Ablagestapel hinzu
             karteGespielt = true;  //Setze karteGespielt auf true
+
+            if (!gelegteKarte.getFarbe().equals("WILD")) {
+                gewaehlteFarbe = ""; //Zurücksetzen der gewaehlteFarbe, wenn eine Nicht-Wild-Karte gespielt wird
+            }
+
             specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
             output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
 
@@ -214,7 +235,6 @@ public class Spiel {
             karteHeben();
         }
     }
-
 
     //Spieler sagt UNO
     private void unoSagen() {
@@ -237,7 +257,6 @@ public class Spiel {
     void naechsterSpieler() {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
         if (karteReversed) {
-
             if (aktuellerIndex <= 0) {
                 aktuellerIndex = spielerListe.size() - 1;
             }
@@ -246,12 +265,9 @@ public class Spiel {
         if (karteSkip) {
             aktuellerIndex = (aktuellerIndex + 2) % spielerListe.size();
             karteSkip = false;
-
         } else {
-
             aktuellerIndex = (aktuellerIndex + 1) % spielerListe.size();
         }
-
 
         aktuellerSpieler = spielerListe.get(aktuellerIndex); // Setzt den nächsten
 
@@ -262,33 +278,33 @@ public class Spiel {
 
     //Überprüft, ob eine Karte gespielt werden kann
     private boolean ueberpruefeKarte(Karte karte, Karte obersteKarte) {
-        if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().contains("+2")) {
-            return karte.getZeichen().contains("+2") || karte.getFarbe().contains("WILD");
+        if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().equals("+2")) {
+            return karte.getZeichen().equals("+2") || karte.getFarbe().equals("WILD");
         }
-        if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().contains("WILD")) {
-            return karte.getFarbe().contains(obersteKarte.getFarbe()) || karte.getZeichen().contains(obersteKarte.getZeichen()) ||
-                    karte.getFarbe().contains("WILD") || karte.getFarbe().contains(obersteKarte.getFarbe()) && karte.getZeichen().contains("REV") || karte.getFarbe().contains(obersteKarte.getFarbe()) && karte.getZeichen().contains("SKIP");
+        if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().equals("WILD") || obersteKarte.getZeichen().equals("+2") || obersteKarte.getZeichen().equals("REV") || obersteKarte.getZeichen().equals("SKIP")) {
+            return karte.getFarbe().equals(obersteKarte.getFarbe()) || karte.getZeichen().equals(obersteKarte.getZeichen()) ||
+                    karte.getFarbe().equals("WILD") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("REV") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("SKIP");
         } else {
-            return karte.getFarbe().contains(gewaehlteFarbe) || karte.getFarbe().contains("WILD");
+            return karte.getFarbe().contains(gewaehlteFarbe) || karte.getFarbe().equals("WILD");
         }
     }
 
     //Behandelt spezielle Karten (Wilde Karten, +2 Karten, +4 Karten)
     private void specialKarten(Karte gelegteKarte) {
-        if (gelegteKarte.getFarbe().contains("WILD") && gelegteKarte.getZeichen().isEmpty()) {
+        if (gelegteKarte.getFarbe().equals("WILD") && gelegteKarte.getZeichen().isEmpty()) {
             gewaehlteFarbe = farbeWaehlen(); //Fordert den Spieler auf, eine Farbe zu wählen
             output.println("Die Farbe ist " + gewaehlteFarbe);
         }
-        if (gelegteKarte.getZeichen().contains("+2")) {
+        if (gelegteKarte.getZeichen().equals("+2")) {
             zuZiehendeKarten += 2; //Addiert 2 zu der Anzahl der zu ziehenden Karten
         }
-        if (gelegteKarte.getZeichen().contains("SKIP")) {
+        if (gelegteKarte.getZeichen().equals("SKIP")) {
             skipKarte();
         }
-        if (gelegteKarte.getZeichen().contains("REV")) {
+        if (gelegteKarte.getZeichen().equals("REV")) {
             reverseKarte();
         }
-        if (gelegteKarte.getFarbe().contains("WILD") && gelegteKarte.getZeichen().contains("+4")) {
+        if (gelegteKarte.getFarbe().equals("WILD") && gelegteKarte.getZeichen().equals("+4")) {
             //Fordert den Spieler auf, eine Farbe zu wählen und erhöht die Anzahl der zu ziehenden Karten um 4
             gewaehlteFarbe = farbeWaehlen();
             zuZiehendeKarten += 4;
@@ -339,7 +355,7 @@ public class Spiel {
 
             boolean kannZiehenVermeiden = false;
             for (Karte karte : gueltigeKarten) {
-                if (karte.getZeichen().contains("+2")) {
+                if (karte.getZeichen().equals("+2")) {
                     kannZiehenVermeiden = true;
                     break;
                 }
@@ -378,17 +394,16 @@ public class Spiel {
 
             addPointsToPlayer(aktuellerSpieler, gesamtPunkte);
 
+            updateSpielerPunkte(aktuellerSpieler.getName(), aktuellerSpieler.getPunkte());
+
             output.println("Der jetzige Punktestand:");
             for (Spieler spieler : spielerListe) {
                 output.println(spieler.getName() + ": " + spieler.getPunkte() + " Punkte");
             }
-
         }
     }
 
-
     //  Methode erstellen die Punkte zusammenzählt
-
     public int countPointsFromPlayer() {
         int gesamtPunkte = 0;
         for (Spieler spieler : spielerListe) {
@@ -402,12 +417,21 @@ public class Spiel {
         return gesamtPunkte;
     }
 
+    private void updateSpielerPunkte(String spielerName, int punkte) {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement updateStmt = conn.prepareStatement("INSERT INTO spieler (name, punkte) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET punkte = excluded.punkte")) {
+            updateStmt.setString(1, spielerName);
+            updateStmt.setInt(2, punkte);
+            updateStmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     //  Methode die die Punkte in Spieler speichert
     public void addPointsToPlayer(Spieler spieler, int punkte) {
         spieler.setPunkte(spieler.getPunkte() + punkte);
     }
-
-
 }
 
 
