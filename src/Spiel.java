@@ -39,7 +39,7 @@ public class Spiel {
         benutzernameInput();
         stapel.addKarten(); //Fügt Karten zum Stapel hinzu
         stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
-        aktuellerSpieler = spielerListe.get(0); // Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
+        aktuellerSpieler = spielerListe.getFirst(); // Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
         // Prüft, ob die oberste Karte ein "SKIP" oder "REVERSE" ist und führt entsprechend die Aktion aus
         Karte topKarte = getTopKarte();
         if (topKarte.getZeichen().contains("SKIP")) {
@@ -210,6 +210,7 @@ public class Spiel {
 
         } else {
             output.println("Ungültige Karte. Probiere es nochmal!");
+            karteHeben();
         }
     }
 
