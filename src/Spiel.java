@@ -278,7 +278,7 @@ public class Spiel {
         if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().equals("+2")) {
             return karte.getZeichen().equals("+2") || karte.getFarbe().equals("+4");
         }
-        if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().equals("WILD") || obersteKarte.getZeichen().equals("+2") || obersteKarte.getZeichen().equals("REV") || obersteKarte.getZeichen().equals("SKIP")) {
+        if (gewaehlteFarbe.isEmpty()) {
             return karte.getFarbe().equals(obersteKarte.getFarbe()) || karte.getZeichen().equals(obersteKarte.getZeichen()) ||
                     karte.getFarbe().equals("WILD") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("REV") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("SKIP");
         } else {
@@ -352,7 +352,7 @@ public class Spiel {
 
             boolean kannZiehenVermeiden = false;
             for (Karte karte : gueltigeKarten) {
-                if (karte.getZeichen().equals("+2")) {
+                if (!getTopKarte().getFarbe().equals("WILD") && karte.getZeichen().equals("+2")) {
                     kannZiehenVermeiden = true;
                     break;
                 }

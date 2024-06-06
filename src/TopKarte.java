@@ -8,12 +8,6 @@ public class TopKarte extends Karte{
         this.ablageStapel = new ArrayList<>();
     }
 
-    public void showAll() {
-        for (Karte karte : ablageStapel) {
-            System.out.println(karte);
-        }
-    }
-
     @Override
     public String toString() {
         return "Top Karte: " + farbe + zeichen;
