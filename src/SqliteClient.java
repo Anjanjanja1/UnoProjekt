@@ -11,8 +11,14 @@ public class SqliteClient {
     private Connection connection = null;
 
     public SqliteClient(String dbName) throws SQLException{
-        connection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+        try{
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+        } catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
+
 
     public boolean tableExists(String tableName) throws SQLException{
         String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='"+ tableName+"';";

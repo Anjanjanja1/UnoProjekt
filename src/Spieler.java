@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Spieler {
 
@@ -10,9 +11,11 @@ public class Spieler {
 
     public Spieler(String name, int punkte) {
         this.name = name;
+        this.punkte = punkte;
         this.meineKarte = new ArrayList<>();
-        this.punkte = 0;
+
     }
+
 
     public ArrayList<Karte> getMeineKarte() {
         return meineKarte;
@@ -70,5 +73,6 @@ public class Spieler {
     public String toString() {
         return name + " " + meineKarte;
     }
+
 
 }

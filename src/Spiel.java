@@ -61,13 +61,14 @@ public class Spiel {
 
     //Initialisiert das Spiel
     private void initialisieren() {
-        System.out.println("Wilkommen zu unserem UNO Spiel!");
+        output.println("Wilkommen zu unserem UNO Spiel!");
+
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement()) {
             String createTableSQL = "CREATE TABLE IF NOT EXISTS spieler (name TEXT PRIMARY KEY, punkte INTEGER)";
             stmt.execute(createTableSQL);
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            output.println("Error creating table: " + ex.getMessage());
         }
     }
 
