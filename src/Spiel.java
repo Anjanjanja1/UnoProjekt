@@ -279,15 +279,18 @@ public class Spiel {
     //Überprüft, ob eine Karte gespielt werden kann
     private boolean ueberpruefeKarte(Karte karte, Karte obersteKarte) {
         if (zuZiehendeKarten > 0 && obersteKarte.getZeichen().equals("+2")) {
-            return karte.getZeichen().equals("+2") || karte.getFarbe().equals("WILD");
+            return karte.getZeichen().equals("+2") || karte.getZeichen().equals("+4");
         }
-        if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0 && !obersteKarte.getFarbe().equals("WILD") || obersteKarte.getZeichen().equals("+2") || obersteKarte.getZeichen().equals("REV") || obersteKarte.getZeichen().equals("SKIP")) {
-            return karte.getFarbe().equals(obersteKarte.getFarbe()) || karte.getZeichen().equals(obersteKarte.getZeichen()) ||
-                    karte.getFarbe().equals("WILD") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("REV") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("SKIP");
-        } else {
-            return karte.getFarbe().contains(gewaehlteFarbe) || karte.getFarbe().equals("WILD");
+
+        if (gewaehlteFarbe.isEmpty() && zuZiehendeKarten == 0) {
+            return karte.getFarbe().contains(obersteKarte.getFarbe())
+                    || karte.getZeichen().contains(obersteKarte.getZeichen())
+                    || karte.getFarbe().equals("WILD");
         }
+
+        return karte.getFarbe().contains(gewaehlteFarbe) || karte.getFarbe().equals("WILD");
     }
+
 
     //Behandelt spezielle Karten (Wilde Karten, +2 Karten, +4 Karten)
     private void specialKarten(Karte gelegteKarte) {
