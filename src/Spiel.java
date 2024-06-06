@@ -46,7 +46,7 @@ public class Spiel {
     public void run() {
         benutzernameInput();
         stapel.addKarten(); //Fügt Karten zum Stapel hinzu
-        stapel.stapelShuffleUndTeilen(spielerListe, 10); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
+        stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
         aktuellerSpieler = spielerListe.getFirst(); // Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
 
         //Prüft, ob die oberste Karte ein "SKIP" oder "REVERSE" ist und führt entsprechend die Aktion aus
