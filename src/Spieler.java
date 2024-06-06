@@ -14,7 +14,6 @@ public class Spieler {
         this.punkte = 0;
     }
 
-
     public ArrayList<Karte> getMeineKarte() {
         return meineKarte;
     }
@@ -71,6 +70,5 @@ public class Spieler {
     public String toString() {
         return name + " " + meineKarte;
     }
-
 
 }

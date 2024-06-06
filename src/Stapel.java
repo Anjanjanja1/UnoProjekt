@@ -24,38 +24,38 @@ public class Stapel extends Karte {
     public ArrayList<Karte> addKarten() {
         stapel.add(new Karte(0, "R-", "0"));
         for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "R-", "REV")); //REVERSE
-            stapel.add(new Karte(20, "R-", "SKIP")); //SKIP
+            stapel.add(new Karte(20, "R", "REV")); //REVERSE
+            stapel.add(new Karte(20, "R", "SKIP")); //SKIP
             stapel.add(new Karte(20, "R", "+2"));
             for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "R-", Integer.toString(j)));
+                stapel.add(new Karte(j, "R", Integer.toString(j)));
             }
         }
-        stapel.add(new Karte(0, "B-", "0"));
+        stapel.add(new Karte(0, "B", "0"));
         for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "B-", "REV"));
-            stapel.add(new Karte(20, "B-", "SKIP"));
+            stapel.add(new Karte(20, "B", "REV"));
+            stapel.add(new Karte(20, "B", "SKIP"));
             stapel.add(new Karte(20, "B", "+2"));
             for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "B-", Integer.toString(j)));
+                stapel.add(new Karte(j, "B", Integer.toString(j)));
             }
         }
-        stapel.add(new Karte(0, "Y-", "0"));
+        stapel.add(new Karte(0, "Y", "0"));
         for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "Y-", "REV"));
-            stapel.add(new Karte(20, "Y-", "SKIP"));
+            stapel.add(new Karte(20, "Y", "REV"));
+            stapel.add(new Karte(20, "Y", "SKIP"));
             stapel.add(new Karte(20, "Y", "+2"));
             for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "Y-", Integer.toString(j)));
+                stapel.add(new Karte(j, "Y", Integer.toString(j)));
             }
         }
-        stapel.add(new Karte(0, "G-", "0"));
+        stapel.add(new Karte(0, "G", "0"));
         for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "G-", "REV"));
-            stapel.add(new Karte(20, "G-", "SKIP"));
+            stapel.add(new Karte(20, "G", "REV"));
+            stapel.add(new Karte(20, "G", "SKIP"));
             stapel.add(new Karte(20, "G", "+2"));
             for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "G-", Integer.toString(j)));
+                stapel.add(new Karte(j, "G", Integer.toString(j)));
             }
         }
         for (int i = 0; i < 4; i++) {
@@ -79,11 +79,8 @@ public class Stapel extends Karte {
 
         for (Spieler s : spielerListe) {
             for (int j = 0; j < anzahl; j++) {
-                if (!stapel.isEmpty()) { // Check if the deck is not empty
-                    s.addKarten(stapel.removeFirst()); // Deal the top card and remove it from the deck
-                } else {
-                    System.out.println("The deck is empty. Cannot deal more cards.");
-                    break;
+                if (!stapel.isEmpty()) {
+                    s.addKarten(stapel.removeFirst());
                 }
             }
         }
@@ -104,13 +101,11 @@ public class Stapel extends Karte {
 
         // Prüfen, ob die erste Karte eine "Skip"-Karte ist
         if (ersteKarte.getZeichen().contains("SKIP")) {
-//            spiel.karteSkip = true;
             spiel.naechsterSpieler();
         }
         // Prüfen, ob die erste Karte eine "Rev"-Karte ist
         else if (ersteKarte.getZeichen().contains("REV")) {
-//            spiel.karteReversed = true;
-            spiel.naechsterSpieler();      // Invertiere die Spielreihenfolge
+            spiel.naechsterSpieler(); //Invertiere die Spielreihenfolge
         }
     }
 
