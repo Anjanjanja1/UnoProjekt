@@ -21,6 +21,10 @@ public class Spiel {
     protected boolean unoGesagt;
     protected boolean havingWinner;
 
+    public ArrayList<Spieler> getSpielerListe() {
+        return this.spielerListe;
+    }
+
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
         this.output = output;

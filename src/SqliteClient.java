@@ -36,6 +36,7 @@ public class SqliteClient {
         statement.setQueryTimeout(30);  // set timeout to 30 sec.
         ResultSet rs = statement.executeQuery(sqlQuery);
         ResultSetMetaData rsmd = rs.getMetaData();
+
         int columns = rsmd.getColumnCount();
         ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         while(rs.next())
