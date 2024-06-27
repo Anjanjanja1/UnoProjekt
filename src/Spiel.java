@@ -1,3 +1,6 @@
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.*;
 import java.util.ArrayList;
@@ -101,16 +104,16 @@ public class Spiel {
     private int benutzermenueauswahl() {
         int menuAuswahl;
         do {
-            output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n Geben Sie Ihre Wahl ein: ");
+            output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n 5. Hilfe \n 6. Punkte anzeigen \n Geben Sie Ihre Wahl ein: ");
             while (!input.hasNextInt()) {
-                System.out.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 4 eingeben.");
+                System.out.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 6 eingeben.");
                 input.next();
             }
             menuAuswahl = input.nextInt();
-            if (menuAuswahl < 1 || menuAuswahl > 4) {
+            if (menuAuswahl < 1 || menuAuswahl > 6) {
                 output.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 4 eingeben.");
             }
-        } while (menuAuswahl < 1 || menuAuswahl > 4);
+        } while (menuAuswahl < 1 || menuAuswahl > 6);
         return menuAuswahl;
     }
 
@@ -160,6 +163,12 @@ public class Spiel {
                         output.println("Du musst eine gültige Karte spielen oder eine Karte ziehen, bevor du den Zug beenden kannst!");
                         karteHeben(); //Strafkarte → wenn der Spieler keine Karte hebe oder lege
                     }
+                    break;
+                case 5:
+                    openHtmlFileInBrowser("BENUTZERHANDBUCH.html");
+                    break;
+                case 6:
+                    System.out.println("Aktueller Punktestand: " + aktuellerSpieler.punkte);
                     break;
                 default:
                     output.println("Ungültige Eingabe.");
@@ -444,6 +453,32 @@ public class Spiel {
             output.println("Der Ablagestapel wurde gemischt und in den Stapel zurückgelegt.");
         } else {
             output.println("Keine Karten im Ablagestapel zum Mischen.");
+        }
+    }
+
+    public static void openHtmlFileInBrowser(String filePath) {
+        try {
+            File htmlFile = new File(filePath);
+            if (!htmlFile.exists()) {
+                System.out.println("File not found: " + filePath);
+                return;
+            }
+
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                // Windows command to open Microsoft Edge
+                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start msedge " + htmlFile.toURI()});
+            } else if (os.contains("mac")) {
+                // macOS command to open Microsoft Edge
+                Runtime.getRuntime().exec(new String[]{"open", "-a", "Microsoft Edge", htmlFile.toURI().toString()});
+            } else if (os.contains("nix") || os.contains("nux")) {
+                // Linux command to open Microsoft Edge (assuming it is installed as `microsoft-edge`)
+                Runtime.getRuntime().exec(new String[]{"microsoft-edge", htmlFile.toURI().toString()});
+            } else {
+                System.out.println("Unsupported operating system: " + os);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

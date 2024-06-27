@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class Karte {
     protected int punkte;
     protected String farbe;
-
     protected String zeichen;
 
     public Karte(int punkte, String farbe, String zeichen) {
