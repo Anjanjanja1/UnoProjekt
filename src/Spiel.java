@@ -466,13 +466,13 @@ public class Spiel {
 
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
-                // Windows command to open Microsoft Edge
+                //Windows command to open Microsoft Edge
                 Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start msedge " + htmlFile.toURI()});
             } else if (os.contains("mac")) {
-                // macOS command to open Microsoft Edge
+                //macOS command to open Microsoft Edge
                 Runtime.getRuntime().exec(new String[]{"open", "-a", "Microsoft Edge", htmlFile.toURI().toString()});
             } else if (os.contains("nix") || os.contains("nux")) {
-                // Linux command to open Microsoft Edge (assuming it is installed as `microsoft-edge`)
+                //Linux command to open Microsoft Edge (assuming it is installed as `microsoft-edge`)
                 Runtime.getRuntime().exec(new String[]{"microsoft-edge", htmlFile.toURI().toString()});
             } else {
                 System.out.println("Unsupported operating system: " + os);

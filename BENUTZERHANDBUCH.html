@@ -1,238 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNO Game User Manual</title>
+    <title>UNO Spielanleitung</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #014370 3px solid;
+        }
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        header ul {
+            padding: 0;
+            list-style: none;
+        }
+        header li {
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+        header #branding {
+            float: left;
+        }
+        header #branding h1 {
+            margin: 0;
+        }
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+        section {
+            padding: 20px;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #mainH {
+            color: #fff;
+        }
+        h1, h2 {
             color: #333;
-            margin: 20px;
-            line-height: 1.6;
         }
-        h1 {
-            color: #E53935;
-            border-bottom: 2px solid #E53935;
-            padding-bottom: 10px;
+        p {
+            line-height: 1.5;
+            margin: 10px 0;
         }
-        h2 {
-            color: #D32F2F;
+        .highlight {
+            background-color: #f9f9f9;
+            border-left: 10px solid #014370;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 30px;
             margin-top: 30px;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        ul li {
-            margin: 5px 0;
-        }
-        .content-section {
+        .toc {
+            background: #014370;
+            padding: 20px;
+            border-radius: 5px;
             margin-bottom: 20px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .content-section h3 {
-            color: #444;
-            margin-top: 20px;
+        .toc h2 {
+            color: #fff;
         }
-        .example {
-            background-color: #f2f2f2;
-            padding: 15px;
-            border-left: 5px solid #D32F2F;
-            margin-top: 10px;
-            border-radius: 4px;
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
         }
-        .example pre {
-            margin: 0;
-            font-family: 'Courier New', Courier, monospace;
+        .toc li {
+            margin: 10px 0;
         }
-        .contact-info {
-            margin-top: 20px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        a {
+        .toc a {
+            color: #fff;
             text-decoration: none;
-            color: #E53935;
+            font-size: 18px;
         }
-        a:hover {
+        .toc a:hover {
             text-decoration: underline;
         }
     </style>
-
 </head>
 <body>
-
-<h1>UNO Game User Manual</h1>
-<h2>Table of Contents</h2>
-<ul>
-    <li><a href="#introduction">1. Introduction</a></li>
-    <li><a href="#setup">Game Setup</a></li>
-    <li><a href="#interface">User Interface</a></li>
-    <li><a href="#gameplay">Gameplay</a></li>
-    <li><a href="#action-cards">Action Cards</a></li>
-    <li><a href="#penalties">Penalties</a></li>
-    <li><a href="#scoring">Scoring</a></li>
-    <li><a href="#end">Game End</a></li>
-    <li><a href="#technical">Technical Information</a></li>
-    <li><a href="#contact">Contact Information</a></li>
-</ul>
-
-<div id="introduction" class="content-section">
-    <h2>1. Introduction</h2>
-    <p>Welcome to our digital version of the classic UNO game! This user manual will guide you through the setup, rules, and gameplay mechanics to ensure you have a seamless and enjoyable experience.</p>
-</div>
-
-<div id="setup" class="content-section">
-    <h2>2. Game Setup</h2>
-    <h3>Players:</h3>
-    <ul>
-        <li>Supports 2-4 players</li>
-        <li>Choose between human players or bots</li>
-    </ul>
-    <h3>Initialization:</h3>
-    <ul>
-        <li>Enter player names</li>
-        <li>The deck is shuffled automatically</li>
-        <li>Each player receives 7 random cards</li>
-        <li>The remaining cards form the draw pile</li>
-        <li>The top card of the draw pile is flipped over to start the discard pile</li>
-        <li>The first player is randomly selected to start the round</li>
-    </ul>
-</div>
-
-<div id="interface" class="content-section">
-    <h2>3. User Interface</h2>
-    <h3>Main Menu:</h3>
-    <ul>
-        <li>Displays the current player’s name</li>
-        <li>Shows the top card on the table</li>
-        <li>Lists the player’s cards</li>
-        <li>Highlights possible playable cards</li>
-        <li>Provides options to:
-            <ul>
-                <li>Draw a card</li>
-                <li>Play a card</li>
-                <li>Say UNO</li>
-                <li>Pass the turn to the next player</li>
-            </ul>
-        </li>
-    </ul>
-    <div class="example">
-        <strong>Example:</strong><br>
-        <pre>
-Player: Anna-Lisa
-Top Card: [R3]
-Your Cards: [B3 G5 Y2 R6]
-Playable Cards: [R6 B3]
-MENU:
-1. Draw Card
-2. Play Card
-3. Say UNO
-4. Next Player
-        </pre>
+<header>
+    <div class="container">
+        <div id="branding">
+            <h1 id="mainH">UNO Spielanleitung</h1>
+        </div>
     </div>
-</div>
+</header>
 
-<div id="gameplay" class="content-section">
-    <h2>4. Gameplay</h2>
-    <p>The game checks the top card to determine the next action.</p>
-    <p>Players take turns in the following sequence:</p>
-    <ul>
-        <li>Check if the top card is a Skip, Reverse, +2, or +4 and apply the respective rules.</li>
-        <li>The current player can choose to:
+<section class="toc">
+    <div class="container">
+        <h2>Inhaltsverzeichnis</h2>
+        <ul>
+            <li><a href="#einleitung">Einleitung</a></li>
+            <li><a href="#spielvorbereitung">Spielvorbereitung</a></li>
+            <li><a href="#benutzeroberflaeche">Benutzeroberfläche</a></li>
+            <li><a href="#spielablauf">Spielablauf</a></li>
+            <li><a href="#aktionskarten">Aktionskarten</a></li>
+            <li><a href="#strafen">Strafen</a></li>
+            <li><a href="#punktewertung">Punktewertung</a></li>
+            <li><a href="#spielende">Spielende</a></li>
+        </ul>
+    </div>
+</section>
+
+<section id="einleitung">
+    <div class="container">
+        <h2>Einleitung</h2>
+        <p>Willkommen zu unserem UNO Spiel! Diese Anleitung hilft Ihnen, die Regeln, die Spielvorbereitung und die Spielmechanik des von Gruppe 4 entwickelten UNO Spiels zu verstehen. Befolgen Sie die Schritte und Anweisungen sorgfältig, um ein reibungsloses und angenehmes Spielerlebnis zu gewährleisten.</p>
+    </div>
+</section>
+
+<section id="spielvorbereitung">
+    <div class="container">
+        <h2>Spielvorbereitung</h2>
+        <p>Um das Spiel zu starten, benötigen Sie 2-4 Spieler. Sie können zwischen menschlichen Spielern oder Bots wählen. Jeder Spieler kann seinen Namen eingeben. Das Kartendeck wird gemischt und jeder Spieler erhält 7 zufällige Karten. Die restlichen Karten bilden den Nachziehstapel, und die oberste Karte wird aufgedeckt und auf den Ablagestapel gelegt. Der erste Spieler beginnt die Runde.</p>
+    </div>
+</section>
+
+<section id="benutzeroberflaeche">
+    <div class="container">
+        <h2>Benutzeroberfläche</h2>
+        <div class="highlight">
+            <p><strong>Spielername: Anna-Lisa</strong></p>
+            <p><strong>Top Karte: [R3]</strong></p>
+            <p><strong>Deine Karten: [B3 G5 Y2 R6]</strong></p>
+            <p><strong>Mögliche Karten: [R6 B3]</strong></p>
+            <p><strong>MENÜ:</strong></p>
             <ul>
-                <li>Draw a card</li>
-                <li>Play a card</li>
-                <li>Say UNO (when they have only one card left)</li>
-                <li>Pass the turn to the next player</li>
+                <li>1. Karte heben</li>
+                <li>2. Karte legen</li>
+                <li>3. UNO sagen</li>
+                <li>4. Nächster Spieler</li>
+                <li>5. Hilfe</li>
+                <li>6. Punkte anzeigen</li>
             </ul>
-        </li>
-        <li>The drawn card can be played immediately if it matches the top card.</li>
-        <li>Players must follow the rules for playing cards and handling special action cards.</li>
-    </ul>
-</div>
+        </div>
+        <p>Das Menü zeigt den Namen des aktuellen Spielers, die oberste Karte auf dem Tisch, die Karten des Spielers, mögliche Spielzüge und Optionen zum Ziehen einer Karte, Ausspielen einer Karte, UNO zu sagen, zum nächsten Spieler zu wechseln, Hilfe zu erhalten oder die Punkte anzuzeigen.</p>
+    </div>
+</section>
 
-<div id="action-cards" class="content-section">
-    <h2>5. Action Cards</h2>
-    <h3>Plus Two Card (+2):</h3>
-    <ul>
-        <li>Next player draws 2 cards</li>
-        <li>Can be placed on a card of the same color or another +2 card</li>
-    </ul>
-    <h3>Reverse Card:</h3>
-    <ul>
-        <li>Reverses the direction of play</li>
-        <li>Can be placed on a card of the same color or another Reverse card</li>
-    </ul>
-    <h3>Skip Card:</h3>
-    <ul>
-        <li>Skips the next player’s turn</li>
-        <li>Can be placed on a card of the same color or another Skip card</li>
-    </ul>
-    <h3>Wild Card:</h3>
-    <ul>
-        <li>Changes the color to be played next</li>
-        <li>Can be played on any card</li>
-    </ul>
-    <h3>Wild +4 Card:</h3>
-    <ul>
-        <li>Changes the color to be played next and the next player draws 4 cards</li>
-        <li>Can be played on any card</li>
-    </ul>
-</div>
+<section id="spielablauf">
+    <div class="container">
+        <h2>Spielablauf</h2>
+        <p>Das Spiel überprüft die oberste Karte auf dem Ablagestapel. Wenn es eine Aussetzen- oder Richtungswechselkarte ist, wird der aktuelle Spieler übersprungen oder die Spielrichtung umgekehrt. Wenn es eine +4 Karte ist, zieht der aktuelle Spieler automatisch 4 Karten. Wenn es eine +2 Karte ist, kann der Spieler eine weitere +2 Karte spielen, um das Ziehen von Karten zu vermeiden, bis ein Spieler keine +2 Karte mehr hat und die angesammelten Karten ziehen muss.</p>
+        <p>Die Spieler können eine Karte ziehen, eine Karte spielen, UNO sagen oder zum nächsten Spieler wechseln, indem sie den entsprechenden Befehl eingeben. Wenn ein Spieler versucht, zweimal in einem Zug zu spielen, erhält er eine Strafkarte. Spieler müssen "UNO" sagen, wenn sie nur noch eine Karte haben. Das Versäumnis, dies zu tun, führt dazu, dass zwei Strafkarten gezogen werden.</p>
+        <p>Um eine Karte zu spielen, geben Sie den Indexwert der Karte in Ihrer Hand ein. Zum Beispiel, wenn Ihre Karten [B3, G5, Y2, R6] sind und Sie G5 spielen möchten, geben Sie den entsprechenden Indexwert für G5 ein, der 1 ist.</p>
+        <p>Die gezogene Karte kann sofort gespielt werden, wenn sie zur obersten Karte passt; andernfalls wechselt der Spieler zum nächsten Zug.</p>
+    </div>
+</section>
 
-<div id="penalties" class="content-section">
-    <h2>6. Penalties</h2>
-    <ul>
-        <li>Forgetting to say "UNO!" results in a 2-card penalty</li>
-        <li>Incorrectly played cards must be taken back and a penalty card drawn</li>
-        <li>Attempting to play twice in one turn results in a penalty card</li>
-    </ul>
-</div>
+<section id="aktionskarten">
+    <div class="container">
+        <h2>Aktionskarten</h2>
+        <div class="highlight">
+            <p><strong>PLUS ZWEI KARTE</strong></p>
+            <p>Der Spieler muss 2 Karten ziehen. Diese Karte kann auf eine Karte derselben Farbe oder eine andere +2 Karte gelegt werden. Sie kann nicht als erste Karte gespielt werden.</p>
+        </div>
+        <div class="highlight">
+            <p><strong>RICHTUNGSWECHSEL KARTE</strong></p>
+            <p>Ändert die Spielrichtung. Diese Karte kann auf eine Karte derselben Farbe oder eine andere Richtungswechselkarte gelegt werden. Sie kann als erste Karte gespielt werden.</p>
+        </div>
+        <div class="highlight">
+            <p><strong>AUSSETZEN KARTE</strong></p>
+            <p>Überspringt den nächsten Spieler. Diese Karte kann auf eine Karte derselben Farbe oder eine andere Aussetzen-Karte gelegt werden. Sie kann als erste Karte gespielt werden.</p>
+        </div>
+        <div class="highlight">
+            <p><strong>WILDE KARTE</strong></p>
+            <p>Ändert die Farbe, die als nächstes gespielt werden soll. Diese Karte kann jederzeit auf jede Karte gelegt werden. Sie kann nicht als erste Karte gespielt werden.</p>
+        </div>
+        <div class="highlight">
+            <p><strong>WILDE +4 KARTE</strong></p>
+            <p>Ändert die Farbe, die als nächstes gespielt werden soll, und der nächste Spieler zieht automatisch 4 Karten. Der Spieler muss einen Zug mit der gewählten Farbe oder einer Spezialkarte machen. Diese Karte kann jederzeit auf jede Karte gelegt werden. Sie kann nicht als erste Karte gespielt werden.</p>
+        </div>
+    </div>
+</section>
 
-<div id="scoring" class="content-section">
-    <h2>7. Scoring</h2>
-    <p>Each card has a point value based on UNO rules:</p>
-    <ul>
-        <li>Number cards (0-9): Face value</li>
-        <li>+2, Reverse, Skip: 20 points</li>
-        <li>Wild, Wild +4: 50 points</li>
-    </ul>
-    <p>The winner of the round scores points based on the remaining cards in other players’ hands</p>
-</div>
+<section id="strafen">
+    <div class="container">
+        <h2>Strafen</h2>
+        <p>Jeder Spieler muss eine Karte ziehen oder spielen. Wenn er das nicht tut, erhält er eine Strafkarte.</p>
+        <p>Das Vergessen, "UNO!" zu sagen, oder es zu sagen, wenn man mehr als eine Karte in der Hand hat, führt dazu, dass zwei Strafkarten gezogen werden.</p>
+        <p>Das Spielen einer falschen Karte führt automatisch dazu, dass der Spieler eine Strafkarte erhält und der nächste Spieler an der Reihe ist.</p>
+    </div>
+</section>
 
-<div id="end" class="content-section">
-    <h2>8. Game End</h2>
-    <ul>
-        <li>The game continues until a player reaches 500 points</li>
-        <li>The player who reaches 500 points first wins the game</li>
-        <li>The winner is announced at the end of the game</li>
-    </ul>
-</div>
+<section id="punktewertung">
+    <div class="container">
+        <h2>Punktewertung</h2>
+        <p>Punkte werden basierend auf den Karten vergeben, die sich noch in den Händen der anderen Spieler befinden, wenn ein Spieler alle seine Karten gespielt hat:</p>
+        <ul>
+            <li>0-9: Kartenwert</li>
+            <li>+2 Karte: 20 Punkte</li>
+            <li>Richtungswechsel Karte: 20 Punkte</li>
+            <li>Aussetzen Karte: 20 Punkte</li>
+            <li>Wilde Karte: 50 Punkte</li>
+            <li>Wilde +4 Karte: 50 Punkte</li>
+        </ul>
+    </div>
+</section>
 
-<div id="technical" class="content-section">
-    <h2>9. Technical Information</h2>
-    <p>The game runs on [specify platform/technology]</p>
-    <p>Ensure your device meets the following requirements:</p>
-    <ul>
-        <li>[list requirements]</li>
-    </ul>
-</div>
+<section id="spielende">
+    <div class="container">
+        <h2>Spielende</h2>
+        <p>Der erste Spieler, der alle seine Karten ablegt, erhält Punkte für die restlichen Karten der anderen Spieler. Die Punkte werden angezeigt und in einer Datenbank gespeichert. Das Spiel wiederholt sich, bis ein Spieler 500 Punkte erreicht. Der erste Spieler, der 500 Punkte erreicht, gewinnt das Spiel, und das Spiel endet. Der Gewinner wird am Ende des Spiels bekannt gegeben.</p>
+    </div>
+</section>
 
-<div id="contact" class="content-section contact-info">
-    <h2>10. Contact Information</h2>
-    <p>For support or inquiries, please contact:</p>
-    <p>Email: support@example.com</p>
-    <p>Phone: +123-456-7890</p>
-    <p>Website: [your website]</p>
-</div>
-
+<footer>
+    <p>© 2024 UNO Spielprojekt Gruppe 4</p>
+</footer>
 </body>
 </html>
