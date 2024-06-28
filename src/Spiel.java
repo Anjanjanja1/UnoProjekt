@@ -115,7 +115,7 @@ public class Spiel {
             }
             menuAuswahl = input.nextInt();
             if (menuAuswahl < 1 || menuAuswahl > 6) {
-                output.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 4 eingeben.");
+                output.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 6 eingeben.");
             }
         } while (menuAuswahl < 1 || menuAuswahl > 6);
         return menuAuswahl;
