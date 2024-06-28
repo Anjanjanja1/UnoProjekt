@@ -243,7 +243,8 @@ public class Spiel {
    //     Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (änderung)
 
         if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
-            aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
+
+            aktuellerSpieler.getMeineKarte().remove(gelegteKarte); //Entfernt die Karte aus der Hand des Spielers
             stapel.getTopKarte().getAblageStapel().add(gelegteKarte); //Fügt die Karte dem Ablagestapel hinzu
             karteGespielt = true;  //Setze karteGespielt auf true
 
