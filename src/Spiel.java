@@ -225,7 +225,9 @@ public class Spiel {
             index = input.nextInt();
         } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
 
-        Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index
+
+         Karte gelegteKarte = gueltigeKarten().get(index);
+   //     Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (änderung)
 
         if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
             aktuellerSpieler.getMeineKarte().remove(index); //Entfernt die Karte aus der Hand des Spielers
