@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -23,6 +22,7 @@ public class Spiel {
     protected boolean karteSkip;
     protected boolean unoGesagt;
     protected boolean havingWinner;
+    protected boolean sessionEnde;
 
     public ArrayList<Spieler> getSpielerListe() {
         return this.spielerListe;
@@ -39,8 +39,9 @@ public class Spiel {
         this.karteGehoben = false;
         this.karteReversed = false;
         this.karteSkip = false;
-        unoGesagt = false;
+        this.unoGesagt = false;
         this.havingWinner = false;
+        this.sessionEnde = false;
         try {
             sqliteClient = new SqliteClient("uno_game.db");
             initialisieren();
@@ -51,7 +52,9 @@ public class Spiel {
 
     //Die Hauptschleife des Spiels → Gameloop
     public void run() {
-        benutzernameInput();
+        if (!sessionEnde && !havingWinner) {
+            benutzernameInput();
+        }
         stapel.addKarten(); //Fügt Karten zum Stapel hinzu
         stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
         aktuellerSpieler = spielerListe.getFirst(); // Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
@@ -82,8 +85,8 @@ public class Spiel {
     //Nimmt die Benutzernamen für die Spieler entgegen
     private void benutzernameInput() {
         for (int i = 0; i < 4; i++) {
-            String[] testNames = {"Sophia", "Ajla", "Anja", "Hansi"};
-            //System.out.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
+            String[] testNames = {"Sophia", "Ajla", "Anja", "Diana"};
+            //output.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
             //String name = input.nextLine();
             String name = testNames[i];
             int punkte = 0; //TODO punkte übergeben vom letzten spiel
@@ -106,7 +109,7 @@ public class Spiel {
         do {
             output.println("MENÜ: \n 1. Karte heben \n 2. Karte legen \n 3. Uno sagen \n 4. Nächster Spieler \n 5. Hilfe \n 6. Punkte anzeigen \n Geben Sie Ihre Wahl ein: ");
             while (!input.hasNextInt()) {
-                System.out.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 6 eingeben.");
+                output.println("Ungültige Eingabe. Bitte eine Zahl zwischen 1 und 6 eingeben.");
                 input.next();
             }
             menuAuswahl = input.nextInt();
@@ -168,7 +171,7 @@ public class Spiel {
                     openHtmlFileInBrowser("BENUTZERHANDBUCH.html");
                     break;
                 case 6:
-                    System.out.println("Aktueller Punktestand: " + aktuellerSpieler.punkte);
+                    output.println("Aktueller Punktestand: " + aktuellerSpieler.punkte);
                     break;
                 default:
                     output.println("Ungültige Eingabe.");
@@ -219,7 +222,7 @@ public class Spiel {
         do {
             output.println("Welche Karte möchtest du legen? (Index eingeben)");
             while (!input.hasNextInt()) {
-                System.out.println("Ungültige Eingabe.");
+                output.println("Ungültige Eingabe.");
                 input.next();
             }
             index = input.nextInt();
@@ -398,7 +401,7 @@ public class Spiel {
 
     public void checkIfCurrentPlayerWin() {
         if (aktuellerSpieler.meineKarte.isEmpty()) {
-            System.out.println("Du hast dieses Spiel gewonnen. Deine Punkte werden addiert.");
+            output.println("Du hast dieses Spiel gewonnen. Deine Punkte werden addiert.");
             havingWinner = true;
 
             int gesamtPunkte = countPointsFromPlayer();
@@ -424,8 +427,34 @@ public class Spiel {
             }
             gesamtPunkte += punkte;
             spieler.getMeineKarte().clear();
+            if (spieler.getPunkte() >= 500) {
+                output.println(spieler.getName() + " hat gewonnen!");
+                sessionEnde = true;
+                continueGame();
+            }
         }
         return gesamtPunkte;
+    }
+
+    public String continueGame() {
+        String continueGame="";
+        do {
+            output.println("Möchtest du eine neue Sitzung starten? (Y/N)");
+            continueGame = input.next().toUpperCase();
+
+            if (!(continueGame.equals("Y") || continueGame.equals("N"))) {
+                output.println("Ungültige Eingabe.");
+            }
+        } while (!(continueGame.equals("Y") || continueGame.equals("N")));
+        if (continueGame.equals("Y")) {
+            havingWinner = false;
+            run();
+        }
+        else{
+            output.println("Ende des Spiel!");
+            System.exit(0);
+        }
+        return continueGame;
     }
 
     private void updateSpielerPunkte(String spielerName, int punkte) {
@@ -474,7 +503,7 @@ public class Spiel {
                 //macOS command to open Microsoft Edge
                 Runtime.getRuntime().exec(new String[]{"open", "-a", "Microsoft Edge", htmlFile.toURI().toString()});
             } else if (os.contains("nix") || os.contains("nux")) {
-                //Linux command to open Microsoft Edge (assuming it is installed as `microsoft-edge`)
+                //Linux command to open Microsoft Edge (assuming it is installed as microsoft-edge)
                 Runtime.getRuntime().exec(new String[]{"microsoft-edge", htmlFile.toURI().toString()});
             } else {
                 System.out.println("Unsupported operating system: " + os);
@@ -484,7 +513,3 @@ public class Spiel {
         }
     }
 }
-
-
-
-

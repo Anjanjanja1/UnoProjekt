@@ -13,7 +13,7 @@ public class DemoApp {
         Scanner input = new Scanner(System.in);
         PrintStream output = System.out;
         Spiel spiel = new Spiel(input, output);
-        System.out.println("Spiel....");
+
         // Startet das Spiel
         spiel.run();
         ArrayList<Spieler> spielerListe = spiel.getSpielerListe();
@@ -21,7 +21,7 @@ public class DemoApp {
         System.out.println();
 
         try {
-            SqliteClient client = new SqliteClient("demodatabase.sqlite");
+            SqliteClient client = new SqliteClient("punkteDatenbank.sqlite");
             if (client.tableExists("Sessions")){
                 client.executeStatement("DROP TABLE Sessions;");
             }
