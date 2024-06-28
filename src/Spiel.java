@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -228,6 +229,15 @@ public class Spiel {
             index = input.nextInt();
         } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
 
+        //     Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (Dieser war damals Ohne try catch)
+        Karte gelegteKarte;
+        try { //Try Catch falls Array kleiner als gewählter Index ist
+            gelegteKarte = gueltigeKarten().get(index);
+        } catch (IndexOutOfBoundsException e) {
+            output.println("Ungültiger Index. Probiere es nochmal!");
+            karteLegen();
+            return;
+        }
 
          Karte gelegteKarte = gueltigeKarten().get(index);
    //     Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (änderung)
