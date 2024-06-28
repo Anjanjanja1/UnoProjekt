@@ -239,7 +239,7 @@ public class Spiel {
             return;
         }
 
-         Karte gelegteKarte = gueltigeKarten().get(index);
+
    //     Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (änderung)
 
         if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
