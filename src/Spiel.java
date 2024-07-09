@@ -44,7 +44,6 @@ public class Spiel {
             DataManager.resetDatenbank();
             System.out.println("Database has been reset on program termination.");
         }));
-
     }
 
     //Die Hauptschleife des Spiels → Gameloop
@@ -150,7 +149,6 @@ public class Spiel {
 
                 if (!karteGespielt && !karteGehoben) {
                     karteLegen();
-
                 }
 
                 if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
@@ -297,7 +295,8 @@ public class Spiel {
             if (gueltigeKarten().isEmpty()) {
                 karteHeben();
             }
-            index = gueltigeKarten().size() - 1;
+            Random random = new Random();
+            index = (int)(Math.random() * gueltigeKarten().size());
         } else {
             do {
 
