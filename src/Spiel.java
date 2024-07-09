@@ -1,15 +1,11 @@
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class Spiel {
-    private static final String DB_URL = "jdbc:sqlite:UnoProjekt.mydatabase.db";
-    private SqliteClient sqliteClient;
     protected final Scanner input; //Zum Lesen von Benutzereingaben
     protected final PrintStream output; //Zum Schreiben von Ausgaben auf die Konsole
     protected final ArrayList<Spieler> spielerListe; //Liste der Spieler zu speichern
@@ -24,10 +20,9 @@ public class Spiel {
     protected boolean unoGesagt;
     protected boolean havingWinner;
     protected boolean sessionEnde;
-
-    public ArrayList<Spieler> getSpielerListe() {
-        return this.spielerListe;
-    }
+    protected static Spieler winner;
+    public static int round = 1;
+    public static int session = 1;
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
@@ -43,22 +38,26 @@ public class Spiel {
         this.unoGesagt = false;
         this.havingWinner = false;
         this.sessionEnde = false;
-        try {
-            sqliteClient = new SqliteClient("uno_game.db");
-            initialisieren();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        DataManager.datenbankErstellen();
+        initialisieren();
+
+        //Shutdown-Hook hinzufügen, um die Datenbank zurückzusetzen, wenn das Programm endet
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            DataManager.resetDatenbank();
+            System.out.println("Database has been reset on program termination.");
+        }));
     }
 
     //Die Hauptschleife des Spiels → Gameloop
     public void run() {
-        if (!sessionEnde && !havingWinner) {
+        if (session == 1 && round == 1) {
             benutzernameInput();
         }
-        stapel.addKarten(); //Fügt Karten zum Stapel hinzu
-        stapel.stapelShuffleUndTeilen(spielerListe, 7); //Mischt den Stapel und teilt jedem Spieler 7 Karten aus
-        aktuellerSpieler = spielerListe.getFirst(); // Setzt den aktuellen Spieler auf den ersten Spieler in der Liste
+        if (round == 1) {
+            stapel.addKarten();
+            stapel.stapelShuffleUndTeilen(spielerListe, 2);
+            aktuellerSpieler = spielerListe.getFirst();
+        }
 
         //Prüft, ob die oberste Karte ein "SKIP" oder "REVERSE" ist und führt entsprechend die Aktion aus
         Karte topKarte = getTopKarte();
@@ -73,14 +72,6 @@ public class Spiel {
     //Initialisiert das Spiel
     private void initialisieren() {
         output.println("Wilkommen zu unserem UNO Spiel!");
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement stmt = conn.createStatement()) {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS spieler (name TEXT PRIMARY KEY, punkte INTEGER)";
-            stmt.execute(createTableSQL);
-        } catch (SQLException ex) {
-            output.println("Error creating table: " + ex.getMessage());
-        }
     }
 
     //Nimmt die Benutzernamen für die Spieler entgegen
@@ -90,7 +81,7 @@ public class Spiel {
             //output.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
             //String name = input.nextLine();
             String name = testNames[i];
-            int punkte = 0; //TODO punkte übergeben vom letzten spiel
+            int punkte = 0;
             Spieler spieler = new Spieler(name, punkte); //Erzeugt ein neues Spieler-Objekt mit dem eingegebenen Namen
             spielerListe.add(spieler);
         }
@@ -123,7 +114,7 @@ public class Spiel {
 
     //Zeigt das Menü und verwaltet die Auswahl des Spielers
     private void menu() {
-        while (!havingWinner) { //TODO -> implement a (second?) Loop that runs until 500 points
+        while (!havingWinner && !sessionEnde) {
             aktuellenZustandAnzeigen(); //Zeigt den aktuellen Spielstatus an
             int menuAuswahl = benutzermenueauswahl();
 
@@ -131,14 +122,19 @@ public class Spiel {
                 case 1:
                     karteHeben();
                     break;
-                case 2: //Neu Implementiert
+                case 2:
+                    //Stelle sicher, dass der Spieler keine Karte spielen kann, wenn er keine gültigen Karten zum Spielen hat.
+                    if (gueltigeKarten().isEmpty()) {
+                        output.println("Du hast keine gültigen Karten zum Spielen. Bitte ziehe eine Karte.");
+                        break;
+                    }
                     if (karteGespielt) {
                         output.println("Du kannst in diesem Zug keine weitere Karte legen.");
                         output.println("Du bekommst eine Strafkarte");
                         karteHeben();
                     } else {
                         karteLegen();
-                        checkIfCurrentPlayerWin();
+                        ueberpruefeObAktuellerSpielerGewinnt();
                     }
                     break;
                 case 3:
@@ -169,7 +165,7 @@ public class Spiel {
                     }
                     break;
                 case 5:
-                    openHtmlFileInBrowser("BENUTZERHANDBUCH.html");
+                    htmlDateiImBrowserOeffnen("BENUTZERHANDBUCH.html");
                     break;
                 case 6:
                     output.println("Aktueller Punktestand: " + aktuellerSpieler.punkte);
@@ -229,7 +225,7 @@ public class Spiel {
             index = input.nextInt();
         } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
 
-        //     Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (Dieser war damals Ohne try catch)
+        //Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (Dieser war damals Ohne try catch)
         Karte gelegteKarte;
         try { //Try Catch falls Array kleiner als gewählter Index ist
             gelegteKarte = gueltigeKarten().get(index);
@@ -240,7 +236,7 @@ public class Spiel {
         }
 
 
-   //     Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (änderung)
+        //Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (änderung)
 
         if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
 
@@ -283,19 +279,30 @@ public class Spiel {
     void naechsterSpieler() {
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
         if (karteReversed) {
-            if (aktuellerIndex <= 0) {
+            if (aktuellerIndex > 0) {
+                aktuellerIndex = aktuellerIndex - 1;
+            } else {
                 aktuellerIndex = spielerListe.size() - 1;
             }
-            aktuellerIndex--;
         }
         if (karteSkip) {
-            aktuellerIndex = (aktuellerIndex + 2) % spielerListe.size();
+            if (karteReversed) {
+                if (aktuellerIndex > 0) {
+                    aktuellerIndex = aktuellerIndex - 1;
+                } else {
+                    aktuellerIndex = spielerListe.size() - 1;
+                }
+            } else {
+                aktuellerIndex = (aktuellerIndex + 2) % spielerListe.size();
+            }
             karteSkip = false;
-        } else {
-            aktuellerIndex = (aktuellerIndex + 1) % spielerListe.size();
+        } else if (!karteReversed) {
+            aktuellerIndex++;
+            if (aktuellerIndex >= spielerListe.size()) {
+                aktuellerIndex = 0;
+            }
         }
-
-        aktuellerSpieler = spielerListe.get(aktuellerIndex); // Setzt den nächsten
+        aktuellerSpieler = spielerListe.get(aktuellerIndex); //Setzt den nächsten
 
         output.println("Die aktuelle Spieler ist: " + aktuellerSpieler.getName());
         //Wenn es Karten zu ziehen gibt, handle das
@@ -309,7 +316,8 @@ public class Spiel {
         }
         if (gewaehlteFarbe.isEmpty()) {
             return karte.getFarbe().equals(obersteKarte.getFarbe()) || karte.getZeichen().equals(obersteKarte.getZeichen()) ||
-                    karte.getFarbe().equals("WILD") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("REV") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("SKIP");
+                    karte.getFarbe().equals("WILD") || karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("REV") ||
+                    karte.getFarbe().equals(obersteKarte.getFarbe()) && karte.getZeichen().equals("SKIP");
         } else {
             return karte.getFarbe().equals(gewaehlteFarbe) || karte.getFarbe().equals("WILD");
         }
@@ -318,6 +326,7 @@ public class Spiel {
 
     //Behandelt spezielle Karten (Wilde Karten, +2 Karten, +4 Karten)
     private void specialKarten(Karte gelegteKarte) {
+        ueberpruefeObAktuellerSpielerGewinnt(); //Überprüfe, ob der Spieler nach dem Spielen einer +2-Karte gewinnt
         if (gelegteKarte.getFarbe().equals("WILD") && gelegteKarte.getZeichen().isEmpty()) {
             gewaehlteFarbe = farbeWaehlen(); //Fordert den Spieler auf, eine Farbe zu wählen
             output.println("Die Farbe ist " + gewaehlteFarbe);
@@ -402,34 +411,52 @@ public class Spiel {
     }
 
     public void reverseKarte() {
-        aktuellerSpieler = spielerListe.get((spielerListe.size() - 1) % spielerListe.size());
         Collections.reverse(spielerListe);
+        int indexAktuellerSpieler = spielerListe.indexOf(aktuellerSpieler);
+        int indexNaechsteSpieler = (indexAktuellerSpieler + 1) % spielerListe.size();
+        aktuellerSpieler = spielerListe.get(indexNaechsteSpieler);
         output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
 
         karteGespielt = false;
         karteGehoben = false;
     }
 
-    public void checkIfCurrentPlayerWin() {
-        if (aktuellerSpieler.meineKarte.isEmpty()) {
-            output.println("Du hast dieses Spiel gewonnen. Deine Punkte werden addiert.");
+    public void ueberpruefeObAktuellerSpielerGewinnt() {
+        if (aktuellerSpieler.getMeineKarte().isEmpty()) {
+            output.println("\n--- Ende der Runde ---");
+            output.println(aktuellerSpieler.getName() + " hat dieses Spiel gewonnen! Deine Punkte werden addiert.");
             havingWinner = true;
 
-            int gesamtPunkte = countPointsFromPlayer();
+            int gesamtPunkte = anzahlPunkteVomSpieler();
 
             addPointsToPlayer(aktuellerSpieler, gesamtPunkte);
 
-            updateSpielerPunkte(aktuellerSpieler.getName(), aktuellerSpieler.getPunkte());
+            //Die Punkte des Gewinners in die Datenbank eintragen
+            DataManager.RekordWinnerInDB(spielerListe, session, round);
 
             output.println("Der jetzige Punktestand:");
             for (Spieler spieler : spielerListe) {
                 output.println(spieler.getName() + ": " + spieler.getPunkte() + " Punkte");
             }
+
+            if (aktuellerSpieler.getPunkte() >= 500) {
+                aktuellerSpieler = winner;
+                output.println("DU HAST DAS SPIEL GEWONNEN!");
+                sessionEnde = true;
+                spielFortsetzen();
+            }
+            if (!sessionEnde) {
+                output.println("\nEine neue Runde beginnt...");
+                round++;
+                resetFuerNeueRunde();
+                run();
+
+            }
         }
     }
 
-    //  Methode erstellen die Punkte zusammenzählt
-    public int countPointsFromPlayer() {
+    //Methode erstellen die Punkte zusammenzählt
+    public int anzahlPunkteVomSpieler() {
         int gesamtPunkte = 0;
         for (Spieler spieler : spielerListe) {
             int punkte = 0;
@@ -438,17 +465,39 @@ public class Spiel {
             }
             gesamtPunkte += punkte;
             spieler.getMeineKarte().clear();
-            if (spieler.getPunkte() >= 500) {
-                output.println(spieler.getName() + " hat gewonnen!");
-                sessionEnde = true;
-                continueGame();
-            }
         }
         return gesamtPunkte;
     }
 
-    public String continueGame() {
-        String continueGame="";
+    //Relevante Spielzustände zurücksetzen
+    private void resetFuerNeueRunde() {
+        for (Spieler spieler : spielerListe) {
+            spieler.getMeineKarte().clear();
+        }
+
+        stapel.resetStapel();
+        stapel.addKarten();
+        stapel.stapelShuffleUndTeilen(spielerListe, 2);
+
+        Karte topKarte = stapel.getStapel().removeFirst();
+        stapel.getTopKarte().getAblageStapel().add(topKarte);
+
+
+        gewaehlteFarbe = "";
+        zuZiehendeKarten = 0;
+        karteGespielt = false;
+        karteGehoben = false;
+        karteReversed = false;
+        karteSkip = false;
+        unoGesagt = false;
+        havingWinner = false;
+
+        aktuellerSpieler = spielerListe.getFirst();
+    }
+
+
+    public String spielFortsetzen() {
+        String continueGame = "";
         do {
             output.println("Möchtest du eine neue Sitzung starten? (Y/N)");
             continueGame = input.next().toUpperCase();
@@ -458,28 +507,25 @@ public class Spiel {
             }
         } while (!(continueGame.equals("Y") || continueGame.equals("N")));
         if (continueGame.equals("Y")) {
+            output.println("Die Sitzung wird zurückgesetzt. Ein neues Spiel beginnt...");
+            for (Spieler spieler : spielerListe) {
+                spieler.setPunkte(0);
+            }
             havingWinner = false;
+            sessionEnde = false;
+            session++;
+            round = 1;
+
             run();
-        }
-        else{
+        } else {
             output.println("Ende des Spiel!");
+            //Datenbank reset
             System.exit(0);
         }
         return continueGame;
     }
 
-    private void updateSpielerPunkte(String spielerName, int punkte) {
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement updateStmt = conn.prepareStatement("INSERT INTO spieler (name, punkte) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET punkte = excluded.punkte")) {
-            updateStmt.setString(1, spielerName);
-            updateStmt.setInt(2, punkte);
-            updateStmt.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    //  Methode die die Punkte in Spieler speichert
+    //Methode die die Punkte in Spieler speichert
     public void addPointsToPlayer(Spieler spieler, int punkte) {
         spieler.setPunkte(spieler.getPunkte() + punkte);
     }
@@ -498,23 +544,19 @@ public class Spiel {
         }
     }
 
-    public static void openHtmlFileInBrowser(String filePath) {
+    public static void htmlDateiImBrowserOeffnen(String filePath) {
         try {
             File htmlFile = new File(filePath);
             if (!htmlFile.exists()) {
                 System.out.println("File not found: " + filePath);
                 return;
             }
-
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
-                //Windows command to open Microsoft Edge
                 Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start msedge " + htmlFile.toURI()});
             } else if (os.contains("mac")) {
-                //macOS command to open Microsoft Edge
                 Runtime.getRuntime().exec(new String[]{"open", "-a", "Microsoft Edge", htmlFile.toURI().toString()});
             } else if (os.contains("nix") || os.contains("nux")) {
-                //Linux command to open Microsoft Edge (assuming it is installed as microsoft-edge)
                 Runtime.getRuntime().exec(new String[]{"microsoft-edge", htmlFile.toURI().toString()});
             } else {
                 System.out.println("Unsupported operating system: " + os);

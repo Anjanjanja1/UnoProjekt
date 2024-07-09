@@ -1,54 +1,50 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SqliteClient {
     private Connection connection = null;
 
-    public SqliteClient(String dbName) throws SQLException{
-        try{
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
-        } catch(ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public SqliteClient(String dbName) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
     }
 
-
-    public boolean tableExists(String tableName) throws SQLException{
-        String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='"+ tableName+"';";
+    public boolean tableExists(String tableName) throws SQLException {
+        String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';";
         return executeQuery(query).size() > 0;
     }
 
-    public void executeStatement(String sqlStatement) throws SQLException{
-        Statement statement = connection.createStatement();
-        statement.setQueryTimeout(30);  // set timeout to 30 sec.
-        statement.executeUpdate(sqlStatement);
+    public void executeStatement(String sqlStatement) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.setQueryTimeout(30); // set timeout to 30 sec.
+            statement.executeUpdate(sqlStatement);
+        }
     }
 
-    public ArrayList<HashMap<String, String>> executeQuery(String sqlQuery) throws SQLException{
-        Statement statement = connection.createStatement();
-        statement.setQueryTimeout(30);  // set timeout to 30 sec.
-        ResultSet rs = statement.executeQuery(sqlQuery);
-        ResultSetMetaData rsmd = rs.getMetaData();
-
-        int columns = rsmd.getColumnCount();
-        ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
-        while(rs.next())
-        {
-            HashMap<String, String> map = new HashMap<String, String>();
-            for (int i = 1; i <= columns; i++) {
-                String value = rs.getString(i);
-                String key = rsmd.getColumnName(i);
-                map.put(key, value);
+    public ArrayList<HashMap<String, String>> executeQuery(String sqlQuery) throws SQLException {
+        ArrayList<HashMap<String, String>> result = new ArrayList<>();
+        try (Statement statement = connection.createStatement()) {
+            statement.setQueryTimeout(30); // set timeout to 30 sec.
+            try (ResultSet rs = statement.executeQuery(sqlQuery)) {
+                ResultSetMetaData rsmd = rs.getMetaData();
+                int columns = rsmd.getColumnCount();
+                while (rs.next()) {
+                    HashMap<String, String> map = new HashMap<>();
+                    for (int i = 1; i <= columns; i++) {
+                        String value = rs.getString(i);
+                        String key = rsmd.getColumnName(i);
+                        map.put(key, value);
+                    }
+                    result.add(map);
+                }
             }
-            result.add(map);
         }
         return result;
+    }
+
+    public void closeConnection() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
     }
 }

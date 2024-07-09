@@ -22,7 +22,8 @@ public class Stapel extends Karte {
     }
 
     public ArrayList<Karte> addKarten() {
-        stapel.add(new Karte(0, "R-", "0"));
+        stapel.clear(); //Clear existing cards
+        stapel.add(new Karte(0, "R", "0"));
         for (int i = 0; i < 2; i++) {
             stapel.add(new Karte(20, "R", "REV")); //REVERSE
             stapel.add(new Karte(20, "R", "SKIP")); //SKIP
@@ -75,8 +76,6 @@ public class Stapel extends Karte {
 
         Collections.shuffle(stapel);
 
-        entferneErsteKarte();
-
         for (Spieler s : spielerListe) {
             for (int j = 0; j < anzahl; j++) {
                 if (!stapel.isEmpty()) {
@@ -84,6 +83,8 @@ public class Stapel extends Karte {
                 }
             }
         }
+        entferneErsteKarte();
+
         return stapel;
     }
 
@@ -107,6 +108,11 @@ public class Stapel extends Karte {
         else if (ersteKarte.getZeichen().contains("REV")) {
             spiel.naechsterSpieler(); //Invertiere die Spielreihenfolge
         }
+    }
+
+    public void resetStapel() {
+        stapel.clear();
+        topKarte.getAblageStapel().clear();
     }
 
 

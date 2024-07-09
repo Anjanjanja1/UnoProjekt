@@ -13,7 +13,6 @@ public class Spieler {
         this.name = name;
         this.punkte = punkte;
         this.meineKarte = new ArrayList<>();
-
     }
 
 
@@ -37,10 +36,6 @@ public class Spieler {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getPunkte() {
         return punkte;
     }
@@ -53,14 +48,14 @@ public class Spieler {
         spielerListe.add(spieler);
     }
 
+    public void addKarten(Karte karten) {
+        this.meineKarte.add(karten);
+    }
+
     public static void printSpieler() {
         for (Spieler spieler : spielerListe) {
             System.out.println(spieler);
         }
-    }
-
-    public void addKarten(Karte karten) {
-        this.meineKarte.add(karten);
     }
 
     public void printKarten() {
