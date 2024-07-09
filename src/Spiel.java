@@ -157,7 +157,7 @@ public class Spiel {
 
     //Zeigt das Menü und verwaltet die Auswahl des Spielers
     private void menu() {
-        while (!havingWinner) { //TODO -> implement a (second?) Loop that runs until 500 points
+        while (!havingWinner && !sessionEnde) {
             aktuellenZustandAnzeigen(); //Zeigt den aktuellen Spielstatus an
             // wenn BotSpieler spielt
             if (aktuellerSpieler instanceof BotSpieler) {
