@@ -238,20 +238,6 @@ public class Spiel {
         }
     }
 
-    private boolean botVersuchtKarteZuLegen() {
-        Karte obersteKarte = getTopKarte();
-        for (Karte karte : aktuellerSpieler.meineKarte) {
-            if (ueberpruefeKarte(karte, obersteKarte)) {
-                aktuellerSpieler.meineKarte.remove(karte);
-                stapel.topKarte.ablageStapel.add(karte);
-                karteGespielt = true;
-                ueberpruefeObAktuellerSpielerGewinnt();
-                return true;
-            }
-        }
-        return false;
-    }
-
     //Greift auf den Ablagestapel des Stapelobjekts zu und gibt die letzte Karte in der Liste zurück
     private Karte getTopKarte() {
         return stapel.getTopKarte().getAblageStapel().getLast();
