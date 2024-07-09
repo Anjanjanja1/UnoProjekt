@@ -46,6 +46,7 @@ public class Spiel {
             DataManager.resetDatenbank();
             System.out.println("Database has been reset on program termination.");
         }));
+
     }
 
     //Die Hauptschleife des Spiels → Gameloop
@@ -55,7 +56,7 @@ public class Spiel {
         }
         if (round == 1) {
             stapel.addKarten();
-            stapel.stapelShuffleUndTeilen(spielerListe, 2);
+            stapel.stapelShuffleUndTeilen(spielerListe, 7);
             aktuellerSpieler = spielerListe.getFirst();
         }
 
@@ -277,32 +278,41 @@ public class Spiel {
 
     //Wechselt zum nächsten Spieler und behandelt die zu ziehenden Karten
     void naechsterSpieler() {
-        int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); //Den Index des aktuellen Spielers
+        int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); // Ruft den Index des aktuellen Spielers ab
+
+        // Behandelt die Rückwärtsrichtung
         if (karteReversed) {
-            if (aktuellerIndex > 0) {
-                aktuellerIndex = aktuellerIndex - 1;
+            if(aktuellerIndex > 0) {
+                aktuellerIndex = aktuellerIndex - 1; // Gehe zum vorherigen Spieler, wenn es nicht der Erste ist
             } else {
-                aktuellerIndex = spielerListe.size() - 1;
+                aktuellerIndex = spielerListe.size() - 1; // Wenn es der erste Spieler ist, gehe zum letzten Spieler
             }
         }
+
+        // Behandelt das Überspringen
         if (karteSkip) {
             if (karteReversed) {
-                if (aktuellerIndex > 0) {
+                // Wenn die Kartenreihenfolge umgekehrt ist, überspringen wir den vorherigen Spieler
+                if(aktuellerIndex > 0) {
                     aktuellerIndex = aktuellerIndex - 1;
                 } else {
                     aktuellerIndex = spielerListe.size() - 1;
                 }
             } else {
+                // Ansonsten überspringen wir den nächsten Spieler
                 aktuellerIndex = (aktuellerIndex + 2) % spielerListe.size();
             }
             karteSkip = false;
-        } else if (!karteReversed) {
-            aktuellerIndex++;
+        }
+        // Behandelt die normale Rundenumdrehung, wenn nicht übersprungen wird
+        else if (!karteReversed) {
+            aktuellerIndex++;  // gehen Sie zum nächsten Spieler
             if (aktuellerIndex >= spielerListe.size()) {
-                aktuellerIndex = 0;
+                aktuellerIndex = 0;  // wenn das Ende der Liste erreicht ist, gehen Sie zum Anfang der Liste
             }
         }
-        aktuellerSpieler = spielerListe.get(aktuellerIndex); //Setzt den nächsten
+
+        aktuellerSpieler = spielerListe.get(aktuellerIndex); // Legt den nächsten Spieler fest
 
         output.println("Die aktuelle Spieler ist: " + aktuellerSpieler.getName());
         //Wenn es Karten zu ziehen gibt, handle das
@@ -412,10 +422,10 @@ public class Spiel {
 
     public void reverseKarte() {
         Collections.reverse(spielerListe);
-        int indexAktuellerSpieler = spielerListe.indexOf(aktuellerSpieler);
-        int indexNaechsteSpieler = (indexAktuellerSpieler + 1) % spielerListe.size();
-        aktuellerSpieler = spielerListe.get(indexNaechsteSpieler);
-        output.println("Reversed! Der nächtste Spieler ist: " + aktuellerSpieler.getName());
+        int indexOfCurrentPlayer = spielerListe.indexOf(aktuellerSpieler);
+        int indexOfNextPlayer = (indexOfCurrentPlayer + 1) % spielerListe.size();
+        aktuellerSpieler = spielerListe.get(indexOfNextPlayer);
+        output.println("Reversed! Der naechste Spieler ist: " + aktuellerSpieler.getName());
 
         karteGespielt = false;
         karteGehoben = false;
@@ -477,7 +487,7 @@ public class Spiel {
 
         stapel.resetStapel();
         stapel.addKarten();
-        stapel.stapelShuffleUndTeilen(spielerListe, 2);
+        stapel.stapelShuffleUndTeilen(spielerListe, 7);
 
         Karte topKarte = stapel.getStapel().removeFirst();
         stapel.getTopKarte().getAblageStapel().add(topKarte);
