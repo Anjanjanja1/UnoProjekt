@@ -50,7 +50,7 @@ public class Spiel {
     //Die Hauptschleife des Spiels → Gameloop
     public void run() {
         if (session == 1 && round == 1) {
-            addiereSpieler();
+            benutzernameInput();
         }
         if (round == 1) {
             stapel.addKarten();
@@ -73,62 +73,48 @@ public class Spiel {
         output.println("Wilkommen zu unserem UNO Spiel!");
     }
 
-    private String botName() {
-        List<String> names = new ArrayList<>(Arrays.asList("Hansi", "Jon", "Johann", "Fluffy", "Lisa", "Fritz", "Helga", "Ferdi", "George", "Berni", "Terminator", "Rick", "Roger"));
-        names.removeAll(spielerListe.stream().map(Spieler::getName).toList());
-        Random random = new Random();
-        return names.get(random.nextInt(names.size()));
-    }
+    protected void benutzernameInput() {
+        output.println("Wie viele Spieler möchten Sie haben? (1-4)");
+        int gesamtSpielerAnzahl = input.nextInt();
+        input.nextLine();  // Consume the newline
 
-    private int spielerAuswahl() {
-        int spielerAuswahl;
-        while (true) {
-            System.out.println("\nWillst du einen Computer Spieler oder einen menschlichen Spieler hinzufuegen?"
-                    + "\n\nTippe:\n\n1 fuer Computer Spieler\n2 fuer menschlichen Spieler");
-            String s = input.nextLine();//benutzt nextLine um spaeter Fehler zu vermeiden
-            spielerAuswahl = Integer.parseInt(s);
-
-            if (spielerAuswahl == 1 || spielerAuswahl == 2) {
-                break;
-            }
-            System.out.println("Eingabe nicht korrekt. Versuche bitte noch mal.");
+        if (gesamtSpielerAnzahl < 1 || gesamtSpielerAnzahl > 4) {
+            output.println("Ungültige Anzahl von Spielern. Bitte geben Sie eine Zahl zwischen 1 und 4 ein.");
+            return;
         }
-        return spielerAuswahl;
-    }
 
-    //Nimmt die Benutzernamen für die Spieler entgegen
-    private void addiereSpieler() {
+        output.println("Wie viele menschliche Spieler möchten Sie haben?");
+        int menschlicheAnzahl = input.nextInt();
+        input.nextLine();  // Consume the newline
 
-        for (int i = 0; i < 4; i++) {
-            int spielerAuswahl = spielerAuswahl();//ruft Methode aus zur Auswahl ob Spieler ist ein Mensch oder Computer
-            String name = "test";
-            //Methode vergibt dem neuen Spieler den Namen, entweder durch Benutzereingabe oder automatisch fuer Bot
-            switch (spielerAuswahl) {//can be replaced with enhanced switch, later
-                case 1:
-                    name = botName();
-                    //  System.out.println("Der Name vom Spieler " + (i+1) + ": " + name);
-                    break;
-                case 2:
-                    System.out.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein:\n");
-                    name = input.nextLine();
-                    //System.out.println("Name: " + name);
-                    break;
-                default:
-                    System.out.println("sth went wrong.");
-            }
-            //initialisieren der Variablen fuer Spieler
-            int punkte = 0; //TODO punkte übergeben vom letzten spiel
-            Spieler spieler = null;
-            //erstellen von Spieler(Mensch oder Komputer)
-            if (spielerAuswahl == 1) {
-                spieler = new BotSpieler(name, punkte);
-            } else if (spielerAuswahl == 2) {
-                spieler = new Spieler(name, punkte);
-            }
-            System.out.println("Spieler #" + (i + 1) + " " + spieler.name + " wurde erfolgreich erstellt.");
-            spielerListe.add(spieler);//fuegt den erstellten Spieler in die spielerListe hinzu
+        if (menschlicheAnzahl < 0 || menschlicheAnzahl > gesamtSpielerAnzahl) {
+            output.println("Ungültige Anzahl von menschlichen Spielern. Bitte geben Sie eine Zahl zwischen 0 und " + gesamtSpielerAnzahl + " ein.");
+            return;
         }
-    }
+
+        output.println("Du willst " + menschlicheAnzahl + " menschliche Spieler haben.");
+
+        for (int i = 0; i < menschlicheAnzahl; i++) {
+            output.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
+            String name = input.nextLine();
+            int punkte = 0;
+            Spieler spieler = new Spieler(name, punkte);
+            spielerListe.add(spieler);
+        }
+
+        // Add bots if the total number of players is less than 4
+        int botAnzahl = gesamtSpielerAnzahl - menschlicheAnzahl;
+        String[] botNames = {"Hansi", "Jon", "Johann", "Fluffy", "Lisa", "Fritz", "Helga", "Ferdi", "George", "Berni", "Terminator", "Rick", "Roger"};
+
+        for (int i = 0; i < botAnzahl; i++) {
+            String botName = botNames[i];
+            int punkte = 0;
+            Spieler bot = new BotSpieler(botName, punkte);
+            spielerListe.add(bot);
+        }
+
+        output.println("Spiel startet mit " + spielerListe.size() + " Spielern. Davon Bots: " + botAnzahl);
+}
 
     //Zeigt den aktuellen Zustand des Spiels
     private void aktuellenZustandAnzeigen() {
@@ -268,17 +254,6 @@ public class Spiel {
         }
         return false;
     }
-
-//    public boolean kartePasst(Karte karte) {
-//        if (stapel.topKarte.ablageStapel.isEmpty()) {
-//            return true;
-//        }
-//        Karte obersteKarte = stapel.topKarte.ablageStapel.getLast();
-//        specialKarten(karte);
-//        return karte.getFarbe().equals(obersteKarte.getFarbe()) ||
-//                karte.getZeichen().equals(obersteKarte.getZeichen());
-//    }
-
 
     //Greift auf den Ablagestapel des Stapelobjekts zu und gibt die letzte Karte in der Liste zurück
     private Karte getTopKarte() {
