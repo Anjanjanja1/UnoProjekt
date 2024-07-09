@@ -149,32 +149,18 @@ public class Spiel {
 
                 if (!karteGespielt && !karteGehoben) {
                     karteLegen();
+                } else {
+                    karteHeben(); //Strafkarte, falls der Bot keine Karte gezogen oder gelegt hat
                 }
 
                 if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
                     unoSagen();
                 }
-
-                if (karteGespielt || karteGehoben) {
-                    if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
-                        output.println("Der Bot hat nicht UNO gesagt. Er bekommt 2 Karten als Strafe!");
-                        for (int i = 0; i < 2; i++) {
-                            if (stapel.getStapel().isEmpty()) {
-                                reshuffleAblagestapel();
-                            }
-                            if (!stapel.getStapel().isEmpty()) {
-                                Karte gezogeneKarte = stapel.getStapel().removeFirst();
-                                aktuellerSpieler.addKarten(gezogeneKarte);
-                            }
-                        }
-                    }
                     karteGespielt = false;
                     karteGehoben = false;
                     unoGesagt = false;
                     naechsterSpieler();
-                } else {
-                    karteHeben(); //Strafkarte, falls der Bot keine Karte gezogen oder gelegt hat
-                }
+
             } else {
                 // Spieler logik
                 int menuAuswahl = benutzermenueauswahl();
