@@ -4,18 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="ausgabe">
-      <change afterPath="$PROJECT_DIR$/src/DataManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="Bot">
+      <change afterPath="$PROJECT_DIR$/src/BotSpieler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnoProjekt.mydatabase.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/punkteDatenbank.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/punkteDatenbank.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DemoApp.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Spieler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spieler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SqliteClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SqliteClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stapel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stapel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uno_game.db" beforeDir="false" afterPath="$PROJECT_DIR$/punkteDatenbank.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,8 +134,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
       </set>
     </attachedChunks>
   </component>
@@ -195,6 +188,7 @@
       <workItem from="1720261168902" duration="11632000" />
       <workItem from="1720419770548" duration="4322000" />
       <workItem from="1720435264229" duration="7240000" />
+      <workItem from="1720513090494" duration="8678000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -460,7 +454,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719567496439</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Reverse">
+      <option name="closed" value="true" />
+      <created>1720513175192</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1720513175192</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,7 +515,9 @@
     <MESSAGE value="Try Catch" />
     <MESSAGE value="continue Round and Session" />
     <MESSAGE value="ausgabe" />
-    <option name="LAST_COMMIT_MESSAGE" value="ausgabe" />
+    <MESSAGE value="Reverse" />
+    <MESSAGE value="Bot" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bot" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -530,15 +534,6 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/Spiel.java</url>
-          <line>51</line>
-          <properties class="Spiel" method="run">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

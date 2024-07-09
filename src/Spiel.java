@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 public class Spiel {
     protected final Scanner input; //Zum Lesen von Benutzereingaben
@@ -52,7 +50,7 @@ public class Spiel {
     //Die Hauptschleife des Spiels → Gameloop
     public void run() {
         if (session == 1 && round == 1) {
-            benutzernameInput();
+            addiereSpieler();
         }
         if (round == 1) {
             stapel.addKarten();
@@ -75,16 +73,60 @@ public class Spiel {
         output.println("Wilkommen zu unserem UNO Spiel!");
     }
 
+    private String botName() {
+        List<String> names = new ArrayList<>(Arrays.asList("Hansi", "Jon", "Johann", "Fluffy", "Lisa", "Fritz", "Helga", "Ferdi", "George", "Berni", "Terminator", "Rick", "Roger"));
+        names.removeAll(spielerListe.stream().map(Spieler::getName).toList());
+        Random random = new Random();
+        return names.get(random.nextInt(names.size()));
+    }
+
+    private int spielerAuswahl() {
+        int spielerAuswahl;
+        while (true) {
+            System.out.println("\nWillst du einen Computer Spieler oder einen menschlichen Spieler hinzufuegen?"
+                    + "\n\nTippe:\n\n1 fuer Computer Spieler\n2 fuer menschlichen Spieler");
+            String s = input.nextLine();//benutzt nextLine um spaeter Fehler zu vermeiden
+            spielerAuswahl = Integer.parseInt(s);
+
+            if (spielerAuswahl == 1 || spielerAuswahl == 2) {
+                break;
+            }
+            System.out.println("Eingabe nicht korrekt. Versuche bitte noch mal.");
+        }
+        return spielerAuswahl;
+    }
+
     //Nimmt die Benutzernamen für die Spieler entgegen
-    private void benutzernameInput() {
+    private void addiereSpieler() {
+
         for (int i = 0; i < 4; i++) {
-            String[] testNames = {"Sophia", "Ajla", "Anja", "Diana"};
-            //output.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
-            //String name = input.nextLine();
-            String name = testNames[i];
-            int punkte = 0;
-            Spieler spieler = new Spieler(name, punkte); //Erzeugt ein neues Spieler-Objekt mit dem eingegebenen Namen
-            spielerListe.add(spieler);
+            int spielerAuswahl = spielerAuswahl();//ruft Methode aus zur Auswahl ob Spieler ist ein Mensch oder Computer
+            String name = "test";
+            //Methode vergibt dem neuen Spieler den Namen, entweder durch Benutzereingabe oder automatisch fuer Bot
+            switch (spielerAuswahl) {//can be replaced with enhanced switch, later
+                case 1:
+                    name = botName();
+                    //  System.out.println("Der Name vom Spieler " + (i+1) + ": " + name);
+                    break;
+                case 2:
+                    System.out.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein:\n");
+                    name = input.nextLine();
+                    //System.out.println("Name: " + name);
+                    break;
+                default:
+                    System.out.println("sth went wrong.");
+            }
+            //initialisieren der Variablen fuer Spieler
+            int punkte = 0; //TODO punkte übergeben vom letzten spiel
+            Spieler spieler = null;
+            //erstellen von Spieler(Mensch oder Komputer)
+            if (spielerAuswahl == 1) {
+                spieler = new BotSpieler(name, punkte);
+            } else if (spielerAuswahl == 2) {
+                spieler = new Spieler(name, punkte);
+            }
+            System.out.println("Spieler #" + (i + 1) + " " + spieler.name + " wurde erfolgreich erstellt.");
+            spielerListe.add(spieler);//fuegt den erstellten Spieler in die spielerListe hinzu
         }
     }
 
@@ -115,67 +157,128 @@ public class Spiel {
 
     //Zeigt das Menü und verwaltet die Auswahl des Spielers
     private void menu() {
-        while (!havingWinner && !sessionEnde) {
+        while (!havingWinner) { //TODO -> implement a (second?) Loop that runs until 500 points
             aktuellenZustandAnzeigen(); //Zeigt den aktuellen Spielstatus an
-            int menuAuswahl = benutzermenueauswahl();
+            // wenn BotSpieler spielt
+            if (aktuellerSpieler instanceof BotSpieler) {
 
-            switch (menuAuswahl) {
-                case 1:
-                    karteHeben();
-                    break;
-                case 2:
-                    //Stelle sicher, dass der Spieler keine Karte spielen kann, wenn er keine gültigen Karten zum Spielen hat.
-                    if (gueltigeKarten().isEmpty()) {
-                        output.println("Du hast keine gültigen Karten zum Spielen. Bitte ziehe eine Karte.");
-                        break;
-                    }
-                    if (karteGespielt) {
-                        output.println("Du kannst in diesem Zug keine weitere Karte legen.");
-                        output.println("Du bekommst eine Strafkarte");
+                if (!karteGespielt && !karteGehoben) {
+                    if (!botVersuchtKarteZuLegen()) {
                         karteHeben();
-                    } else {
-                        karteLegen();
-                        ueberpruefeObAktuellerSpielerGewinnt();
                     }
-                    break;
-                case 3:
-                    unoGesagt = true;
+                }
+
+                if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
                     unoSagen();
-                    break;
-                case 4:
-                    if (karteGespielt || karteGehoben) {
-                        if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
-                            output.println("Du hast nicht UNO gesagt. Du bekommst 2 Karten als Strafe!");
-                            for (int i = 0; i < 2; i++) {
-                                if (stapel.getStapel().isEmpty()) {
-                                    reshuffleAblagestapel();
-                                }
-                                if (!stapel.getStapel().isEmpty()) {
-                                    Karte gezogeneKarte = stapel.getStapel().removeFirst();
-                                    aktuellerSpieler.addKarten(gezogeneKarte);
-                                }
+                }
+
+                if (karteGespielt || karteGehoben) {
+                    if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
+                        output.println("Der Bot hat nicht UNO gesagt. Er bekommt 2 Karten als Strafe!");
+                        for (int i = 0; i < 2; i++) {
+                            if (stapel.getStapel().isEmpty()) {
+                                reshuffleAblagestapel();
+                            }
+                            if (!stapel.getStapel().isEmpty()) {
+                                Karte gezogeneKarte = stapel.getStapel().removeFirst();
+                                aktuellerSpieler.addKarten(gezogeneKarte);
                             }
                         }
-                        karteGespielt = false;
-                        karteGehoben = false;
-                        unoGesagt = false;
-                        naechsterSpieler();
-                    } else {
-                        output.println("Du musst eine gültige Karte spielen oder eine Karte ziehen, bevor du den Zug beenden kannst!");
-                        karteHeben(); //Strafkarte → wenn der Spieler keine Karte hebe oder lege
                     }
-                    break;
-                case 5:
-                    htmlDateiImBrowserOeffnen("BENUTZERHANDBUCH.html");
-                    break;
-                case 6:
-                    output.println("Aktueller Punktestand: " + aktuellerSpieler.punkte);
-                    break;
-                default:
-                    output.println("Ungültige Eingabe.");
+                    karteGespielt = false;
+                    karteGehoben = false;
+                    unoGesagt = false;
+                    naechsterSpieler();
+                } else {
+                    karteHeben(); //Strafkarte, falls der Bot keine Karte gezogen oder gelegt hat
+                }
+            } else {
+                // Spieler logik
+                int menuAuswahl = benutzermenueauswahl();
+
+                switch (menuAuswahl) {
+                    case 1:
+                        karteHeben();
+                        break;
+                    case 2:
+                        //Stelle sicher, dass der Spieler keine Karte spielen kann, wenn er keine gültigen Karten zum Spielen hat.
+                        if (gueltigeKarten().isEmpty()) {
+                            output.println("Du hast keine gültigen Karten zum Spielen. Bitte ziehe eine Karte.");
+                            break;
+                        }
+                        if (karteGespielt) {
+                            output.println("Du kannst in diesem Zug keine weitere Karte legen.");
+                            output.println("Du bekommst eine Strafkarte");
+                            karteHeben();
+                        } else {
+                            karteLegen();
+                            ueberpruefeObAktuellerSpielerGewinnt();
+                        }
+                        break;
+                    case 3:
+                        unoGesagt = true;
+                        unoSagen();
+                        break;
+                    case 4:
+                        if (karteGespielt || karteGehoben) {
+                            if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
+                                output.println("Du hast nicht UNO gesagt. Du bekommst 2 Karten als Strafe!");
+                                for (int i = 0; i < 2; i++) {
+                                    if (stapel.getStapel().isEmpty()) {
+                                        reshuffleAblagestapel();
+                                    }
+                                    if (!stapel.getStapel().isEmpty()) {
+                                        Karte gezogeneKarte = stapel.getStapel().removeFirst();
+                                        aktuellerSpieler.addKarten(gezogeneKarte);
+                                    }
+                                }
+                            }
+                            karteGespielt = false;
+                            karteGehoben = false;
+                            unoGesagt = false;
+                            naechsterSpieler();
+                        } else {
+                            output.println("Du musst eine gültige Karte spielen oder eine Karte ziehen, bevor du den Zug beenden kannst!");
+                            karteHeben(); //Strafkarte → wenn der Spieler keine Karte hebe oder lege
+                        }
+                        break;
+                    case 5:
+                        htmlDateiImBrowserOeffnen("BENUTZERHANDBUCH.html");
+                        break;
+                    case 6:
+                        output.println("Aktueller Punktestand: " + aktuellerSpieler.punkte);
+                        break;
+                    default:
+                        output.println("Ungültige Eingabe.");
+                }
             }
         }
     }
+
+    private boolean botVersuchtKarteZuLegen() {
+        Karte obersteKarte = getTopKarte();
+        for (Karte karte : aktuellerSpieler.meineKarte) {
+            if (ueberpruefeKarte(karte, obersteKarte)) {
+                aktuellerSpieler.meineKarte.remove(karte);
+                stapel.topKarte.ablageStapel.add(karte);
+                karteGespielt = true;
+                ueberpruefeObAktuellerSpielerGewinnt();
+                return true;
+            }
+        }
+        return false;
+    }
+
+//    public boolean kartePasst(Karte karte) {
+//        if (stapel.topKarte.ablageStapel.isEmpty()) {
+//            return true;
+//        }
+//        Karte obersteKarte = stapel.topKarte.ablageStapel.getLast();
+//        specialKarten(karte);
+//        return karte.getFarbe().equals(obersteKarte.getFarbe()) ||
+//                karte.getZeichen().equals(obersteKarte.getZeichen());
+//    }
+
 
     //Greift auf den Ablagestapel des Stapelobjekts zu und gibt die letzte Karte in der Liste zurück
     private Karte getTopKarte() {
@@ -282,7 +385,7 @@ public class Spiel {
 
         // Behandelt die Rückwärtsrichtung
         if (karteReversed) {
-            if(aktuellerIndex > 0) {
+            if (aktuellerIndex > 0) {
                 aktuellerIndex = aktuellerIndex - 1; // Gehe zum vorherigen Spieler, wenn es nicht der Erste ist
             } else {
                 aktuellerIndex = spielerListe.size() - 1; // Wenn es der erste Spieler ist, gehe zum letzten Spieler
@@ -293,7 +396,7 @@ public class Spiel {
         if (karteSkip) {
             if (karteReversed) {
                 // Wenn die Kartenreihenfolge umgekehrt ist, überspringen wir den vorherigen Spieler
-                if(aktuellerIndex > 0) {
+                if (aktuellerIndex > 0) {
                     aktuellerIndex = aktuellerIndex - 1;
                 } else {
                     aktuellerIndex = spielerListe.size() - 1;
@@ -361,15 +464,26 @@ public class Spiel {
 
     //Fragt den Spieler nach der Farbwahl
     private String farbeWaehlen() {
-        do {
-            output.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
-            gewaehlteFarbe = input.next().toUpperCase();
+        if (aktuellerSpieler instanceof BotSpieler) {
+            String[] botFarbe = {"Y", "R", "B", "G"};
+            Random random = new Random();
+            int index = random.nextInt(botFarbe.length);
 
-            if (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G"))) {
-                output.println("Ungültige Eingabe.");
-            }
-        } while (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G")));
-        return gewaehlteFarbe;
+            gewaehlteFarbe = botFarbe[index];
+            System.out.println(gewaehlteFarbe);
+            return gewaehlteFarbe;
+        } else {
+            do {
+                output.println("Welche Farbe wählen Sie? \n [Y, R, B, G]: ");
+                gewaehlteFarbe = input.next().toUpperCase();
+
+                if (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G"))) {
+                    output.println("Ungültige Eingabe.");
+                }
+            } while (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G")));
+            System.out.println(gewaehlteFarbe);
+            return gewaehlteFarbe;
+        }
     }
 
     //Methode zum Anwenden von Strafkarten
@@ -506,8 +620,8 @@ public class Spiel {
     }
 
 
-    public String spielFortsetzen() {
-        String continueGame = "";
+    public void spielFortsetzen() {
+        String continueGame;
         do {
             output.println("Möchtest du eine neue Sitzung starten? (Y/N)");
             continueGame = input.next().toUpperCase();
@@ -532,7 +646,6 @@ public class Spiel {
             //Datenbank reset
             System.exit(0);
         }
-        return continueGame;
     }
 
     //Methode die die Punkte in Spieler speichert
@@ -543,7 +656,7 @@ public class Spiel {
     public void reshuffleAblagestapel() {
         ArrayList<Karte> ablageStapel = stapel.getTopKarte().getAblageStapel();
         if (ablageStapel.size() > 1) {
-            Karte topKarte = ablageStapel.remove(ablageStapel.size() - 1); // Keep the top card
+            Karte topKarte = ablageStapel.removeLast(); // Keep the top card
             Collections.shuffle(ablageStapel);
             stapel.getStapel().addAll(ablageStapel);
             ablageStapel.clear();
