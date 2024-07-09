@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="menu">
+    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="spieler auswahl">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/punkteDatenbank.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/punkteDatenbank.sqlite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -190,7 +191,7 @@
       <workItem from="1720419770548" duration="4322000" />
       <workItem from="1720435264229" duration="7240000" />
       <workItem from="1720513090494" duration="8678000" />
-      <workItem from="1720523264583" duration="1951000" />
+      <workItem from="1720523264583" duration="4476000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -472,7 +473,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720523752453</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="spieler auswahl">
+      <option name="closed" value="true" />
+      <created>1720525878145</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1720525878145</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -503,7 +512,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="16.04" />
     <MESSAGE value="24.04" />
     <MESSAGE value="04.05" />
     <MESSAGE value="23.05" />
@@ -528,7 +536,8 @@
     <MESSAGE value="Reverse" />
     <MESSAGE value="Bot" />
     <MESSAGE value="menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="menu" />
+    <MESSAGE value="spieler auswahl" />
+    <option name="LAST_COMMIT_MESSAGE" value="spieler auswahl" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

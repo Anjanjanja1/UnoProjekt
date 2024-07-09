@@ -114,7 +114,7 @@ public class Spiel {
         }
 
         output.println("Spiel startet mit " + spielerListe.size() + " Spielern. Davon Bots: " + botAnzahl);
-}
+    }
 
     //Zeigt den aktuellen Zustand des Spiels
     private void aktuellenZustandAnzeigen() {
@@ -149,9 +149,8 @@ public class Spiel {
             if (aktuellerSpieler instanceof BotSpieler) {
 
                 if (!karteGespielt && !karteGehoben) {
-                    if (!botVersuchtKarteZuLegen()) {
-                        karteHeben();
-                    }
+                    karteLegen();
+
                 }
 
                 if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
@@ -289,21 +288,28 @@ public class Spiel {
 
     //Der aktuelle Spieler legt eine Karte ab
     private void karteLegen() {
+        int index = 0;
         if (karteGespielt) {
             output.println("Du kannst in diesem Zug keine weitere Karte legen.");
             return;
         }
-
-        int index;
-        do {
-            output.println("Welche Karte möchtest du legen? (Index eingeben)");
-            while (!input.hasNextInt()) {
-                output.println("Ungültige Eingabe.");
-                input.next();
+        if (aktuellerSpieler instanceof BotSpieler) {
+            if (gueltigeKarten().isEmpty()) {
+                karteHeben();
             }
-            index = input.nextInt();
-        } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
+            index = gueltigeKarten().size() - 1;
+        } else {
+            do {
 
+                output.println("Welche Karte möchtest du legen? (Index eingeben)");
+                while (!input.hasNextInt()) {
+                    output.println("Ungültige Eingabe.");
+                    input.next();
+                }
+                index = input.nextInt();
+
+            } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
+        }
         //Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (Dieser war damals Ohne try catch)
         Karte gelegteKarte;
         try { //Try Catch falls Array kleiner als gewählter Index ist
