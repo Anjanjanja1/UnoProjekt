@@ -255,7 +255,11 @@ public class Spiel {
             Karte gezogeneKarte = stapel.getStapel().removeFirst();
             aktuellerSpieler.addKarten(gezogeneKarte);
             gueltigeKarten();
-            output.println("Du hast die Karte " + gezogeneKarte + " gezogen.");
+            if (aktuellerSpieler instanceof BotSpieler) {
+                output.println("Der Bot " + aktuellerSpieler.getName() + " hat die Karte " + gezogeneKarte + " gezogen.");
+            } else {
+                output.println("Du hast die Karte " + gezogeneKarte + " gezogen.");
+            }
             karteGehoben = true;
         }
     }
@@ -309,7 +313,11 @@ public class Spiel {
             }
 
             specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
-            output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
+            if (aktuellerSpieler instanceof BotSpieler) {
+                output.println("Der Bot " + aktuellerSpieler.getName() + " hat die Karte " + gelegteKarte + " gelegt.");
+            } else {
+                output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
+            }
 
         } else {
             output.println("Ungültige Karte. Probiere es nochmal!");
@@ -343,7 +351,14 @@ public class Spiel {
             } catch (Exception e) {
                 output.println("Error: " + e.getMessage());
             }
+        } else {
+            try {
+                Thread.sleep(3000);
+            } catch (Exception e) {
+                output.println("error");
+            }
         }
+
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); // Ruft den Index des aktuellen Spielers ab
 
         // Behandelt die Rückwärtsrichtung

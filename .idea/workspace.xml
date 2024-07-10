@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="bot spielt">
+    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="fix index">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/punkteDatenbank.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/punkteDatenbank.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,9 +50,6 @@
     &quot;accountId&quot;: &quot;937ce5de-7c2e-4695-a860-d5a2f3fc9150&quot;
   }
 }</component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -63,41 +62,41 @@
     <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.DemoApp.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Anja/OneDrive - FH CAMPUS 02/11PythonProjects/Python&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.DemoApp.executor": "Run",
+    "Application.Main.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Asus/IdeaProjects/UnoProjektLatestVersion",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;,
-      &quot;sqlite&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql",
+      "sqlite"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Anja\IdeaProjects\UnoProjekt" />
@@ -134,8 +133,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
       </set>
     </attachedChunks>
   </component>
@@ -188,9 +186,7 @@
       <workItem from="1720261168902" duration="11632000" />
       <workItem from="1720419770548" duration="4322000" />
       <workItem from="1720435264229" duration="7240000" />
-      <workItem from="1720513090494" duration="8678000" />
-      <workItem from="1720523264583" duration="6477000" />
-      <workItem from="1720595931673" duration="773000" />
+      <workItem from="1720601954384" duration="2633000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -456,63 +452,7 @@
       <option name="project" value="LOCAL" />
       <updated>1719567496439</updated>
     </task>
-    <task id="LOCAL-00034" summary="Reverse">
-      <option name="closed" value="true" />
-      <created>1720513175192</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1720513175192</updated>
-    </task>
-    <task id="LOCAL-00035" summary="menu">
-      <option name="closed" value="true" />
-      <created>1720523752453</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1720523752453</updated>
-    </task>
-    <task id="LOCAL-00036" summary="spieler auswahl">
-      <option name="closed" value="true" />
-      <created>1720525878145</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1720525878145</updated>
-    </task>
-    <task id="LOCAL-00037" summary="bot spielt">
-      <option name="closed" value="true" />
-      <created>1720528105957</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1720528105957</updated>
-    </task>
-    <task id="LOCAL-00038" summary="bot spielt">
-      <option name="closed" value="true" />
-      <created>1720528780496</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1720528780496</updated>
-    </task>
-    <task id="LOCAL-00039" summary="bot spielt">
-      <option name="closed" value="true" />
-      <created>1720529276052</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1720529276052</updated>
-    </task>
-    <task id="LOCAL-00040" summary="bot spielt">
-      <option name="closed" value="true" />
-      <created>1720529643106</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1720529643106</updated>
-    </task>
-    <option name="localTasksCounter" value="41" />
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -543,6 +483,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="16.04" />
+    <MESSAGE value="24.04" />
     <MESSAGE value="04.05" />
     <MESSAGE value="23.05" />
     <MESSAGE value="27.05" />
@@ -563,12 +505,7 @@
     <MESSAGE value="Try Catch" />
     <MESSAGE value="continue Round and Session" />
     <MESSAGE value="ausgabe" />
-    <MESSAGE value="Reverse" />
-    <MESSAGE value="Bot" />
-    <MESSAGE value="menu" />
-    <MESSAGE value="spieler auswahl" />
-    <MESSAGE value="bot spielt" />
-    <option name="LAST_COMMIT_MESSAGE" value="bot spielt" />
+    <option name="LAST_COMMIT_MESSAGE" value="ausgabe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -602,5 +539,36 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.github.evgenys91.machinet.common.dslhistory.DslHistoryState">
+    <option name="historyDtoById">
+      <map>
+        <entry key="6e9ecd">
+          <value>
+            <ChatHistoryModel>
+              <option name="id" value="6e9ecd" />
+              <option name="initiateTms" value="1720515265457" />
+              <option name="request" value=" hi" />
+              <option name="response" value="" />
+              <option name="responseDescription" value="Hello! Welcome to Machinet AI. Please [sign in](https://plugin.machinet.net/#signin) and [subscribe](https://plugin.machinet.net/#pricing) in order to use Machinet AI. &#10;&#10;To sign in, please follow these steps:&#10;1. Press 'Sign In' button at the left corner of the chat inside IDE.&#10;2. You will then be automatically redirected to https://plugin.machinet.net website, where you will be prompted to sign in. The login form contains inputs for email and password.&#10;&#10;To subscribe to Machinet AI, you can choose a Pro or Max subscription at our [website](https://plugin.machinet.net/#pricing). You can also use a Pro Trial subscription to test Machinet AI for 10 days.&#10;&#10;Let me know if you need any further assistance!" />
+              <option name="responseFileName" value="" />
+              <option name="responseFilePath" value="" />
+              <option name="responseTms" value="1720515269545" />
+              <option name="usedLocalFilePaths">
+                <list>
+                  <option value="$PROJECT_DIR$/src/TopKarte.java" />
+                  <option value="$PROJECT_DIR$/src/SqliteClient.java" />
+                  <option value="$PROJECT_DIR$/src/Spiel.java" />
+                  <option value="$PROJECT_DIR$/src/Karte.java" />
+                  <option value="$PROJECT_DIR$/src/Stapel.java" />
+                  <option value="$PROJECT_DIR$/src/Spieler.java" />
+                  <option value="$PROJECT_DIR$/src/DataManager.java" />
+                </list>
+              </option>
+            </ChatHistoryModel>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
