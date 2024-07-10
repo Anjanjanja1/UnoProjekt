@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="bot spielt">
-      <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +189,8 @@
       <workItem from="1720419770548" duration="4322000" />
       <workItem from="1720435264229" duration="7240000" />
       <workItem from="1720513090494" duration="8678000" />
-      <workItem from="1720523264583" duration="6289000" />
+      <workItem from="1720523264583" duration="6477000" />
+      <workItem from="1720595931673" duration="773000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -503,7 +504,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720529276052</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="bot spielt">
+      <option name="closed" value="true" />
+      <created>1720529643106</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1720529643106</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

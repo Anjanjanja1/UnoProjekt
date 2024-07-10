@@ -21,6 +21,7 @@ public class Spiel {
     protected static Spieler winner;
     public static int round = 1;
     public static int session = 1;
+    protected boolean alleBotSpieler;
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
@@ -36,6 +37,7 @@ public class Spiel {
         this.unoGesagt = false;
         this.havingWinner = false;
         this.sessionEnde = false;
+        this.alleBotSpieler = false;
         DataManager.datenbankErstellen();
         initialisieren();
 
@@ -100,7 +102,9 @@ public class Spiel {
             Spieler spieler = new Spieler(name, punkte);
             spielerListe.add(spieler);
         }
-
+        if (menschlicheAnzahl == 0) {
+            alleBotSpieler = true;
+        }
         // Add bots if the total number of players is less than 4
         int botAnzahl = gesamtSpielerAnzahl - menschlicheAnzahl;
         String[] botNames = {"Hansi", "Jon", "Johann", "Fluffy", "Lisa", "Fritz", "Helga", "Ferdi", "George", "Berni", "Terminator", "Rick", "Roger"};
@@ -156,10 +160,10 @@ public class Spiel {
                 if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
                     unoSagen();
                 }
-                    karteGespielt = false;
-                    karteGehoben = false;
-                    unoGesagt = false;
-                    naechsterSpieler();
+                karteGespielt = false;
+                karteGehoben = false;
+                unoGesagt = false;
+                naechsterSpieler();
 
             } else {
                 // Spieler logik
@@ -268,7 +272,7 @@ public class Spiel {
                 karteHeben();
             }
             Random random = new Random();
-            index = (int)(Math.random() * gueltigeKarten().size());
+            index = (int) (Math.random() * gueltigeKarten().size());
         } else {
             do {
 
@@ -333,6 +337,13 @@ public class Spiel {
 
     //Wechselt zum nächsten Spieler und behandelt die zu ziehenden Karten
     void naechsterSpieler() {
+        if (alleBotSpieler) {
+            try {
+                Thread.sleep(3000);
+            } catch (Exception e) {
+                output.println("Error: " + e.getMessage());
+            }
+        }
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); // Ruft den Index des aktuellen Spielers ab
 
         // Behandelt die Rückwärtsrichtung
