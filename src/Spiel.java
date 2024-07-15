@@ -150,28 +150,25 @@ public class Spiel {
             aktuellenZustandAnzeigen(); //Zeigt den aktuellen Spielstatus an
             // wenn BotSpieler spielt
             if (aktuellerSpieler instanceof BotSpieler) {
-
-                if (!karteGespielt && !karteGehoben) {
-                    karteLegen();
-                } else {
-                    karteHeben(); //Strafkarte, falls der Bot keine Karte gezogen oder gelegt hat
-                }
-
-                if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
-                    unoSagen();
-                }
+                botLogik();
                 karteGespielt = false;
                 karteGehoben = false;
                 unoGesagt = false;
-                naechsterSpieler();
-
+                aktuellenZustandAnzeigen();
+                if (!getTopKarte().getZeichen().equals("REV") && !getTopKarte().getZeichen().equals("SKIP")) {
+                    naechsterSpieler();
+                }
             } else {
                 // Spieler logik
                 int menuAuswahl = benutzermenueauswahl();
 
                 switch (menuAuswahl) {
                     case 1:
-                        karteHeben();
+                        if (karteGehoben) {
+                            output.println("Du kannst in diesem Zug keine weitere Karte heben.");
+                        } else {
+                            karteHeben();
+                        }
                         break;
                     case 2:
                         //Stelle sicher, dass der Spieler keine Karte spielen kann, wenn er keine gültigen Karten zum Spielen hat.
@@ -228,6 +225,21 @@ public class Spiel {
         }
     }
 
+    private void botLogik() {
+        if (!karteGespielt && !karteGehoben) {
+            karteLegen();
+        } else {
+            if (karteGehoben) {
+                output.println("Du kannst in diesem Zug keine weitere Karte heben.");
+            } else {
+                karteHeben();
+            }
+        }
+        if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
+            unoSagen();
+        }
+    }
+
     //Greift auf den Ablagestapel des Stapelobjekts zu und gibt die letzte Karte in der Liste zurück
     private Karte getTopKarte() {
         return stapel.getTopKarte().getAblageStapel().getLast();
@@ -271,35 +283,32 @@ public class Spiel {
             output.println("Du kannst in diesem Zug keine weitere Karte legen.");
             return;
         }
-        if (aktuellerSpieler instanceof BotSpieler) {
-            if (gueltigeKarten().isEmpty()) {
-                karteHeben();
-            }
-            Random random = new Random();
-            index = (int) (Math.random() * gueltigeKarten().size());
-        } else {
-            do {
-
+        do {
+            if (aktuellerSpieler instanceof BotSpieler) {
+                if (gueltigeKarten().isEmpty()) {
+                    karteHeben();
+                }
+                index = (int) (Math.random() * gueltigeKarten().size());
+            } else {
                 output.println("Welche Karte möchtest du legen? (Index eingeben)");
                 while (!input.hasNextInt()) {
                     output.println("Ungültige Eingabe.");
                     input.next();
                 }
                 index = input.nextInt();
+            }
+        } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
 
-            } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
-        }
         //Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (Dieser war damals Ohne try catch)
         Karte gelegteKarte;
         try { //Try Catch falls Array kleiner als gewählter Index ist
             gelegteKarte = gueltigeKarten().get(index);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (
+                IndexOutOfBoundsException e) {
             output.println("Ungültiger Index. Probiere es nochmal!");
             karteLegen();
             return;
         }
-
-
         //Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (änderung)
 
         if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
@@ -347,13 +356,13 @@ public class Spiel {
     void naechsterSpieler() {
         if (alleBotSpieler) {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (Exception e) {
                 output.println("Error: " + e.getMessage());
             }
         } else {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (Exception e) {
                 output.println("error");
             }
@@ -448,7 +457,6 @@ public class Spiel {
             int index = random.nextInt(botFarbe.length);
 
             gewaehlteFarbe = botFarbe[index];
-            System.out.println(gewaehlteFarbe);
             return gewaehlteFarbe;
         } else {
             do {
@@ -459,7 +467,6 @@ public class Spiel {
                     output.println("Ungültige Eingabe.");
                 }
             } while (!(gewaehlteFarbe.equals("Y") || gewaehlteFarbe.equals("R") || gewaehlteFarbe.equals("B") || gewaehlteFarbe.equals("G")));
-            System.out.println(gewaehlteFarbe);
             return gewaehlteFarbe;
         }
     }
@@ -583,7 +590,6 @@ public class Spiel {
 
         Karte topKarte = stapel.getStapel().removeFirst();
         stapel.getTopKarte().getAblageStapel().add(topKarte);
-
 
         gewaehlteFarbe = "";
         zuZiehendeKarten = 0;
