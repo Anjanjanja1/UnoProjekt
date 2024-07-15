@@ -152,11 +152,11 @@ public class Spiel {
                 karteGespielt = false;
                 karteGehoben = false;
                 unoGesagt = false;
-                try {
-                    Thread.sleep(2000);  //Wartet 2 Sekunden
-                } catch (Exception e) {
-                    output.println("Error: " + e.getMessage());
-                }
+//                try {
+//                    Thread.sleep(2000);  //Wartet 2 Sekunden
+//                } catch (Exception e) {
+//                    output.println("Error: " + e.getMessage());
+//                }
                 if (!getTopKarte().getZeichen().equals("REV") && !getTopKarte().getZeichen().equals("SKIP")) {
                     naechsterSpieler(); //Wechselt zum nächsten Spieler
                 }
@@ -531,7 +531,7 @@ public class Spiel {
             }
 
             if (aktuellerSpieler.getPunkte() >= 500) {
-                output.println("DU HAST DAS SPIEL GEWONNEN!");
+                output.println(aktuellerSpieler.getName() + " HAT DAS SPIEL GEWONNEN!");
                 sessionEnde = true;
                 spielFortsetzen(); //Fragt, ob das Spiel fortgesetzt werden soll
             }
