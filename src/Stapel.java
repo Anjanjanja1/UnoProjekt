@@ -88,6 +88,20 @@ public class Stapel extends Karte {
         return stapel;
     }
 
+    public void reshuffleAblagestapel() {
+        ArrayList<Karte> ablageStapel = this.getTopKarte().getAblageStapel();
+        if (ablageStapel.size() > 1) {
+            Karte topKarte = ablageStapel.removeLast();
+            Collections.shuffle(ablageStapel);
+            this.getStapel().addAll(ablageStapel);
+            ablageStapel.clear();
+            ablageStapel.add(topKarte);
+            System.out.println("Der Ablagestapel wurde gemischt und in den Stapel zurückgelegt.");
+        } else {
+            System.out.println("Keine Karten im Ablagestapel zum Mischen.");
+        }
+    }
+
 
     public void entferneErsteKarte() {
         Karte ersteKarte;

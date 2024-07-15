@@ -1,4 +1,3 @@
-
 import java.io.PrintStream;
 import java.util.*;
 
@@ -66,11 +65,11 @@ public class Spiel {
     }
 
     //Initialisiert das Spiel
-    private void initialisieren() {
+    public void initialisieren() {
         output.println("Wilkommen zu unserem UNO Spiel!");
     }
 
-    protected void benutzernameInput() {
+    public void benutzernameInput() {
         output.println("Wie viele Spieler möchten Sie haben? (1-4)");
         int gesamtSpielerAnzahl = input.nextInt();
         input.nextLine();
@@ -118,7 +117,7 @@ public class Spiel {
         output.println("\nSpielername: " + aktuellerSpieler.getName());
         output.println("Top Karte: " + getTopKarte());
         output.println("Deine Karten: " + aktuellerSpieler.getMeineKarte());
-        output.println("Mögliche Karten: " + gueltigeKarten()+"\n");
+        output.println("Mögliche Karten: " + gueltigeKarten());
     }
 
     //Fragt den Benutzer nach der Menüauswahl
@@ -149,11 +148,11 @@ public class Spiel {
                 karteGespielt = false;
                 karteGehoben = false;
                 unoGesagt = false;
-                try {
-                    Thread.sleep(2000);
-                } catch (Exception e) {
-                    output.println("Error: " + e.getMessage());
-                }
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (Exception e) {
+//                    output.println("Error: " + e.getMessage());
+//                }
                 if (!getTopKarte().getZeichen().equals("REV") && !getTopKarte().getZeichen().equals("SKIP")) {
                     naechsterSpieler();
                 }
@@ -194,13 +193,9 @@ public class Spiel {
                             if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
                                 output.println("Du hast nicht UNO gesagt. Du bekommst 2 Karten als Strafe!");
                                 for (int i = 0; i < 2; i++) {
-                                    if (stapel.getStapel().isEmpty()) {
-                                        reshuffleAblagestapel();
-                                    }
-                                    if (!stapel.getStapel().isEmpty()) {
-                                        Karte gezogeneKarte = stapel.getStapel().removeFirst();
-                                        aktuellerSpieler.addKarten(gezogeneKarte);
-                                    }
+                                    pruefeObStapelLeerIst();
+                                    Karte gezogeneKarte = stapel.getStapel().removeFirst();
+                                    aktuellerSpieler.addKarten(gezogeneKarte);
                                 }
                             }
                             karteGespielt = false;
@@ -233,7 +228,7 @@ public class Spiel {
             }
             if (!gueltigeKarten().isEmpty())
                 karteLegen();
-            }
+        }
         if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
             unoSagen();
         }
@@ -258,26 +253,22 @@ public class Spiel {
 
     //Der aktuelle Spieler hebt eine Karte vom Stapel
     private void karteHeben() {
-        if (stapel.getStapel().isEmpty()) {
-            reshuffleAblagestapel();
+        pruefeObStapelLeerIst();
+        Karte gezogeneKarte = stapel.getStapel().removeFirst();
+        aktuellerSpieler.addKarten(gezogeneKarte);
+        gueltigeKarten();
+        if (aktuellerSpieler instanceof BotSpieler) {
+            output.println("Der Bot " + aktuellerSpieler.getName() + " hat die Karte " + gezogeneKarte + " gezogen.");
+        } else {
+            output.println("Du hast die Karte " + gezogeneKarte + " gezogen.");
         }
+        karteGehoben = true;
 
-        if (!stapel.getStapel().isEmpty()) {
-            Karte gezogeneKarte = stapel.getStapel().removeFirst();
-            aktuellerSpieler.addKarten(gezogeneKarte);
-            gueltigeKarten();
-            if (aktuellerSpieler instanceof BotSpieler) {
-                output.println("Der Bot " + aktuellerSpieler.getName() + " hat die Karte " + gezogeneKarte + " gezogen.");
-            } else {
-                output.println("Du hast die Karte " + gezogeneKarte + " gezogen.");
-            }
-            karteGehoben = true;
-        }
     }
 
     //Der aktuelle Spieler legt eine Karte ab
     private void karteLegen() {
-        int index = 0;
+        int index;
         if (karteGespielt) {
             output.println("Du kannst in diesem Zug keine weitere Karte legen.");
             return;
@@ -301,8 +292,7 @@ public class Spiel {
         Karte gelegteKarte;
         try { //Try Catch falls Array kleiner als gewählter Index ist
             gelegteKarte = gueltigeKarten().get(index);
-        } catch (
-                IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             output.println("Ungültiger Index. Probiere es nochmal!");
             karteLegen();
             return;
@@ -337,13 +327,10 @@ public class Spiel {
         if (aktuellerSpieler.getMeineKarte().size() > 1) {
             output.println("Du hast nicht zur richtigen Zeit UNO gesagt. Du bekommst 2 Karten als Strafe!");
             for (int i = 0; i < 2; i++) {
-                if (stapel.getStapel().isEmpty()) {
-                    reshuffleAblagestapel();
-                }
-                if (!stapel.getStapel().isEmpty()) {
-                    Karte gezogeneKarte = stapel.getStapel().removeFirst();
-                    aktuellerSpieler.addKarten(gezogeneKarte);
-                }
+                pruefeObStapelLeerIst();
+                Karte gezogeneKarte = stapel.getStapel().removeFirst();
+                aktuellerSpieler.addKarten(gezogeneKarte);
+
             }
             naechsterSpieler();
         }
@@ -460,13 +447,9 @@ public class Spiel {
         if (zuZiehendeKarten > 0) {
             output.println(aktuellerSpieler.getName() + " bekommt " + zuZiehendeKarten + " Karten.");
             for (int i = 0; i < zuZiehendeKarten; i++) {
-                if (stapel.getStapel().isEmpty()) {
-                    reshuffleAblagestapel();
-                }
-                if (!stapel.getStapel().isEmpty()) {
-                    Karte gezogeneKarte = stapel.getStapel().removeFirst();
-                    aktuellerSpieler.addKarten(gezogeneKarte);
-                }
+                pruefeObStapelLeerIst();
+                Karte gezogeneKarte = stapel.getStapel().removeFirst();
+                aktuellerSpieler.addKarten(gezogeneKarte);
             }
             zuZiehendeKarten = 0;
             karteGespielt = false;
@@ -513,6 +496,12 @@ public class Spiel {
         karteGehoben = false;
     }
 
+    public void pruefeObStapelLeerIst() {
+        if (stapel.getStapel().isEmpty()) {
+            stapel.reshuffleAblagestapel();
+        }
+    }
+
     public void ueberpruefeObAktuellerSpielerGewinnt() {
         if (aktuellerSpieler.getMeineKarte().isEmpty()) {
             output.println("\n--- Ende der Runde ---");
@@ -521,7 +510,7 @@ public class Spiel {
 
             int gesamtPunkte = anzahlPunkteVomSpieler();
 
-            addPointsToPlayer(aktuellerSpieler, gesamtPunkte);
+            addierePunkteZuSpieler(aktuellerSpieler, gesamtPunkte);
 
             //Die Punkte des Gewinners in die Datenbank eintragen
             DataManager.RekordWinnerInDB(spielerListe, session, round);
@@ -544,6 +533,11 @@ public class Spiel {
 
             }
         }
+    }
+
+    //Methode die die Punkte in Spieler speichert
+    public void addierePunkteZuSpieler(Spieler spieler, int punkte) {
+        spieler.setPunkte(spieler.getPunkte() + punkte);
     }
 
     //Methode erstellen die Punkte zusammenzählt
@@ -609,27 +603,7 @@ public class Spiel {
             run();
         } else {
             output.println("Ende des Spiel!");
-            //Datenbank reset
-            System.exit(0);
-        }
-    }
-
-    //Methode die die Punkte in Spieler speichert
-    public void addPointsToPlayer(Spieler spieler, int punkte) {
-        spieler.setPunkte(spieler.getPunkte() + punkte);
-    }
-
-    public void reshuffleAblagestapel() {
-        ArrayList<Karte> ablageStapel = stapel.getTopKarte().getAblageStapel();
-        if (ablageStapel.size() > 1) {
-            Karte topKarte = ablageStapel.removeLast(); // Keep the top card
-            Collections.shuffle(ablageStapel);
-            stapel.getStapel().addAll(ablageStapel);
-            ablageStapel.clear();
-            ablageStapel.add(topKarte);
-            output.println("Der Ablagestapel wurde gemischt und in den Stapel zurückgelegt.");
-        } else {
-            output.println("Keine Karten im Ablagestapel zum Mischen.");
+            System.exit(0); //Datenbank reset
         }
     }
 }
