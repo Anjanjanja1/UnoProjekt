@@ -1,4 +1,5 @@
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
@@ -8,7 +9,8 @@ public class Main {
         PrintStream output = System.out;
         Spiel spiel = new Spiel(input, output);
 
-        // Startet das Spiel
+        //Startet das Spiel
         spiel.run();
+
     }
 }

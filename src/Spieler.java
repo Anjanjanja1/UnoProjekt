@@ -2,18 +2,19 @@ import java.util.ArrayList;
 
 public class Spieler {
 
-    protected String name;
-    protected ArrayList<Karte> meineKarte;
-    protected static ArrayList<Spieler> spielerListe = new ArrayList<>();
-    protected int punkte;
+    protected String name; //Name des Spielers
+    protected ArrayList<Karte> meineKarte; //Liste der Karten, die der Spieler besitzt
+    protected static ArrayList<Spieler> spielerListe = new ArrayList<>(); //Liste aller Spieler
+    protected int punkte; //Punktestand des Spielers
 
-
+    //Konstruktor
     public Spieler(String name, int punkte) {
         this.name = name;
         this.punkte = punkte;
-        this.meineKarte = new ArrayList<>();
+        this.meineKarte = new ArrayList<>(); //Initialisiert die Kartenliste des Spielers
     }
 
+    //Getters und Setters
     public ArrayList<Karte> getMeineKarte() {
         return meineKarte;
     }
@@ -46,16 +47,13 @@ public class Spieler {
         spielerListe.add(spieler);
     }
 
+    //Fügt eine Karte zur Kartenliste des Spielers hinzu
     public void addKarten(Karte karten) {
         this.meineKarte.add(karten);
     }
-
-
 
     @Override
     public String toString() {
         return name + " " + meineKarte;
     }
-
-
 }

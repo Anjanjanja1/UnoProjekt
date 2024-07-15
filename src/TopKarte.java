@@ -2,8 +2,9 @@ import java.util.ArrayList;
 
 public class TopKarte extends Karte{
 
-    protected ArrayList<Karte> ablageStapel;
+    protected ArrayList<Karte> ablageStapel; //Liste der Karten im Ablagestapel
 
+    //Konstruktor
     public TopKarte() {
         this.ablageStapel = new ArrayList<>();
     }
@@ -13,6 +14,7 @@ public class TopKarte extends Karte{
         return "Top Karte: " + farbe + zeichen;
     }
 
+    //Getter und Setter
     public ArrayList<Karte> getAblageStapel() {
         return ablageStapel;
     }

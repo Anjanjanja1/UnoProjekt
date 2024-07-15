@@ -1,20 +1,19 @@
-import java.util.ArrayList;
-
-
 public class Karte {
-    protected int punkte;
-    protected String farbe;
-    protected String zeichen;
+    protected int punkte; //Punktzahl der Karte
+    protected String farbe; //Farbe der Karte
+    protected String zeichen; //Zeichen der Karte (zahl oder Aktionssymbol)
 
+    //Konstruktor
     public Karte(int punkte, String farbe, String zeichen) {
         this.punkte = punkte;
         this.farbe = farbe;
         this.zeichen = zeichen;
     }
 
+    //Standardkonstruktor
     public Karte(){}
 
-
+    //Getters und Setters
     public String getZeichen() {
         return zeichen;
     }
@@ -43,5 +42,4 @@ public class Karte {
     public String toString() {
         return farbe + zeichen;
     }
-
 }
