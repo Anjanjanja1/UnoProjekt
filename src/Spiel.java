@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.IOException;
+
 import java.io.PrintStream;
 import java.util.*;
 
@@ -18,10 +17,8 @@ public class Spiel {
     protected boolean unoGesagt;
     protected boolean havingWinner;
     protected boolean sessionEnde;
-    protected static Spieler winner;
     public static int round = 1;
     public static int session = 1;
-    protected boolean alleBotSpieler;
 
     public Spiel(Scanner input, PrintStream output) {
         this.input = input;
@@ -37,7 +34,6 @@ public class Spiel {
         this.unoGesagt = false;
         this.havingWinner = false;
         this.sessionEnde = false;
-        this.alleBotSpieler = false;
         DataManager.datenbankErstellen();
         initialisieren();
 
@@ -77,7 +73,7 @@ public class Spiel {
     protected void benutzernameInput() {
         output.println("Wie viele Spieler möchten Sie haben? (1-4)");
         int gesamtSpielerAnzahl = input.nextInt();
-        input.nextLine();  // Consume the newline
+        input.nextLine();
 
         if (gesamtSpielerAnzahl < 1 || gesamtSpielerAnzahl > 4) {
             output.println("Ungültige Anzahl von Spielern. Bitte geben Sie eine Zahl zwischen 1 und 4 ein.");
@@ -86,7 +82,7 @@ public class Spiel {
 
         output.println("Wie viele menschliche Spieler möchten Sie haben?");
         int menschlicheAnzahl = input.nextInt();
-        input.nextLine();  // Consume the newline
+        input.nextLine();
 
         if (menschlicheAnzahl < 0 || menschlicheAnzahl > gesamtSpielerAnzahl) {
             output.println("Ungültige Anzahl von menschlichen Spielern. Bitte geben Sie eine Zahl zwischen 0 und " + gesamtSpielerAnzahl + " ein.");
@@ -102,10 +98,8 @@ public class Spiel {
             Spieler spieler = new Spieler(name, punkte);
             spielerListe.add(spieler);
         }
-        if (menschlicheAnzahl == 0) {
-            alleBotSpieler = true;
-        }
-        // Add bots if the total number of players is less than 4
+
+        //Fügen Sie Bots hinzu, wenn die Gesamtzahl der Spieler weniger als 4 beträgt
         int botAnzahl = gesamtSpielerAnzahl - menschlicheAnzahl;
         String[] botNames = {"Hansi", "Jon", "Johann", "Fluffy", "Lisa", "Fritz", "Helga", "Ferdi", "George", "Berni", "Terminator", "Rick", "Roger"};
 
@@ -124,7 +118,7 @@ public class Spiel {
         output.println("\nSpielername: " + aktuellerSpieler.getName());
         output.println("Top Karte: " + getTopKarte());
         output.println("Deine Karten: " + aktuellerSpieler.getMeineKarte());
-        output.println("Mögliche Karten: " + gueltigeKarten());
+        output.println("Mögliche Karten: " + gueltigeKarten()+"\n");
     }
 
     //Fragt den Benutzer nach der Menüauswahl
@@ -151,10 +145,15 @@ public class Spiel {
             // wenn BotSpieler spielt
             if (aktuellerSpieler instanceof BotSpieler) {
                 botLogik();
+                aktuellenZustandAnzeigen();
                 karteGespielt = false;
                 karteGehoben = false;
                 unoGesagt = false;
-                aktuellenZustandAnzeigen();
+                try {
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+                    output.println("Error: " + e.getMessage());
+                }
                 if (!getTopKarte().getZeichen().equals("REV") && !getTopKarte().getZeichen().equals("SKIP")) {
                     naechsterSpieler();
                 }
@@ -166,6 +165,7 @@ public class Spiel {
                     case 1:
                         if (karteGehoben) {
                             output.println("Du kannst in diesem Zug keine weitere Karte heben.");
+                            break;
                         } else {
                             karteHeben();
                         }
@@ -213,7 +213,7 @@ public class Spiel {
                         }
                         break;
                     case 5:
-                        htmlDateiImBrowserOeffnen("BENUTZERHANDBUCH.html");
+                        Hilfe.htmlDateiImBrowserOeffnen("BENUTZERHANDBUCH.html");
                         break;
                     case 6:
                         output.println("Aktueller Punktestand: " + aktuellerSpieler.punkte);
@@ -227,14 +227,13 @@ public class Spiel {
 
     private void botLogik() {
         if (!karteGespielt && !karteGehoben) {
-            karteLegen();
-        } else {
-            if (karteGehoben) {
-                output.println("Du kannst in diesem Zug keine weitere Karte heben.");
-            } else {
+            //Stelle sicher, dass der Spieler keine Karte spielen kann, wenn er keine gültigen Karten zum Spielen hat.
+            if (gueltigeKarten().isEmpty()) {
                 karteHeben();
             }
-        }
+            if (!gueltigeKarten().isEmpty())
+                karteLegen();
+            }
         if (aktuellerSpieler.meineKarte.size() == 1 && !unoGesagt) {
             unoSagen();
         }
@@ -299,7 +298,6 @@ public class Spiel {
             }
         } while (!(index >= 0 && index < aktuellerSpieler.getMeineKarte().size()));
 
-        //Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (Dieser war damals Ohne try catch)
         Karte gelegteKarte;
         try { //Try Catch falls Array kleiner als gewählter Index ist
             gelegteKarte = gueltigeKarten().get(index);
@@ -309,7 +307,6 @@ public class Spiel {
             karteLegen();
             return;
         }
-        //Karte gelegteKarte = aktuellerSpieler.getMeineKarte().get(index); //Holt die Karte mit dem angegebenen Index (änderung)
 
         if (ueberpruefeKarte(gelegteKarte, getTopKarte())) { //Prüft, ob die Karte gespielt werden kann
 
@@ -354,20 +351,6 @@ public class Spiel {
 
     //Wechselt zum nächsten Spieler und behandelt die zu ziehenden Karten
     void naechsterSpieler() {
-        if (alleBotSpieler) {
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
-                output.println("Error: " + e.getMessage());
-            }
-        } else {
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
-                output.println("error");
-            }
-        }
-
         int aktuellerIndex = spielerListe.indexOf(aktuellerSpieler); // Ruft den Index des aktuellen Spielers ab
 
         // Behandelt die Rückwärtsrichtung
@@ -549,7 +532,6 @@ public class Spiel {
             }
 
             if (aktuellerSpieler.getPunkte() >= 500) {
-                aktuellerSpieler = winner;
                 output.println("DU HAST DAS SPIEL GEWONNEN!");
                 sessionEnde = true;
                 spielFortsetzen();
@@ -648,28 +630,6 @@ public class Spiel {
             output.println("Der Ablagestapel wurde gemischt und in den Stapel zurückgelegt.");
         } else {
             output.println("Keine Karten im Ablagestapel zum Mischen.");
-        }
-    }
-
-    public static void htmlDateiImBrowserOeffnen(String filePath) {
-        try {
-            File htmlFile = new File(filePath);
-            if (!htmlFile.exists()) {
-                System.out.println("File not found: " + filePath);
-                return;
-            }
-            String os = System.getProperty("os.name").toLowerCase();
-            if (os.contains("win")) {
-                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start msedge " + htmlFile.toURI()});
-            } else if (os.contains("mac")) {
-                Runtime.getRuntime().exec(new String[]{"open", "-a", "Microsoft Edge", htmlFile.toURI().toString()});
-            } else if (os.contains("nix") || os.contains("nux")) {
-                Runtime.getRuntime().exec(new String[]{"microsoft-edge", htmlFile.toURI().toString()});
-            } else {
-                System.out.println("Unsupported operating system: " + os);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

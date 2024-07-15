@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="bot thread">
+    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="small changes">
+      <change afterPath="$PROJECT_DIR$/src/Hilfe.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/punkteDatenbank.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/punkteDatenbank.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -190,7 +192,7 @@
       <workItem from="1720601954384" duration="2633000" />
       <workItem from="1720687964116" duration="1364000" />
       <workItem from="1720767669890" duration="57000" />
-      <workItem from="1721025421577" duration="748000" />
+      <workItem from="1721025421577" duration="4179000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -456,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719567496439</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="small changes">
+      <option name="closed" value="true" />
+      <created>1721027540648</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1721027540648</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -509,7 +519,8 @@
     <MESSAGE value="Try Catch" />
     <MESSAGE value="continue Round and Session" />
     <MESSAGE value="ausgabe" />
-    <option name="LAST_COMMIT_MESSAGE" value="ausgabe" />
+    <MESSAGE value="small changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="small changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
