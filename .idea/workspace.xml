@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="small changes">
+    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="probe">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/punkteDatenbank.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/punkteDatenbank.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +190,7 @@
       <workItem from="1720601954384" duration="2633000" />
       <workItem from="1720687964116" duration="1364000" />
       <workItem from="1720767669890" duration="57000" />
-      <workItem from="1721025421577" duration="11338000" />
+      <workItem from="1721025421577" duration="14097000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -479,7 +480,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721037140007</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="probe">
+      <option name="closed" value="true" />
+      <created>1721038036511</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1721038036511</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,7 +542,8 @@
     <MESSAGE value="continue Round and Session" />
     <MESSAGE value="ausgabe" />
     <MESSAGE value="small changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="small changes" />
+    <MESSAGE value="probe" />
+    <option name="LAST_COMMIT_MESSAGE" value="probe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

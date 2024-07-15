@@ -415,7 +415,9 @@ public class Spiel {
             gewaehlteFarbe = farbeWaehlen();
             zuZiehendeKarten += 4;
             output.println("Die Farbe ist " + gewaehlteFarbe);
-            naechsterSpieler();
+            if (!(aktuellerSpieler instanceof BotSpieler)) {
+                naechsterSpieler();
+            }
         }
     }
 
