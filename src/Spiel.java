@@ -72,13 +72,13 @@ public class Spiel {
     //Fragt nach Benutzernamen und erstellt Spieler
     public void benutzernameInput() {
         // Gesamte Anzahl der Spieler abfragen
-        output.println("Wie viele Spieler möchten Sie haben? (1-4)");
+        output.println("Wie viele Spieler möchten Sie haben? (2-4)");
         int gesamtSpielerAnzahl = input.nextInt();
         input.nextLine();
 
         // Überprüfen, ob die Anzahl der Spieler gültig ist mit while Schleife
-        while (gesamtSpielerAnzahl < 1 || gesamtSpielerAnzahl > 4) {
-            output.println("Ungültige Anzahl von Spielern. Bitte geben Sie eine Zahl zwischen 1 und 4 ein.");
+        while (gesamtSpielerAnzahl < 2 || gesamtSpielerAnzahl > 4) {
+            output.println("Ungültige Anzahl von Spielern. Bitte geben Sie eine Zahl zwischen 2 und 4 ein.");
             gesamtSpielerAnzahl = input.nextInt();
             input.nextLine();
         }
@@ -152,11 +152,11 @@ public class Spiel {
                 karteGespielt = false;
                 karteGehoben = false;
                 unoGesagt = false;
-//                try {
-//                    Thread.sleep(2000);  //Wartet 2 Sekunden
-//                } catch (Exception e) {
-//                    output.println("Error: " + e.getMessage());
-//                }
+                try {
+                    Thread.sleep(2000);  //Wartet 2 Sekunden
+                } catch (Exception e) {
+                    output.println("Error: " + e.getMessage());
+                }
                 if (!getTopKarte().getZeichen().equals("REV") && !getTopKarte().getZeichen().equals("SKIP")) {
                     naechsterSpieler(); //Wechselt zum nächsten Spieler
                 }
