@@ -71,45 +71,48 @@ public class Spiel {
 
     //Fragt nach Benutzernamen und erstellt Spieler
     public void benutzernameInput() {
+        // Gesamte Anzahl der Spieler abfragen
         output.println("Wie viele Spieler möchten Sie haben? (1-4)");
         int gesamtSpielerAnzahl = input.nextInt();
         input.nextLine();
 
-        if (gesamtSpielerAnzahl < 1 || gesamtSpielerAnzahl > 4) {
+        // Überprüfen, ob die Anzahl der Spieler gültig ist mit while Schleife
+        while (gesamtSpielerAnzahl < 1 || gesamtSpielerAnzahl > 4) {
             output.println("Ungültige Anzahl von Spielern. Bitte geben Sie eine Zahl zwischen 1 und 4 ein.");
-            return;
+            gesamtSpielerAnzahl = input.nextInt();
+            input.nextLine();
         }
-
+        // Anzahl der menschlichen Spieler abfragen
         output.println("Wie viele menschliche Spieler möchten Sie haben?");
         int menschlicheAnzahl = input.nextInt();
         input.nextLine();
 
-        if (menschlicheAnzahl < 0 || menschlicheAnzahl > gesamtSpielerAnzahl) {
+        // Überprüfen, ob die Anzahl der menschlichen Spieler gültig ist
+        while (menschlicheAnzahl < 0 || menschlicheAnzahl > gesamtSpielerAnzahl) {
             output.println("Ungültige Anzahl von menschlichen Spielern. Bitte geben Sie eine Zahl zwischen 0 und " + gesamtSpielerAnzahl + " ein.");
-            return;
+            menschlicheAnzahl = input.nextInt();
+            input.nextLine();
         }
-
         output.println("Du willst " + menschlicheAnzahl + " menschliche Spieler haben.");
 
+        // Namen für menschliche Spieler erfassen
         for (int i = 0; i < menschlicheAnzahl; i++) {
             output.println("Bitte gib den Namen von Spieler " + (i + 1) + " ein: ");
             String name = input.nextLine();
-            int punkte = 0;
-            Spieler spieler = new Spieler(name, punkte); //Erstellt einen neuen Spieler
-            spielerListe.add(spieler); //Fügt den Spieler zur Liste hinzu
+            Spieler spieler = new Spieler(name, 0);
+            spielerListe.add(spieler);
         }
 
-        //Fügt Bots hinzu, wenn die Gesamtzahl der Spieler weniger als 4 beträgt
+
+        // Bot-Spieler hinzufügen, wenn die Gesamtzahl der Spieler weniger als 4 beträgt
         int botAnzahl = gesamtSpielerAnzahl - menschlicheAnzahl;
         String[] botNames = {"Hansi", "Jon", "Johann", "Fluffy", "Lisa", "Fritz", "Helga", "Ferdi", "George", "Berni", "Terminator", "Rick", "Roger"};
 
         for (int i = 0; i < botAnzahl; i++) {
             String botName = botNames[i];
-            int punkte = 0;
-            Spieler bot = new BotSpieler(botName, punkte); //Erstellt einen neuen Bot-Spieler
-            spielerListe.add(bot); //Fügt den Bot zur Liste hinzu
+            Spieler bot = new BotSpieler(botName, 0);
+            spielerListe.add(bot);
         }
-
         output.println("Spiel startet mit " + spielerListe.size() + " Spielern. Davon Bots: " + botAnzahl);
     }
 

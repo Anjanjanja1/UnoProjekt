@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="bot +4">
+    <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="probe">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/punkteDatenbank.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/punkteDatenbank.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BotSpieler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BotSpieler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Hilfe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Hilfe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Karte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Karte.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Spieler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spieler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SqliteClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SqliteClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stapel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stapel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TopKarte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TopKarte.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +190,7 @@
       <workItem from="1720601954384" duration="2633000" />
       <workItem from="1720687964116" duration="1364000" />
       <workItem from="1720767669890" duration="57000" />
-      <workItem from="1721025421577" duration="19259000" />
+      <workItem from="1721025421577" duration="14097000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -497,15 +488,7 @@
       <option name="project" value="LOCAL" />
       <updated>1721038036511</updated>
     </task>
-    <task id="LOCAL-00038" summary="bot +4">
-      <option name="closed" value="true" />
-      <created>1721041681120</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1721041681120</updated>
-    </task>
-    <option name="localTasksCounter" value="39" />
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -560,8 +543,7 @@
     <MESSAGE value="ausgabe" />
     <MESSAGE value="small changes" />
     <MESSAGE value="probe" />
-    <MESSAGE value="bot +4" />
-    <option name="LAST_COMMIT_MESSAGE" value="bot +4" />
+    <option name="LAST_COMMIT_MESSAGE" value="probe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
