@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Stapel extends Karte {
+public class Stapel {
 
     protected ArrayList<Karte> stapel;
     protected TopKarte topKarte;
@@ -21,92 +21,65 @@ public class Stapel extends Karte {
         return topKarte;
     }
 
-    public ArrayList<Karte> addKarten() {
-        stapel.clear(); //Clear existing cards
-        stapel.add(new Karte(0, "R", "0"));
-        for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "R", "REV")); //REVERSE
-            stapel.add(new Karte(20, "R", "SKIP")); //SKIP
-            stapel.add(new Karte(20, "R", "+2"));
-            for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "R", Integer.toString(j)));
+    public void addKarten() {
+        stapel.clear(); // Clear existing cards
+
+        // Adds cards for each color
+        String[] farben = {"R", "B", "Y", "G"};
+        for (String farbe : farben) {
+            stapel.add(new Karte(0, farbe, "0"));
+            for (int i = 0; i < 2; i++) {
+                stapel.add(new Karte(20, farbe, "REV")); // REVERSE
+                stapel.add(new Karte(20, farbe, "SKIP")); // SKIP
+                stapel.add(new Karte(20, farbe, "+2")); // +2
+                for (int j = 1; j < 10; j++) {
+                    stapel.add(new Karte(j, farbe, Integer.toString(j)));
+                }
             }
         }
-        stapel.add(new Karte(0, "B", "0"));
-        for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "B", "REV"));
-            stapel.add(new Karte(20, "B", "SKIP"));
-            stapel.add(new Karte(20, "B", "+2"));
-            for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "B", Integer.toString(j)));
-            }
-        }
-        stapel.add(new Karte(0, "Y", "0"));
-        for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "Y", "REV"));
-            stapel.add(new Karte(20, "Y", "SKIP"));
-            stapel.add(new Karte(20, "Y", "+2"));
-            for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "Y", Integer.toString(j)));
-            }
-        }
-        stapel.add(new Karte(0, "G", "0"));
-        for (int i = 0; i < 2; i++) {
-            stapel.add(new Karte(20, "G", "REV"));
-            stapel.add(new Karte(20, "G", "SKIP"));
-            stapel.add(new Karte(20, "G", "+2"));
-            for (int j = 1; j < 10; j++) {
-                stapel.add(new Karte(j, "G", Integer.toString(j)));
-            }
-        }
+
+        // Adds wild cards
         for (int i = 0; i < 4; i++) {
             stapel.add(new Karte(50, "WILD", "+4"));
             stapel.add(new Karte(50, "WILD", ""));
         }
-        return stapel;
     }
 
-
-    public ArrayList<Karte> stapelShuffleUndTeilen(ArrayList<Spieler> spielerListe, int anzahl) {
-
+    public void stapelShuffleUndTeilen(ArrayList<Spieler> spielerListe, int anzahl) {
         if (stapel.isEmpty()) {
             System.out.println("Der Stapel ist leer und kann nicht gemischt und verteilt werden.");
-            return stapel;
+            return;
         }
 
         Collections.shuffle(stapel);
 
-        for (Spieler s : spielerListe) {
+        for (Spieler spieler : spielerListe) {
             for (int j = 0; j < anzahl; j++) {
                 if (!stapel.isEmpty()) {
-                    s.addKarten(stapel.removeFirst());
+                    spieler.addKarten(stapel.remove(0));
                 }
             }
         }
         entferneErsteKarte();
-
-        return stapel;
     }
-
 
     public void entferneErsteKarte() {
         Karte ersteKarte;
         do {
-            ersteKarte = stapel.removeFirst();
-            if (ersteKarte.getFarbe().contains("WILD") || ersteKarte.getZeichen().contains("+2")) {
-                stapel.addLast(ersteKarte);
+            ersteKarte = stapel.remove(0);
+            if (ersteKarte.getFarbe().equals("WILD") || ersteKarte.getZeichen().equals("+2")) {
+                stapel.add(ersteKarte);
                 System.out.println("Die erste Karte war eine unerwünschte Karte, wurde entfernt und am Ende des Stapels eingefügt.");
             }
-        } while (ersteKarte.getFarbe().contains("WILD") || ersteKarte.getZeichen().contains("+2"));
+        } while (ersteKarte.getFarbe().equals("WILD") || ersteKarte.getZeichen().equals("+2"));
+
         topKarte.getAblageStapel().add(ersteKarte);
 
-        // Prüfen, ob die erste Karte eine "Skip"-Karte ist
-        if (ersteKarte.getZeichen().contains("SKIP")) {
+        // Prüfen, ob die erste Karte eine "Skip"- oder "Reverse"-Karte ist
+        if (ersteKarte.getZeichen().equals("SKIP")) {
             spiel.naechsterSpieler();
-        }
-        // Prüfen, ob die erste Karte eine "Rev"-Karte ist
-        else if (ersteKarte.getZeichen().contains("REV")) {
-            spiel.naechsterSpieler(); //Invertiere die Spielreihenfolge
+        } else if (ersteKarte.getZeichen().equals("REV")) {
+            spiel.reverseKarte(); // Korrekturen: naechsterSpieler ist nicht korrekt für reverse
         }
     }
 
@@ -115,11 +88,8 @@ public class Stapel extends Karte {
         topKarte.getAblageStapel().clear();
     }
 
-
     @Override
     public String toString() {
-        return "Stapel " + stapel + "\n ablageStapel " + topKarte;
+        return "Stapel " + stapel + "\nAblageStapel " + topKarte;
     }
-
-
 }
