@@ -7,9 +7,6 @@
     <list default="true" id="a27b344e-8de1-4728-be04-43ee2216aa66" name="Changes" comment="small changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/punkteDatenbank.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/punkteDatenbank.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Spiel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spiel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Spieler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Spieler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stapel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stapel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +189,7 @@
       <workItem from="1720601954384" duration="2633000" />
       <workItem from="1720687964116" duration="1364000" />
       <workItem from="1720767669890" duration="57000" />
-      <workItem from="1721025421577" duration="10395000" />
+      <workItem from="1721025421577" duration="11338000" />
     </task>
     <task id="LOCAL-00001" summary="16.04">
       <option name="closed" value="true" />
@@ -474,7 +471,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721031169429</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="small changes">
+      <option name="closed" value="true" />
+      <created>1721037140007</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1721037140007</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
