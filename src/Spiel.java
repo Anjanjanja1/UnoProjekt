@@ -312,7 +312,7 @@ public class Spiel {
 
             specialKarten(gelegteKarte); //Behandelt alle Spezialeffekte der Karte
             if (aktuellerSpieler instanceof BotSpieler) {
-                output.println("Der Bot " + aktuellerSpieler.getName() + " hat die Karte " + gelegteKarte + " gelegt.");
+                output.println("Der Bot hat die Karte " + gelegteKarte + " gelegt.");
             } else {
                 output.println("Du hast die Karte " + gelegteKarte + " gelegt.");
             }
